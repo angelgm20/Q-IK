@@ -1,0 +1,53 @@
+
+<div class="label-sub" id="contenedor-titulo-form-comision"><p class="fs-1" class="fw-bold" class="lh-1">Clientes</p> </div>
+<form class="form-horizontal" onsubmit="return false;">
+    <div class="form-group">
+        <div class="col-md-6 text-left">
+            <input type="text" class="form-control input-search" id="buscar-cliente" placeholder="Buscar Clientes (Nombre,RFC)" oninput="buscarCliente()">
+        </div>
+        <div class="col-md-2 text-center">
+            <select class="form-control input-search" id="num-reg" name="num-reg" onchange="buscarCliente()">
+                <option value="1000" >-</option>
+                <option value="3" >3</option>
+                <option value="15" >15</option>
+                <option value="20" >20</option>
+                <option value="30" >30</option>
+                <option value="50" >50</option>
+                <option value="100" >100</option>
+            </select>
+        </div>
+        <div class="col-md-4 text-right" id="btn-crear">
+            
+        </div>
+    </div>
+</form>
+<!--<button class="btn btn-sm btn-primary " onclick="tests()" id="btn-form-factura">Guardar <span class="glyphicon glyphicon-save"></span></button>-->
+<div class="scrollX div-bordered">
+    <table class="table table-hover table-condensed table-responsive table-cliente table-head" id="body-lista-clientes">
+        <thead class="sin-paddding">
+            <tr>
+                <th></th>
+                <th>Nombre </th>
+                <th>Empresa </th>
+                <th class="col-md-3">Correo Informacion</th>
+                <th>Correo Facturacion </th>
+                <th>Correo Gerencia </th>
+                <th>Telefono </th>
+                <th>RFC </th>
+                <th>Razon Social </th>
+                <th><span class="glyphicon glyphicon-option-vertical"></span></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<br/>
+<script type="text/javascript" src="js/scriptcliente.js"></script>
+<script >
+                    $(document).ready(function () {
+                        var cleave = new Cleave('.cfdi', {
+                            delimiter: '-',
+                            blocks: [8, 4, 4, 4, 12]
+                        });
+
+                    });
+</script>

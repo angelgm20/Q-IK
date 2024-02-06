@@ -1,0 +1,47 @@
+<!--Contenedor del contenido de los elementos: requerido por bootstrap-->
+<div class="text-center" id="contenedor-formulario-login">
+    <!--Imagen de control restaurant, el id no debe modificarse, tampoco la clase-->
+    <!--Imagen de sine en parte superior de la pagina-->
+    <img src="img/LogoQik.png" class="img-rounded" id="logo-login"/>
+    <br/><br/>
+    <div>
+        <!--Formulario del login, devuelve false para no enviar el formulario, ya que se comprueba con jquery, la clase form-inline permite que el formulario este en linea-->
+        <form action="#" method="post" id="formulario-login" onsubmit="return false;" name="formulario">
+            <!-- Inica el codigo de los input-->
+            <div class="row" >
+                <div class="input-block">
+                    <label class="label-login pull-left" for="usuario">Usuario</label>
+                    <div class="input-icons">
+                        <i class="lnr lnr-user icon-login"></i> 
+                        <input class="input-login" type="text" id="usuario" name="usuario" placeholder="Usuario">
+                        <div id="usuario-errors">
+                    </div>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-block"> 
+                    <label class="label-login pull-left" for="contrasena">Contrase&ntilde;a</label>
+                    <div class="input-icons">
+                        <i class="lnr lnr-lock icon-login"></i> 
+                        <input class="input-login" type="password" id="contrasena" name="contrasena" placeholder="Password">
+                        <div id="contrasena-errors">
+                    </div>
+                    </div> 
+                </div> 
+            </div>
+            <br>
+            <div class="row">
+                <div class="input-block">
+                    <button class="button-login" id="btn-form-login" onclick="login();" data-placement="left"> Ingresar </button>
+                </div>
+            </div>
+            
+
+        </form>
+
+    </div>
+</div>
+<!--fin contenedor-->
+

@@ -1,0 +1,45 @@
+<div class="col-md-12"><div class="titulo-lista">Usuarios </div> </div>
+<form class="form-horizontal" onsubmit="return false;">
+    <div class="form-group">
+        <div class="col-sm-6">
+            <input type="text" class="form-control input-search" id="buscar-usuario" placeholder="Buscar usuario (Usuario o Nombre/Apellidos)" oninput="buscarUsuario()">
+        </div>
+        
+        <div class="col-sm-2">
+            <select class="form-control text-center input-search" id="num-reg" name="num-reg" onchange="buscarUsuario()">
+                <option value="10" >10</option>
+                <option value="15" >15</option>
+                <option value="20" >20</option>
+                <option value="30" >30</option>
+                <option value="50" >50</option>
+                <option value="100" >100</option>
+            </select>
+        </div>
+        <div class="col-sm-4 text-right" id="btn-crear">
+            
+        </div>
+    </div>
+</form>
+<div class="scrollX div-bordered">
+    <table class="table tab-hover table-condensed table-responsive table-row table-head" id="body-lista-usuarios-altas">
+        <thead class="sin-paddding">
+            <tr >
+                <th>Usuario </th>
+                <th>Nombre </th>
+                <th>Apellido paterno </th>
+                <th>Apellido Materno </th>
+                <th>Correo </th>
+                <th>Celular </th>
+                <th>Telefono </th>
+                <th> <span class="glyphicon glyphicon-option-vertical"></span></th>
+            </tr>
+        </thead>
+        <tbody >
+        </tbody>
+    </table>
+</div>
+<br/>
+<script type="text/javascript" src="js/scriptusuario.js"></script>
+
+
+

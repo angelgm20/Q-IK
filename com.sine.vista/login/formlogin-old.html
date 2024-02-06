@@ -1,0 +1,37 @@
+<!--Contenedor del contenido de los elementos: requerido por bootstrap-->
+<div class="container text-center" id="contenedor-formulario-login">
+    <!--Imagen de control restaurant, el id no debe modificarse, tampoco la clase-->
+   
+    <!--Contenedor del titulo de la aplicacion-->
+    <div class="col-md-12" id="contenedor-logo">
+        <!--titulo de la aplicacion-->
+        <span id="titulo-login-a" class='titulo-login'>SINE</span><span class='titulo-login' id="titulo-login-b">SINEFacturacin.</span>
+    </div>
+    <div>
+        <!--Formulario del login, devuelve false para no enviar el formulario, ya que se comprueba con jquery, la clase form-inline permite que el formulario este en linea-->
+        <form action="#" method="post" class="form-inline" id="formulario-login" onsubmit="return false;" name="formulario">
+            <!-- Inica el codigo de los input-->
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only" for="correo">Correo</label>
+                    <div class="input-group-addon">Correo</div>
+                    <input class="form-control" id="usuario" name="usuario" placeholder="Usuario" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only" for="correo">Contraseña</label>
+                    <div class="input-group-addon">Contraseña</div>
+                    <input class="form-control" type="password" id="contrasena" name="contrasena" placeholder="Password" />
+                </div>
+            </div>
+            <!--Fin codigo input-->
+            <!--Boton para comprobar el formulario-->
+            <button class="btn btn-primary" id="btn-form-login" onclick="login();" data-placement="left"> Entrar <span class="glyphicon glyphicon-log-in"></span></button>
+        </form>
+        <!--Imagen de sine en parte inferior de la pagina-->
+        <img src="img/LogoSine.png" class="img-rounded" id="logo-login"/>
+    </div>
+</div>
+<!--fin contenedor-->
+

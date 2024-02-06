@@ -1,0 +1,341 @@
+<form action="#" onsubmit="return false;" id="form-encabezado">
+    <div class="col-md-12">
+        <div class="label-sub text-center text-md-start" id="contenedor-titulo-form-encabezado">Configuracion de Encabezado </div> 
+    </div>  
+
+    <div class="rounded float-end"> 
+        <iframe id="myIframe" src="com.sine.imprimir/ejemplo.pdf#toolbar=0&navpanes=0" width="410" height="500px"></iframe>
+    </div>
+
+    
+    
+
+    <div class="col-md-6">
+        <div class="col-md-12"> 
+            <label class="label-form text-right mb-2 text-md-start" for="id-encabezado">Editar</label>
+            <div class="form-group">
+                <select class="form-select" id="id-encabezado" name="id-encabezado" onchange="loadEncabezado();">
+                    <option class="option-list" value="" id="option-default-encabezado">- - - -</option>
+                    <optgroup id="encabezados" class="contenedor-encabezados text-left">
+                        <option class="option-list" value="1" >Encabezado Facturas</option>
+                        <option class="option-list" value="2" >Encabezado Recibos de Pago</option>
+                        <option class="option-list" value="3" >Encabezado Cotizaciones</option>
+                        <option class="option-list" value="4" >Encabezado Recibos de Anticipo</option>
+                        <option class="option-list" value="5" >Encabezado Comunicados</option>
+                        <option class="option-list" value="6" >Encabezado Reporte de Facturasxxx</option>
+                        <option class="option-list" value="7" >Encabezado Reporte de Pagosxxx</option>
+                        <option class="option-list" value="8" >Encabezado Reporte Grafico de Impuestos</option>
+                        <option class="option-list" value="9" >xxxEncabezado Reporte de Impuestosxxx</option>
+                        <option class="option-list" value="10" >Encabezado Reporte de Ventasxxx</option>
+                        <option class="option-list" value="11" >Encabezado Cartas Porte</option>
+                        <option class="option-list" value="12" >Encabezado Ticket de Venta</option>
+                        <option class="option-list" value="13" >Encabezado Corte de Cajaxxx</option>
+                    </optgroup>
+                </select>
+                <div id="id-encabezado-errors"></div>
+            </div>
+        </div>
+        
+        
+            <div class="row">
+                <div id="config-gral">
+                    <div class="new-tooltip icon tip">
+                        <label class="label-form text-right mb-2" for="chlogo">¿Usar configuración en General?</label>
+                        <div class="form-group">
+                            <div class="new-tooltip icon tip " style="margin-bottom: 10px;"> <!-- Ajusta el valor según sea necesario para agregar espacio vertical -->
+                            <input class="input-check" id="chlogo" name="chlogo" type="checkbox" style="margin-right: 5px;"/>&nbsp; <!-- Ajusta el valor según sea necesario para agregar espacio horizontal -->
+                            <i class="fas fa-question-circle"></i>
+                            <span class="tiptext">Seleccionando esta opción se usará la configuración actual de comisiones para todos los usuarios.</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div id="datos-empresa" style="display: none;"> 
+                    <div>
+                        <label class="label-form mb-2">¿Que datos tendrá el encabezado del ticket?</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input class="input-radio" id="chk-data" name="option-header-ticket" type="radio" onclick="habilitarDatos()"/>
+                            <label for="chk-data">Datos y Logo</label>
+                        </div>                   
+                        <div class="col-md-4">
+                            <input class="input-radio" id="chk-logo" name="option-header-ticket" type="radio" onclick="habilitarDatos()"/>
+                            <label for="chk-logo">Logo</label>
+                        </div>                   
+                        <div class="col-md-4">
+                            <input class="input-radio" id="chk-only-data" name="option-header-ticket" type="radio" onclick="habilitarDatos()"/>
+                            <label for="chk-only-data">Datos</label>
+                        </div>                   
+                    </div>
+                </div>
+                
+                <div   id="header-logo" style="padding-top: 10px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="button-file text-right mb-2" for="imagen"><span class="far fa-image"></span> Logotipo</label>
+                            <div class="form-group">
+                                <input class="form-control text-center upload" id="imagen" name="imagen" type="file" onchange="cargarLogo();"/>
+                                <div id="imagen-errors"></div>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6" id="muestraimagen"></div>
+                    </div>
+                </div>
+                <input id="filename" name="filename" type="hidden"/>
+                <input id="imgactualizar" type="hidden"/>
+            </div>
+            <div id="data-empressa" style="display: none;">
+                <div>
+                    <label class="label-sub">Datos Empresa</label>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="label-form text-right" for="nombre-empresa">Nombre</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="nombre-empresa" name="nombre-empresa" placeholder="Nombre de la empresa" type="text" onblur="visualizarPDF();"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="label-form text-right" for="razon-social">Razón Social</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="razon-social" name="razon-social" placeholder="Razón social" type="text" onblur="visualizarPDF();"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="label-form text-right" for="direccion">Dirección</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="direccion" name="direccion" placeholder="Dirección" type="text" onblur="visualizarPDF();"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="label-form text-right" for="rfc-empresa">RFC</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="rfc-empresa" name="rfc-empresa" placeholder="RFC" type="text" onblur="visualizarPDF();"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="label-sub">Encabezado</label>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="label-form text-right mb-2" for="titulo">Titulo</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="titulo" name="titulo" placeholder="Titulo PDF" type="text" onblur="visualizarPDF();"/>
+                        <div id="titulo-errors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="carta-titulo" class="row" style="display: none;">
+                <div class="col-md-12">
+                    <label class="label-form text-right mb-2" for="titulo2">Titulo Hoja de Carta Porte</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="titulo2" name="titulo2" placeholder="Titulo Carta Porte" type="text"/>
+                        <div id="titulo2-errors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="color-titulo">Color Titulo</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-titulo" name="color-titulo" type="color" onchange="visualizarPDF();"/>
+                        <div id="color-titulo-errors">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="color-celda">Color Celda</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-celda" name="color-celda" type="color" onchange="visualizarPDF();"/>
+                        <div id="color-celda-errors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+
+            <div id="common-cuerpo">
+            <div>
+                <label class="label-sub">Cuerpo</label>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="color-cuadro">Color Fondo Subtitulos</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-cuadro" name="color-cuadro" type="color" onchange="visualizarPDF();"/>
+                        <div id="color-cuadro-errors">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="color-subtitulo">Color Subtitulos</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-subtitulo" name="color-subtitulo" type="color" onchange="visualizarPDF();"/>
+                        <div id="color-subtitulo-errors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            <div class="row">
+                <div id="common-subtitulos">
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="color-tabla">Color Fondo Datos</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="fondo-datos" name="fondo-datos" type="color" onchange="visualizarPDF();"/>
+                            <div id="color-tabla-errors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="titulos-tabla">Color Texto Negritas</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="texto-bold" name="titulos-tabla" type="color" onchange="visualizarPDF();"/>
+                            <div id="titulos-tabla-errors">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="titulos-tabla">Color Texto</label>
+                     <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-texto" name="titulos-tabla" type="color" onchange="visualizarPDF();"/>
+                        <div id="titulos-tabla-errors">
+                        </div>
+
+                        </div>
+                        </div>
+                        
+                        <div id="common-ticket" class="col-md-6" style="display: none;">
+                     <label class="label-form text-right mb-2" for="width-ticket">Ancho Ticket(mm)</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="width-ticket" name="width-ticket" type="number"  onchange="verificaAnchoticket()" />
+                        </div>
+                </div>
+
+            </div>
+            <div id="common-table" class="row">
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="color-tabla">Color Celda Tabla</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="color-tabla" name="color-tabla" type="color" onchange="visualizarPDF();"/>
+                        <div id="color-tabla-errors">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="label-form text-right mb-2" for="titulos-tabla">Color Titulos Tabla</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="titulos-tabla" name="titulos-tabla" type="color" onchange="visualizarPDF();"/>
+                        <div id="titulos-tabla-errors">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    
+    </div>
+
+    
+    <div class="row" id="add-observaciones" hidden="">
+        <div class="col-md-6">
+            <label id="lbl-despedida" class="label-form text-right mb-2" for="observaciones">Mensaje de Observaciones</label>
+            <div class="form-group">
+                <textarea rows="5" cols="60" id="observaciones-cot" class="form-control input-form" placeholder="Observaciones sobre la cotizacion" onblur="visualizarPDF();">Cotización en pesos mexicanos, vigencia de la cotización 15 días a partir de la fecha de emisión. Se requiere 50% de anticipo para iniciar el trabajo.</textarea>
+
+            </div>
+            <div id="observaciones-cot-errors">
+            </div>
+        </div>
+    </div>
+
+
+    
+        <div class="col-md-12">
+            <div>
+                <label class="label-sub">Pie de Pagina</label>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label id="lbl-pagina" class="label-form text-right mb-2" for="pagina">Pagina</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="pagina" name="pagina" placeholder="Pagina de Contacto" type="text" onblur="visualizarPDF();"/>
+                        <div id="pagina-errors">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label id="lbl-correo" class="label-form text-right mb-2" for="correo">Correo</label>
+                    <div class="form-group">
+                        <input class="form-control text-center input-form" id="correo" name="correo" placeholder="Correo de Contacto" type="text" onblur="visualizarPDF();"/>
+                        <div id="correo-errors">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="common-pie" class="row">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="telefono1">Telefono 1</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="telefono1" name="telefono1" placeholder="Telefono de Contacto" type="text" onblur="visualizarPDF();"/>
+                            <div id="telefono1-errors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="telefono2">Telefono 2</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="telefono2" name="telefono2" placeholder="Telefono de Contacto" type="text" onblur="visualizarPDF();"/>
+                            <div id="telefono2-errors">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="color-pie">Color texto</label>
+                        <div class="form-group">
+                            <input class="form-control text-center input-form" id="color-pie" name="color-pie" type="color" onchange="visualizarPDF();"/>
+                            <div id="color-pie-errors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="label-form text-right mb-2" for="chnum">Numeracion de Pagina</label>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="input-check" id="chnum" name="chnum" type="checkbox" onclick="visualizarPDF();"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-danger me-2" onclick="loadView('config')" >Cancelar <span class="fas fa-times"></span></button>
+        <button class="btn btn-primary" onclick="actualizarEncabezado()" id="btn-form-comunicado" >Guardar <span class="fas fa-save"></span></button>
+    </div>
+</form>
+<br/><br/>
+<script src="js/scriptconfig.js"></script>

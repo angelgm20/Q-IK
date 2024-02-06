@@ -1,0 +1,894 @@
+<div class="col-md-12"><div class="titulo-lista">Asignar Permisos </div> </div>
+<br/><br/><br/><br/><br/><br/>
+
+<div class="div-form">
+    <div>
+        <label class="label-sub" id="titulo-asignar">Asignando permisos a:</label>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <button class="button-form btn-danger" onclick="loadView('listasuarioaltas');" >Cancelar <span class="glyphicon glyphicon-remove"></span></button> &nbsp; 
+                <button id="btn-guardar-permisos" class="button-submit" onclick="" >Asignar Permisos <span class="glyphicon glyphicon-ok"></span></button>
+            </div> 
+        </div>
+        <div class="col-md-6 text-left"> 
+            <button id="btn-all-permisos" class="button-form btn-success"  onclick="checkAll();" >Asignar/Quitar todos los Permisos <span class="glyphicon glyphicon-ok"></span></button>
+            <input type="checkbox" id="checkall" hidden=""/>
+        </div>
+    </div>
+    <br>
+    <form action="com.sine.enlace/enlaceusuario.php" onsubmit="return false;" id="form-permisos">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse1" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading1'>
+                            <h4 class="text-center">
+                                Facturas <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+
+                        </div>
+                    </a>
+                    <div id="collapse1" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Crear Factura:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevafactura" name="nuevafactura" type="checkbox"/>
+                                </div>
+                                <div id="nuevafactura-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Editar Factura:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarfactura" name="editarfactura" type="checkbox"/>
+                                </div>
+                                <div id="editarfactura-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Eliminar Factura:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarfactura" name="eliminarfactura" type="checkbox"/>
+                                </div>
+                                <div id="eliminarfactura-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listafactura">Lista Facturas:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listafactura" name="listafactura" type="checkbox"/>
+                                </div>
+                                <div id="listafactura-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse2" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading2'>
+                            <h4 class="text-center">
+                                Pagos <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse2" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearpago">Crear Pago:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearpago" name="crearpago" type="checkbox"/>
+                                </div>
+                                <div id="crearpago-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Editar Pago:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarpago" name="editarpago" type="checkbox"/>
+                                </div>
+                                <div id="editarpago-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Eliminar Pago:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarpago" name="eliminarpago" type="checkbox"/>
+                                </div>
+                                <div id="eliminarpago-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listapago">Lista Pago:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listapago" name="listapago" type="checkbox"/>
+                                </div>
+                                <div id="listapago-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse14" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading1'>
+                            <h4 class="text-center">
+                                Nominas <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+
+                        </div>
+                    </a>
+                    <div id="collapse14" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="listaempleado">Lista Empleado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaempleado" name="listaempleado" type="checkbox"/>
+                                </div>
+                                <div id="listaempleado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevoempleado">Crear Empleado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevoempleado" name="nuevoempleado" type="checkbox"/>
+                                </div>
+                                <div id="nuevoempleado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarempleado">Editar Empleado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarempleado" name="editarempleado" type="checkbox"/>
+                                </div>
+                                <div id="editarempleado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarempleado">Eliminar Empleado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarempleado" name="eliminarempleado" type="checkbox"/>
+                                </div>
+                                <div id="eliminarempleado-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="listanomina">Lista Nomina</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listanomina" name="listanomina" type="checkbox"/>
+                                </div>
+                                <div id="listanomina-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevanomina">Crear Nomina:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevanomina" name="nuevanomina" type="checkbox"/>
+                                </div>
+                                <div id="nuevanomina-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarnomina">Editar Nomina:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarnomina" name="editarnomina" type="checkbox"/>
+                                </div>
+                                <div id="editarnomina-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarnomina">Eliminar Nomina:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarnomina" name="eliminarnomina" type="checkbox"/>
+                                </div>
+                                <div id="eliminarnomina-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse15" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading2'>
+                            <h4 class="text-center">
+                                Carta Porte <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse15" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="listaubicacion">Ubicaciones:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaubicacion" name="listaubicacion" type="checkbox"/>
+                                </div>
+                                <div id="listaubicacion-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevaubicacion">Crear Ubicacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevaubicacion" name="nuevaubicacion" type="checkbox"/>
+                                </div>
+                                <div id="nuevaubicacion-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarubicacion">Editar Ubicacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarubicacion" name="editarubicacion" type="checkbox"/>
+                                </div>
+                                <div id="editarubicacion-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarubicacion">Eliminar Ubicacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarubicacion" name="eliminarubicacion" type="checkbox"/>
+                                </div>
+                                <div id="eliminarubicacion-errors"></div>
+                            </div>
+
+                            <br/>
+
+                            <label class="label-form col-md-4 text-right" for="listatransporte">Transportes:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listatransporte" name="listatransporte" type="checkbox"/>
+                                </div>
+                                <div id="listatransporte-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevotransporte">Crear Transporte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevotransporte" name="nuevotransporte" type="checkbox"/>
+                                </div>
+                                <div id="nuevotransporte-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editartransporte">Editar Transporte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editartransporte" name="editartransporte" type="checkbox"/>
+                                </div>
+                                <div id="editartransporte-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminartransporte">Eliminar Transporte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminartransporte" name="eliminartransporte" type="checkbox"/>
+                                </div>
+                                <div id="eliminartransporte-errors"></div>
+                            </div>
+
+                            <br/>
+
+                            <label class="label-form col-md-4 text-right" for="listaremolque">Remolques:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaremolque" name="listaremolque" type="checkbox"/>
+                                </div>
+                                <div id="listaremolque-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevoremolque">Crear Remolque:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevoremolque" name="nuevoremolque" type="checkbox"/>
+                                </div>
+                                <div id="nuevoremolque-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarremolque">Editar Remolque:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarremolque" name="editarremolque" type="checkbox"/>
+                                </div>
+                                <div id="editarremolque-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarremolque">Eliminar Remolque:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarremolque" name="eliminarremolque" type="checkbox"/>
+                                </div>
+                                <div id="eliminarremolque-errors"></div>
+                            </div>
+
+                            <br/>
+
+                            <label class="label-form col-md-4 text-right" for="listaoperador">Operadores:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaoperador" name="listaoperador" type="checkbox"/>
+                                </div>
+                                <div id="listaoperador-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevooperador">Crear Operador:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevooperador" name="nuevooperador" type="checkbox"/>
+                                </div>
+                                <div id="nuevooperador-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editaroperador">Editar Operador:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editaroperador" name="editaroperador" type="checkbox"/>
+                                </div>
+                                <div id="editaroperador-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminaroperador">Eliminar Operador:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminaroperador" name="eliminaroperador" type="checkbox"/>
+                                </div>
+                                <div id="eliminaroperador-errors"></div>
+                            </div>
+
+                            <br/>
+
+                            <label class="label-form col-md-4 text-right" for="listacarta">Lista Carta Porte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listacarta" name="listacarta" type="checkbox"/>
+                                </div>
+                                <div id="listacarta-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevacarta">Crear Carta Porte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="nuevacarta" name="nuevacarta" type="checkbox"/>
+                                </div>
+                                <div id="nuevacarta-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarcarta">Editar Carta Porte:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarcarta" name="editarcarta" type="checkbox"/>
+                                </div>
+                                <div id="editarcarta-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarcarta">Eliminar Carta:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarcarta" name="eliminarcarta" type="checkbox"/>
+                                </div>
+                                <div id="eliminarcarta-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse3" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading3'>
+                            <h4 class="text-center">
+                                Cotizaciones <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+
+                        </div>
+                    </a>
+                    <div id="collapse3" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearcot">Crear Cotizacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearcot" name="crearcot" type="checkbox"/>
+                                </div>
+                                <div id="crearcot-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Editar Cotizacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarcot" name="editarcot" type="checkbox"/>
+                                </div>
+                                <div id="editarcot-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="nuevafactura">Eliminar:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarcot" name="eliminarcot" type="checkbox"/>
+                                </div>
+                                <div id="eliminarcot-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listacot">Lista Cotizacion:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listacot" name="listacot" type="checkbox"/>
+                                </div>
+                                <div id="listacot-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="listacot">Anticipos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="anticipo" name="anticipo" type="checkbox"/>
+                                </div>
+                                <div id="anticipo-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse4" class="btn-primary" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading4'>
+                            <h4 class=" text-center">
+                                Clientes <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse4" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearcliente">Crear Cliente:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearcliente" name="crearcliente" type="checkbox"/>
+                                </div>
+                                <div id="crearcliente-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarcliente">Editar Cliente:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarcliente" name="editarcliente" type="checkbox"/>
+                                </div>
+                                <div id="editarcliente-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarcliente">Eliminar Cliente:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarcliente" name="eliminarcliente" type="checkbox"/>
+                                </div>
+                                <div id="eliminarcliente-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listacliente">Lista Cliente:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listacliente" name="listacliente" type="checkbox"/>
+                                </div>
+                                <div id="listacliente-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse5" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading5'>
+                            <h4 class="text-center">
+                                Comunicados <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse5" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearcomunicado">Crear Comunicado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearcomunicado" name="crearcomunicado" type="checkbox"/>
+                                </div>
+                                <div id="crearcomunicado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarcomunicado">Editar Comunicado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarcomunicado" name="editarcomunicado" type="checkbox"/>
+                                </div>
+                                <div id="editarcomunicado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarcomunicado">Eliminar Comunicado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarcomunicado" name="eliminarcomunicado" type="checkbox"/>
+                                </div>
+                                <div id="eliminarcomunicado-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listacomunicado">Lista Comunicado:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listacomunicado" name="listacomunicado" type="checkbox"/>
+                                </div>
+                                <div id="listacomunicado-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse6" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading6'>
+                            <h4 class="text-center">
+                                Productos <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse6" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearproducto">Crear Producto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearproducto" name="crearproducto" type="checkbox"/>
+                                </div>
+                                <div id="crearproducto-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarproducto">Editar Producto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarproducto" name="editarproducto" type="checkbox"/>
+                                </div>
+                                <div id="editarproducto-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarproducto">Eliminar Producto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarproducto" name="eliminarproducto" type="checkbox"/>
+                                </div>
+                                <div id="eliminarproducto-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="listaproducto">Lista Producto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaproducto" name="listaproducto" type="checkbox"/>
+                                </div>
+                                <div id="listaproducto-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse7" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading7'>
+                            <h4 class="text-center">
+                                Proveedor <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse7" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearproveedor">Crear Proveedor:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearproveedor" name="crearproveedor" type="checkbox"/>
+                                </div>
+                                <div id="crearproveedor-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarproveedor">Editar Proveedor:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarproveedor" name="editarproveedor" type="checkbox"/>
+                                </div>
+                                <div id="editarproveedor-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarproveedor">Eliminar Proveedor:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarproveedor" name="eliminarproveedor" type="checkbox"/>
+                                </div>
+                                <div id="eliminarproveedor-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listaproveedor">Lista Proveedor:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaproveedor" name="listaproveedor" type="checkbox"/>
+                                </div>
+                                <div id="listaproveedor-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse13" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading13'>
+                            <h4 class="text-center">
+                                Impuestos <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse13" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearimpuesto">Crear Impuesto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearimpuesto" name="crearimpuesto" type="checkbox"/>
+                                </div>
+                                <div id="crearimpuesto-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarimpuesto">Editar Impuesto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarimpuesto" name="editarimpuesto" type="checkbox"/>
+                                </div>
+                                <div id="editarimpuesto-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarimpuesto">Eliminar Impuesto:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarimpuesto" name="eliminarimpuesto" type="checkbox"/>
+                                </div>
+                                <div id="eliminarimpuesto-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listaimpuesto">Lista Proveedor:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaimpuesto" name="listaimpuesto" type="checkbox"/>
+                                </div>
+                                <div id="listaimpuesto-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse8" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading8'>
+                            <h4 class="text-center">
+                                Datos de Facturacion <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse8" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="creardatos">Alta Datos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="creardatos" name="creardatos" type="checkbox"/>
+                                </div>
+                                <div id="creardatos-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editardatos">Editar Datos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editardatos" name="editardatos" type="checkbox"/>
+                                </div>
+                                <div id="editardatos-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listadatos">Lista Datos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listadatos" name="listadatos" type="checkbox"/>
+                                </div>
+                                <div id="listadatos-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse9" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading9'>
+                            <h4 class="text-center">
+                                Contratos <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse9" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearcontrato">Nuevo Contrato:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearcontrato" name="crearcontrato" type="checkbox"/>
+                                </div>
+                                <div id="crearcontrato-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="editarcontrato">Editar Contrato:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editarcontrato" name="editarcontrato" type="checkbox"/>
+                                </div>
+                                <div id="editarcontrato-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarcontrato">Eliminar Contrato:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarcontrato" name="eliminarcontrato" type="checkbox"/>
+                                </div>
+                                <div id="eliminarcontrato-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listacontrato">Lista Datos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listacontrato" name="listacontrato" type="checkbox"/>
+                                </div>
+                                <div id="listacontrato-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse10" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading10'>
+                            <h4 class="text-center">
+                                Usuarios <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse10" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="crearusuario">Nuevo Usuario:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="crearusuario" name="crearusuario" type="checkbox"/>
+                                </div>
+                                <div id="crearusuario-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listausuario">Lista Usuarios:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listausuario" name="listausuario" type="checkbox"/>
+                                </div>
+                                <div id="listausuario-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="eliminarusuario">Eliminar Usuarios:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="eliminarusuario" name="eliminarusuario" type="checkbox"/>
+                                </div>
+                                <div id="eliminarusuario-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="crearusuario">Asignar Permisos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="asgpermiso" name="asgpermiso" type="checkbox"/>
+                                </div>
+                                <div id="asgpermiso-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse11" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading11'>
+                            <h4 class="text-center">
+                                Reportes <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse11" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="repfactura">Reporte Facturas:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="repfactura" name="repfactura" type="checkbox"/>
+                                </div>
+                                <div id="repfactura-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="reppago">Reporte Pagos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="reppago" name="reppago" type="checkbox"/>
+                                </div>
+                                <div id="reppago-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="repgrafica">Reporte Grafico:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="repgrafica" name="repgrafica" type="checkbox"/>
+                                </div>
+                                <div id="repgrafica-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="repiva">Reporte Impuestos:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="repiva" name="repiva" type="checkbox"/>
+                                </div>
+                                <div id="repiva-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listaiva">Lista Datos Impuestos de Recargo:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listaiva" name="listaiva" type="checkbox"/>
+                                </div>
+                                <div id="listaiva-errors"></div>
+                            </div>
+                            <label class="label-form col-md-4 text-right" for="listaiva">Reporte de Ventas:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="repventas" name="repventas" type="checkbox"/>
+                                </div>
+                                <div id="repventas-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <a href="#collapse12" data-toggle='collapse' data-parent='#accordion'>
+                        <div class="panel-head-style" role="tab" id='heading12'>
+                            <h4 class="text-center">
+                                Configuracion <span class="glyphicon glyphicon-list"></span>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse12" class="panel-collapse collapse collapse-permission">
+                        <div class="panel-body altura-panel-categoria">
+                            <label class="label-form col-md-4 text-right" for="confencabezado">Agregar Folios:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="addfolio" name="addfolio" type="checkbox"/>
+                                </div>
+                                <div id="addfolio-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confcorreo">Lista Folios:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="listfolio" name="listfolio" type="checkbox"/>
+                                </div>
+                                <div id="listfolio-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confencabezado">Editar Folios:</label>
+                            <div class="col-md-2 form-group">
+                                <div class="input-group">
+                                    <input class="input-check" id="editfolio" name="editfolio" type="checkbox"/>
+                                </div>
+                                <div id="editfolio-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confcorreo">Eliminar Folios:</label>
+                            <div class="col-md-2 form-group">
+                                <input class="input-check" id="delfolio" name="delfolio" type="checkbox"/>
+                                <div id="delfolio-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confcorreo">Comisiones:</label>
+                            <div class="col-md-2 form-group">
+                                <input class="input-check" id="addcomision" name="addcomision" type="checkbox"/>
+                                <div id="addcomision-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confencabezado">Conf. de Encabezados:</label>
+                            <div class="col-md-2 form-group">
+                                <input class="input-check" id="confencabezado" name="confencabezado" type="checkbox"/>
+                                <div id="confencabezado-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="confcorreo">Conf. de Correo:</label>
+                            <div class="col-md-2 form-group">
+                                <input class="input-check" id="confcorreo" name="confcorreo" type="checkbox"/>
+                                <div id="confcorreo-errors"></div>
+                            </div>
+
+                            <label class="label-form col-md-4 text-right" for="imptablas">Importar Tablas:</label>
+                            <div class="col-md-2 form-group">
+                                <input class="input-check" id="imptablas" name="imptablas" type="checkbox"/>
+                                <div id="imptablas-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

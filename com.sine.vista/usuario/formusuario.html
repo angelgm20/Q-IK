@@ -1,0 +1,123 @@
+<form action="com.sine.enlace/enlaceusuario.php" onsubmit="return false;" id="form-usuario">
+    <div class="col-md-12"><div class="titulo-lista" id="contenedor-titulo-form-usuario">Nuevo Usuario </div> </div>
+    <div id="div-space">
+    </div>
+    <div class="div-form">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <label class="mark-required text-right">*</label> <label class="label-required text-right"> Campo Obligatorio</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label class="button-file text-right" for="imagen"><span class="glyphicon glyphicon-picture" ></span> Imagen de Perfil</label>
+                <div class="form-group">
+                    <input class="form-control text-center upload"  id="imagen" name="imagen"  type="file" onchange="cargarImgUsuario();"/>
+                    <input id="filename" name="filename"  type="hidden"/>
+                    <div id="imagen-errors">
+                    </div>
+                </div>
+            </div>
+            <div class="text-left col-md-3 ex-profile" id="muestraimagen" >
+            </div>
+            <div class="col-md-6">
+                <label class="label-form text-right" for="nombre">Nombre</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="nombre" name="nombre" placeholder="Nombre" type="text"/>
+                    <div id="nombre-errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="label-form text-right" for="apellido-paterno">Apellido paterno</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="apellido-paterno" name="apellido-paterno" placeholder="Apellido paterno" type="text"/>
+                    <div id="apellido-paterno-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="label-form text-right" for="apellido-materno">Apellido materno</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="apellido-materno" name="apellido-materno" placeholder="Apellido materno" type="text"/>
+                    <div id="apellido-materno-errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col-md-6">
+                <label class="label-form text-right" for="usuario">Nombre de Usuario</label> <label class="mark-required text-right">*</label>
+                <div id="div-user" class="form-group">
+                    <input class="form-control text-center input-form" id="usuario" name="usuario" placeholder="Nombre de Usuario" type="text"/>
+                    <div id="usuario-errors">
+                    </div>
+                </div>
+                <span id="span-user"></span>
+            </div>
+            <div class="col-md-6">
+                <label class="label-form text-right" for="contrasena">Contraseña</label> <label class="mark-required text-right">*</label>
+                <div id="div-pass" class="form-group">
+                    <input class="form-control text-center input-form" id="contrasena" name="contrasena" placeholder="Contraseña" type="password" autocomplete="new-password"/>
+                    <div id="contrasena-errors">
+                    </div>
+                </div>
+                <span id="span-pass"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="label-form text-right" for="correo">Correo</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="correo" name="correo" placeholder="Correo" type="email"/>
+                    <div id="correo-errors">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="label-form text-right" for="telefono">Telefono</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="telefono" name="telefono" placeholder="Telefono" type="number"/>
+                    <div id="telefono-errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="label-form text-right" for="celular">Celular</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="celular" name="celular" placeholder="Celular" type="number"/>
+                    <div id="correo-errors">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="label-form text-right" for="tipo-usuario">Tipo de Usuario</label> <label class="mark-required text-right">*</label>
+                <div class="form-group">
+                    <select class="form-control text-center input-form" id="tipo-usuario" name="tipo-usuario" >
+                        <option value="" id="option-default-tipo">- - - -</option>
+                        <option value="1" id="tipo1">Administrador</option>
+                        <option value="2" id="tipo2">Empleado</option>
+                    </select>
+                    <div id="tipo-usuario-errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button class="button-form btn-danger" onclick="loadView('listasuarioaltas');" >Cancelar <span class="glyphicon glyphicon-remove"></span></button> &nbsp;
+                <button class="button-form btn-primary" onclick="insertarUsuario()" id="btn-form-usuario">Guardar <span class="glyphicon glyphicon-floppy-disk"></span></button>
+            </div>
+        </div>
+    </div>
+</form>
+<br/>
+<script type="text/javascript" src="js/scriptusuario.js"></script>
+<script>
+                        window.addEventListener('resize', resetDiv);
+                        resetDiv();
+</script>

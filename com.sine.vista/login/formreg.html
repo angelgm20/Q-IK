@@ -1,0 +1,99 @@
+<!--Contenedor del contenido de los elementos: requerido por bootstrap-->
+<div class="container text-center" id="contenedor-formulario-login">
+    <!--Imagen de control restaurant, el id no debe modificarse, tampoco la clase-->
+    <!--Imagen de sine en parte superior de la pagina-->
+    <img src="img/LogoQik.png" class="img-rounded" id="logo-login"/>
+    <br/><br/>
+    <div>
+        <!--Formulario del login, devuelve false para no enviar el formulario, ya que se comprueba con jquery, la clase form-inline permite que el formulario este en linea-->
+        <form action="#" method="post" class="form-inline" id="formulario-login" onsubmit="return false;" name="formulario">
+            <div class="row">
+                <label class="control-label col-md-2 text-right" for="nombre">Nombre</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="nombre" name="nombre" placeholder="Nombre" type="text"/>
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    </div>
+                    <div id="nombre-errors">
+                    </div>
+                </div>
+                <label class="control-label col-md-2 text-right" for="apellido-paterno">Apellido paterno</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="apellido-paterno" name="apellido-paterno" placeholder="Apellido paterno" type="text"/>
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    </div>
+                    <div id="apellido-paterno-errors"></div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-md-2 text-right" for="apellido-materno">Apellido materno</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="apellido-materno" name="apellido-materno" placeholder="Apellido materno" type="text"/>
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    </div>
+                    <div id="apellido-materno-errors">
+                    </div>
+                </div>
+                <label class="control-label col-md-2 text-right" for="telefono">Telefono</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="telefono" name="telefono" placeholder="Telefono" type="number"/>
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></div>
+                    </div>
+                    <div id="telefono-errors">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-md-2 text-right" for="usuario">Nombre de Usuario</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="nomusuario" name="nomusuario" placeholder="Nombre de Usuario" type="text"/>
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    </div>
+                    <div id="nomusuario-errors">
+                    </div>
+                </div>
+                <label class="control-label col-md-2 text-right" for="contrasena">Contraseña</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="pass" name="pass" placeholder="Contraseña" type="password"/>
+                        <div class="input-group-addon"><span id="span-pass" class="glyphicon glyphicon-certificate"></span></div>
+                    </div>
+                    <div id="pass-errors">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-md-2 text-right" for="correo">Correo</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="correo" name="correo" placeholder="Correo" type="email"/>
+                        <div class="input-group-addon"><span>@</span></div>
+                    </div>
+                    <div id="correo-errors">
+                    </div>
+                </div>
+                <label class="control-label col-md-2 text-right" for="celular">Celular</label>
+                <div class="col-md-4 form-group">
+                    <div class="input-group">
+                        <input class="form-control text-center input-sm" id="celular" name="celular" placeholder="Celular" type="number"/>
+                        <div class="input-group-addon"><span>@</span></div>
+                    </div>
+                    <div id="correo-errors">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!--Fin codigo input-->
+            <!--Boton para comprobar el formulario-->
+            <button class="btn btn-success" id="btn-form-registrar" onclick="Registrar();" data-placement="left"> Registrarse <span class="glyphicon glyphicon-log-in"></span></button>
+        </form>
+        <hr>
+
+    </div>
+</div>
+<!--fin contenedor-->
+
