@@ -74,7 +74,8 @@
                 <div class="row">
                     <div class="form-group col-md-12">
                         <label class="label-form text-right" for="observaciones-producto">Observaciones</label>
-                        <textarea rows="5" cols="60" id="observaciones-producto" class="form-control input-form" placeholder="Observaciones sobre el Producto" maxlength="400" ></textarea>
+                        <!-- <textarea rows="5" cols="60" id="observaciones-producto" class="form-control input-form" placeholder="Observaciones sobre el Producto" maxlength="400" ></textarea>-->
+                        <textarea rows="5" cols="60" id="observaciones-producto" class="form-control input-form" placeholder="Observaciones sobre el Producto" maxlength="10000" ></textarea>
                         <div id="observaciones-producto-errors">
                     </div>
                     </div>

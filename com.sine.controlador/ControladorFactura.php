@@ -812,7 +812,7 @@ class ControladorFactura {
 
     public function getDetalle($idfactura) {
         $consultado = false;
-        $consulta = "SELECT det.* FROM detalle_factura det WHERE tagdetallef=:id";
+        $consulta = "SELECT det.* FROM detalle_factura det WHERE tagdetallef=:id ORDER BY iddetalle_factura ASC";
         $consultas = new Consultas();
         $val = array("id" => $idfactura);
         $consultado = $consultas->getResults($consulta, $val);
@@ -1583,8 +1583,9 @@ class ControladorFactura {
             $periodoglobal = $facturaactual['periodoglobal'];
             $mesperiodo = $facturaactual['mesperiodo'];
             $anhoperiodo = $facturaactual['anhoperiodo'];
+        	$cpemisor = $facturaactual['factura_cpemisor'];
 
-            $datos = "$idfactura</tr>$serie</tr>$letra</tr>$folio</tr>$fecha_creacion</tr>$idcliente</tr>$cliente</tr>$rfccliente</tr>$rzreceptor</tr>$cpreceptor</tr>$regfiscalrec</tr>$idmetodo_pago</tr>$idmoneda</tr>$iduso_cfdi</tr>$idforma_pago</tr>$idtipo_comprobante</tr>$status</tr>$uuid</tr>$iddatos</tr>$chfirmar</tr>$cfdisrel</tr>$tcambio</tr>$rfc</tr>$rzsocial</tr>$clvreg</tr>$regimen</tr>$tag</tr>$dirreceptor</tr>$periodoglobal</tr>$mesperiodo</tr>$anhoperiodo";
+            $datos = "$idfactura</tr>$serie</tr>$letra</tr>$folio</tr>$fecha_creacion</tr>$idcliente</tr>$cliente</tr>$rfccliente</tr>$rzreceptor</tr>$cpreceptor</tr>$regfiscalrec</tr>$idmetodo_pago</tr>$idmoneda</tr>$iduso_cfdi</tr>$idforma_pago</tr>$idtipo_comprobante</tr>$status</tr>$uuid</tr>$iddatos</tr>$chfirmar</tr>$cfdisrel</tr>$tcambio</tr>$rfc</tr>$rzsocial</tr>$clvreg</tr>$regimen</tr>$tag</tr>$dirreceptor</tr>$periodoglobal</tr>$mesperiodo</tr>$anhoperiodo</tr>$cpemisor";
             break;
         }
         return $datos;
@@ -2312,11 +2313,18 @@ class ControladorFactura {
         return $eliminado;
     }
 
-    public function getPagosReg($folio) {
+    public function getPagosReg($folio, $idfactura) {
         $consultado = false;
         $consultas = new Consultas();
-        $consulta = "SELECT * FROM pagos p INNER JOIN catalogo_pago c ON (c.idcatalogo_pago=p.pago_idformapago) WHERE idpago=:pid;";
-        $val = array("pid" => $folio);
+        $consulta = "SELECT * 
+					FROM pagos p 
+					INNER JOIN complemento_pago cp ON (cp.tagpago=p.tagpago) 
+					INNER JOIN catalogo_pago c ON (c.idcatalogo_pago=cp.complemento_idformapago)
+					INNER JOIN detallepago dp ON (dp.detalle_tagencabezado=cp.tagpago) 
+					AND (dp.detalle_tagcomplemento=cp.tagcomplemento) 
+					WHERE p.tagpago = :pid 
+					AND dp.pago_idfactura = :fid";
+        $val = array("pid" => $folio, "fid" => $idfactura);
         $consultado = $consultas->getResults($consulta, $val);
         return $consultado;
     }
@@ -2324,7 +2332,11 @@ class ControladorFactura {
     public function getPagosDetalle($id) {
         $consultado = false;
         $consultas = new Consultas();
-        $consulta = "SELECT foliopago FROM detallepago WHERE pago_idfactura=:id AND type=:type ORDER BY foliopago DESC;";
+        $consulta = "SELECT pagos.foliopago, detallepago.detalle_tagencabezado 
+					FROM detallepago 
+					INNER JOIN pagos ON pagos.tagpago = detallepago.detalle_tagencabezado 
+					WHERE pago_idfactura=:id AND type=:type 
+					ORDER BY pagos.foliopago DESC";
         $val = array("id" => $id,
             "type" => 'f');
         $consultado = $consultas->getResults($consulta, $val);
@@ -2343,19 +2355,19 @@ class ControladorFactura {
                 </thead><tbody>";
         $productos = $this->getPagosDetalle($idfactura);
         foreach ($productos as $productoactual) {
-            $folio = $productoactual['foliopago'];
-            $pagos = $this->getPagosReg($folio);
+            $folio = $productoactual['detalle_tagencabezado'];
+            $pagos = $this->getPagosReg($folio, $idfactura);
             foreach ($pagos as $pagoactual) {
                 $idpago = $pagoactual['idpago'];
                 $foliopago = $pagoactual['letra'] . $pagoactual['foliopago'];
-                $fechapago = $pagoactual['fechapago'];
+                $fechapago = $pagoactual['complemento_fechapago'];
                 $div = explode("-", $fechapago);
                 $mes = $this->translateMonth($div[1]);
 
                 $fechapago = $div[2] . ' - ' . $mes;
-                $horapago = $pagoactual['horapago'];
+                $horapago = $pagoactual['complemento_horapago'];
                 $horapago = date('g:i a', strtotime($horapago));
-                $totalpagado = $pagoactual['totalpagado'];
+                $totalpagado = $pagoactual['monto'];
                 $c_pago = $pagoactual['c_pago'];
                 $formapago = $pagoactual['descripcion_pago'];
 
@@ -2373,7 +2385,7 @@ class ControladorFactura {
                         <td>$foliopago</td>
                         <td>$fechapago - $horapago</td>
                         <td>$c_pago $formapago</td>
-                        <td>$ " . bcdiv($totalpagado, '1', 2) . "</td>
+                        <td>$ " . number_format(bcdiv($totalpagado, '1', 2),2) . "</td>
                         <td>$estado</td>
                         <td align='center'><a class='btn button-list' title='Descagar PDF' onclick=\"imprimirpago($idpago);\"><span class='glyphicon glyphicon-list-alt'></span></a></td>
                     </tr>
@@ -2867,7 +2879,37 @@ class ControladorFactura {
         $raiz = $xml->createElementNS('http://www.sat.gob.mx/cfd/4', 'cfdi:Comprobante');
         $raiz = $xml->appendChild($raiz);
     	
-        $fecha = $this->getFechaFactura($difverano, $difinvierno);
+        ////$fecha = $this->getFechaFactura($difverano, $difinvierno); Esta es la funcion que tenia David, la sustitui para poder timbrar
+   
+   ///// Se usa para obtener la fecha 
+    $f = getdate();
+
+        $d = $f['mday'];
+        $m = $f['mon'];
+        $y = $f['year'];
+        $h = $f['hours']-1;
+        $mi = $f['minutes'];
+        $s = $f['seconds'];
+        if ($d < 10) {
+            $d = "0$d";
+        }
+        if ($m < 10) {
+            $m = "0$m";
+        }
+        if ($h < 10) {
+            $h = "0$h";
+        }
+        if ($mi < 10) {
+            $mi = "0$mi";
+        }
+        if ($s < 10) {
+            $s = "0$s";
+        }
+        $fecha = $y . '-' . $m . '-' . $d . 'T' . $h . ':' . $mi . ':' . $s;
+    
+    
+    ///final de obtener la fecha
+    
 		
         $raiz->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $raiz->setAttributeNS('http://www.w3.org/2001/XMLSchema-instance', 'schemaLocation', 'http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd');

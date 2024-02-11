@@ -266,7 +266,7 @@ if (isset($_POST['transaccion'])) {
             }
             break;
             
-        //ANGELGM
+
         case 'insertarcomision':
             $f = new Configuracion();
             $cc = new ControladorConfiguracion();

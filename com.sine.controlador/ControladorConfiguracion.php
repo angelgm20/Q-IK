@@ -412,7 +412,7 @@ class ControladorConfiguracion {
         }
         return $existe;
     }
-   //VALIDACIONES
+   //VAL
     public function nuevoCorreo($c) {
         $insertar = "";
         $check = $this-> verificarCorreo($c);
@@ -559,9 +559,6 @@ class ControladorConfiguracion {
         return $actualizado;
     }
 
-    
-    
-
     private function updateLogoBody($id, $img) {
         $actualizado = FALSE;
         $con = new Consultas();
@@ -571,13 +568,6 @@ class ControladorConfiguracion {
         $actualizado = $con->execute($consulta, $val);
         return $actualizado;
     }
-
-    
-
-    
-
-    
-    
 
     private function getUsuariosAux($con = "") {
         $consultado = false;
@@ -654,7 +644,8 @@ class ControladorConfiguracion {
         }
         return $insertado;
     }
-      public function quitarComision($idcomision) {
+
+    public function quitarComision($idcomision) {
         $eliminado = false;
         $consulta = "DELETE FROM `comisionusuario` WHERE idcomisionusuario=:id;";
         $valores = array("id" => $idcomision);
@@ -662,11 +653,6 @@ class ControladorConfiguracion {
         $eliminado = $consultas->execute($consulta, $valores);
         return $eliminado;
     }
-
-    
-    
-
-    
 
     private function checkComision($f) {
         $comision = "";

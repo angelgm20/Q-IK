@@ -405,8 +405,10 @@ class PDF extends FPDF {
     }
 
     function CheckPageBreak($h) {
-        if ($this->GetY() + $h > $this->PageBreakTrigger)
+        if ($this->GetY() + $h > $this->PageBreakTrigger){
             $this->AddPage($this->CurOrientation);
+            $this->Ln($h);
+        }
     }
 
     function NbLines($w, $txt) {
@@ -534,6 +536,8 @@ class PDF extends FPDF {
         $this->SetTextColor(255, 0, 0);
         $this->SetFont('Arial', 'B', 14);
         $this->Cell(45, 8, utf8_decode($this->Tfolio), 0, 0, 'C', false);
+
+        $this->Ln(15);
     }
 
     function Footer() {

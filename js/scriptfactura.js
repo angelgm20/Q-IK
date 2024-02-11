@@ -803,16 +803,40 @@ function setvaloresRegistrarPago(datos) {
     $("#cp-cliente").val(cpreceptor);
     $("#option-default-datos").val(iddatosfacturacion);
     $("#option-default-datos").text(nombrecontribuyente);
-    loadOpcionesFormaPago2(idformapago);
-    loadOpcionesMoneda(idmoneda);
-    $("#tipo-cambio").val(tcambio);
-    $("#folio-factura").removeAttr('disabled');
-    $("#folio-factura").val("Factura-" + foliofactura);
-    if (idcliente != '0') {
-        loadOpcionesBanco(idcliente);
-    }
+    
+    $.ajax({
+        url: "com.sine.enlace/enlacepago.php",
+        type: "POST",
+        data: {transaccion: "expcomplementos", idformapago:idformapago, idmoneda:idmoneda, tcambio:tcambio, idfactura:idfactura, foliofactura:foliofactura},
+        success: function (datos) {
+            var texto = datos.toString();
+            var bandera = texto.substring(0, 1);
+            var res = texto.substring(1, 1000);
+            if (bandera == '0') {
+                alertify.error(res);
+            } else {
+                var array = datos.split("<comp>");
+                comp = array.length;
+                for (i = 0; i < array.length; i++) {
+                    var comps = array[i].split("<cut>");
+                    $("#tabs").append(comps[0]);
+                    $("#complementos").append(comps[1]);
+                    var tag1 = comps[2];
 
-    loadFactura(idfactura, 'f');
+                    $(".sub-div").hide();
+                    $(".tab-pago").removeClass("sub-tab-active");
+
+                    var first = $("#tabs").find('.tab-pago:first').attr("data-tab");
+                    if (first) {
+                        $("#complemento-" + first).show();
+                        $("#tab-" + first).addClass("sub-tab-active");
+                    }
+                    tablaRowCFDI(tag1);
+                    loadFactura(idfactura, 'f', tag1);
+                }
+            }
+        }
+    });
     loadFolioPago();
     cargandoHide();
 }
@@ -1015,6 +1039,7 @@ function setValoresEditarFactura(datos) {
     var periodoG = array[28];
     var mesperiodo = array[29];
     var anhoperiodo = array[30];
+	var cpemisor = array[31];
 
     var arfecha = fechacreacion.split("-");
     var fechacreacion = arfecha[2] + "/" + arfecha[1] + "/" + arfecha[0];
@@ -1051,8 +1076,9 @@ function setValoresEditarFactura(datos) {
             $("#tipo-cambio").attr('disabled', true);
         }
     }
-
+	
     if (cfdisrel == '1') {
+    	
         $.ajax({
             url: "com.sine.enlace/enlacefactura.php",
             type: "POST",

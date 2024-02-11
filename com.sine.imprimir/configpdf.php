@@ -56,6 +56,23 @@ class PDF extends FPDF {
     var $razonsocial = '';
     var $direccion = '';
     var $RFC = '';
+
+    function RowWithColor($data, $colors, $estadoIndex) {
+        $x = $this->GetX();
+        $y = $this->GetY();
+        $estado = $data[$estadoIndex];
+        $color = isset($colors[$estado]) ? $colors[$estado] : array(0, 0, 0); // Color por defecto: negro
+        foreach ($data as $i => $value) {
+        if ($i === $estadoIndex) {
+        $this->SetFillColor($color[0], $color[1], $color[2]);
+        } else {
+        $this->SetFillColor(255, 255, 255); 
+        }
+        $this->SetTextColor(0, 0, 0); 
+        $this->Cell($this->widths[$i], 7, $value, 1, 0, 'C', true);
+        }
+        $this->SetXY($x, $y + 7);
+    }
    
     function SetWidths($w) {
         $this->widths = $w;
@@ -229,10 +246,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->RoundedRect($x, $y, $w, $h, 2, 'F');
-            //$this->Rect($x, $y, $w, $h);
-            //Print the text
+            
             $this->MultiCell($w, 4.5, $data[$i], 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
@@ -266,10 +280,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->RoundedRect($x, $y, $w, $h, 2, 'F');
-            //$this->Rect($x, $y, $w, $h);
-            //Print the text
+           
             $this->MultiCell($w, $lh, $data[$i], 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
@@ -302,10 +313,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->RoundedRect($x, $y, $w, $h, 2, 'F');
-            //$this->Rect($x, $y, $w, $h);
-            //Print the text
+            
             $this->MultiCell($w, $lh, $data[$i], 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
@@ -337,9 +345,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->Rect($x, $y, $w, $h);
-            //Print the text
+            
             $this->MultiCell($w, 4.5, $data[$i], 0, $a);
             //Put the position to the right of the cell
             $this->SetXY($x + $w, $y);
@@ -372,8 +378,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->Rect($x, $y, $w, $h);
+            
             $this->RoundedRect($x, $y, $w, $h, 4, 'F');
             //Print the text
             $this->MultiCell($w, $h2, $data[$i], 0, $a);
@@ -408,8 +413,7 @@ class PDF extends FPDF {
             //Save the current position
             $x = $this->GetX();
             $y = $this->GetY();
-            //Draw the border
-            //$this->Rect($x, $y, $w, $h);
+           
             $this->RoundedRect($x, $y, $w, $h, 2, 'D');
             //Print the text
             $this->MultiCell($w, $h2, $data[$i], 0, $a);
@@ -791,8 +795,7 @@ $razonsocial = $_POST['razonsocial'];
 $nombreempresa = $_POST['nombreempresa'];
 $chkdata = $_POST['chkdata'];
 
-/*$rgbctit = explode("-", $cc->hex2rgb($clrtitulo));
-/*$rgbcelda = explode("-", $cc->hex2rgb($colorcelda));*/
+
 $rgbc = explode("-", $cc->hex2rgb($clrcuadro));
 $rgbs = explode("-", $cc->hex2rgb($clrsub));
 $rgbfd = explode("-", $cc->hex2rgb($clrfdatos));
@@ -978,6 +981,7 @@ switch ($idencabezado) {
         $pdf->RoundedRect(10, $pdf->GetY(), 195, 3, 1.5, 'F');
         break;
     case 2:
+         
         $pdf->SetWidths(Array(80));
         $pdf->SetLineHeight(8);
         $pdf->SetY(36.3);
@@ -1101,19 +1105,96 @@ switch ($idencabezado) {
         $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
         $pdf->RoundedRect(10, $pdf->GetY(), 195, 9, 2, 'FD');
         $pdf->RowNBC(Array(utf8_decode('UUID'), utf8_decode('FOLIO'), utf8_decode('METODO PAGO'), utf8_decode('TOTAL FACTURA'), utf8_decode('MONEDA/CAMBIO'), utf8_decode('PARC.'), utf8_decode('ANTERIOR'), utf8_decode('PAGADO'), utf8_decode('RESTANTE')));
-
-        $pdf->Ln(1);
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->Row(Array(utf8_decode('00000000-0000-0000-0000-000000000000'), utf8_decode('F0001'), utf8_decode("PPD"), utf8_decode('$ ' . number_format("1000", 2, '.', ',')), utf8_decode("MXN/1"), utf8_decode('1'), utf8_decode('$ ' . number_format("1000", 2, '.', ',')), utf8_decode('$ ' . number_format('1000', 2, '.', ',')), utf8_decode('$ ' . number_format('0', 2, '.', ','))));
-
+        //cambios nuevos 
+        $pdf->setRowColorText($clrtxt);
+        $pdf->SetStyles('');
+        $pdf->SetAligns('C');
+        $pdf->SetRowBorder('B');
+        $pdf->Row(Array('123e4567-e89b-12d3-a456-42661417','ABC123DEF456GHI789','targeta Debito','12,34.00','MXN','P1','12,34.00','12,00.00','34.00'));
+        $pdf->Row(Array('123e4567-e89b-12d3-a456-42661417','ABC123DEF456GHI789','targeta Debito','34.00','MXN','P2','34.00','33.00','10.00'));
+       
         $pdf->SetFont('Arial', 'B', 9);
         $pdf->SetX(140.7);
         $pdf->SetWidths(Array(25, 20, 20));
         $pdf->SetLineHeight(4.5);
         $pdf->SetAligns(array('R', 'C', 'C'));
-        $pdf->Row(Array(utf8_decode("Total Pagado: "), utf8_decode("$ " . number_format('1000', 2, '.', ',')), utf8_decode('MXN')));
+        $pdf->Row(Array(utf8_decode("Total Pagado: "), utf8_decode("$ " . number_format('1234.00', 2, '.', ',')), utf8_decode('MXN')));
         $pdf->Ln(2);
+
+        $pdf->SetFont('Arial', 'BI', 8);
+            $pdf->Write(10, utf8_decode("*Este documento no posee efectos fiscales"), '');
+       
+            $pdf->SetFillColor($rgbfd[0], $rgbfd[1], $rgbfd[2]);
+            $pdf->RoundedRect(10, $pdf->GetY(), 95, 30, 2, 'F');
+            $pdf->SetTextColor(0, 0, 0);
+
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbbld[0], $rgbbld[1], $rgbbld[2]);
+            $pdf->Write(10, utf8_decode("Folio Fiscal (UUID): "), '');
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbtxt[0], $rgbtxt[1], $rgbtxt[2]);
+            $pdf->Write(10, utf8_decode('123e4567-e89b-12d3-a456-42661417'), '');
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbbld[0], $rgbbld[1], $rgbbld[2]);
+            $pdf->Write(10, utf8_decode("N° Certificado SAT: "), '');
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbtxt[0], $rgbtxt[1], $rgbtxt[2]);
+            $pdf->Write(10, utf8_decode('ABC123DEF456GHI789'), '');
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbbld[0], $rgbbld[1], $rgbbld[2]);
+            $pdf->Write(10, utf8_decode("Fecha de Certificacion: "), '');
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial', '', 8);
+            $pdf->SetX(40);
+            $pdf->SetTextColor($rgbtxt[0], $rgbtxt[1], $rgbtxt[2]);
+            $pdf->Write(10, utf8_decode('2024-02-10'), '');
+            $pdf->Ln(11.5);
+
+            $pdf->SetFont('Arial', 'B', 9);
+
+            $pdf->SetFillColor($rgbc[0], $rgbc[1], $rgbc[2]);
+            $pdf->SetTextColor($rgbs[0], $rgbs[1], $rgbs[2]);
+            $pdf->RoundedRect(10, $pdf->GetY(), 35, 5, 2, 'F');
+            $pdf->SetX(12);
+            $pdf->Write(5, utf8_decode("Sello CFDI"), '');
+
+            $pdf->RoundedRect(75, $pdf->GetY(), 35, 5, 2, 'F');
+            $pdf->SetX(77);
+            $pdf->Write(5, utf8_decode("Sello SAT"), '');
+
+            $pdf->RoundedRect(140, $pdf->GetY(), 35, 5, 2, 'F');
+            $pdf->SetX(142);
+            $pdf->Write(5, utf8_decode("Cadena Original"), '');
+            $pdf->Ln(5);
+            $pdf->SetWidths(Array(62.5, 2.5, 62.5, 2.5, 65));
+            $pdf->SetLineHeight(2.5);
+            $pdf->SetFont('Arial', '', 5);
+            $pdf->rgbfd0 = $rgbfd[0];
+            $pdf->rgbfd1 = $rgbfd[1];
+            $pdf->rgbfd2 = $rgbfd[2];
+            $pdf->SetTextColor($rgbtxt[0], $rgbtxt[1], $rgbtxt[2]);
+            $pdf->RowR(Array(utf8_decode('ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), "",
+                             utf8_decode('0987654321ZYXWVUTSRQPONMLKJIHGFEDCBA'), "",
+                             utf8_decode('1234567890ABCDEFGHI')));
+            $pdf->SetFont('Arial', '', 9);
+            $pdf->Write(8, utf8_decode("Este documento es una representacion impresa de un cfdi-."), '');
+        
+            $pdf->SetFont('Arial', 'BI', 8);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->Cell(10, 3, '*El pago ' , '$foliopago' , ' ha sido oficialmente cancelado', 0, 0, 'L', 0);
+        
+            $pdf->isFinished = true;
+       
+
         break;
     case 3:
         $pdf->SetFont('Arial', 'B', 10);
@@ -1269,7 +1350,8 @@ switch ($idencabezado) {
         $pdf->TextWithRotation(25.5, 223, '01 01 2021', 25.5, 0);
         $pdf->Image('../img/SelloSine2.png', 10, 180, 70);
         break;
-    case 6: 
+    case 6:     
+        
         $pdf->SetFont('Arial', '', 15);
         $pdf->SetFillColor($rgbc[0], $rgbc[1], $rgbc[2]);
         $pdf->SetTextColor($rgbs[0], $rgbs[1], $rgbs[2]);
@@ -1292,212 +1374,85 @@ switch ($idencabezado) {
         $pdf->RowNBC(Array("Folio", "Fecha creacion", "Emisor", "Cliente", "RFC", "Tipo", "Estado", "Total"));
         $pdf->SetTextColor(0, 0, 0);
 
-        $ivaperiodo = 0;
-        $retperiodo = 0;
-        $descperiodo = 0;
-        $totalPeriodo = 0;
-        $totalPendientes = 0;
-        $totalCanceladas = 0;
-        $totalPagadas = 0;
-
-    
-        $nombre_cliente = "";
-        if (!empty($tipo) && !empty($cf)) {  //Verificar si las variables están definidas 
-        if ($tipo == "" || $tipo == '1' || $tipo == '3') {
-            $facturas = $cf->getReporteFactura($f);
-            foreach ($facturas as $reporteactual) {
-                $fid = $reporteactual['iddatos_factura'];
-                $folio = $reporteactual['letra'] . $reporteactual['folio_interno_fac'];
-                $fecha = $reporteactual['fecha_creacion'];
-                $emisor = $reporteactual['factura_rzsocial'];
-                $nombre_cliente = $reporteactual['rzreceptor'];
-                $rfc = $reporteactual['rfcreceptor'];
-                $estado = $reporteactual['status_pago'];
-                $subtotal = $reporteactual['subtotal'];
-                $iva = $reporteactual['subtotaliva'];
-                $ret = $reporteactual['subtotalret'];
-                $totaldescuentos = $reporteactual['totaldescuentos'];
-                $total = $reporteactual['totalfactura'];
-                $tipofactura = $reporteactual['tipofactura'];
-                $tcambio = $reporteactual['tcambio'];
-                $monedaF = $reporteactual['id_moneda'];
-                $cmoneda = $reporteactual['c_moneda'];
-
-                $divideF = explode("-", $fecha);
-                $mes = $cf->translateMonth($divideF[1]);
-                $fecha = $divideF[2] . '/' . $mes . '/' . $divideF[0];
-
-                if ($estado == '1') {
-                    $estadofac = 'Pagada';
-                    $fillcolor = $pdf->SetFillColor(19, 202, 1);
-                    $totalPagadas += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '2') {
-                    $estadofac = 'Pendiente';
-                    $fillcolor = $pdf->SetFillColor(255, 0, 0);
-                    $totalPendientes += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '3') {
-                    $estadofac = 'Cancelada';
-                    $fillcolor = $pdf->SetFillColor(255, 181, 67);
-                    $totalCanceladas += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '4') {
-                    $estadofac = 'Pago Parcial';
-                    $fillcolor = $pdf->SetFillColor(2, 231, 239);
-                    $total = $cf->restanteParcial($fid, $total,'f');
-                    $totalPendientes += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                }
-
-                if ($tipofactura == '1') {
-                    $type = "Factura";
-                } else if ($tipofactura == '2') {
-                    $type = "Recibo";
-                }
-
-                $diviva = explode("<impuesto>", $iva);
-                foreach ($diviva as $ivan) {
-                    $traslados = $ivan;
-                    $divt = explode("-", $traslados);
-                    $ivaperiodo += $cf->totalDivisa($divt[0], $tcambio, $idmonedaC, $monedaF);
-                }
-
-                $divret = explode("<impuesto>", $ret);
-                foreach ($divret as $retn) {
-                    $retenciones = $retn;
-                    $divr = explode("-", $retenciones);
-                    $retperiodo += $cf->totalDivisa($divr[0], $tcambio, $idmonedaC, $monedaF);
-                }
-                $descperiodo += $cf->totalDivisa($totaldescuentos, $tcambio, $idmonedaC, $monedaF);
-                $totalPeriodo += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-
-                $pdf->Row(Array(utf8_decode($folio), utf8_decode($fecha), utf8_decode($emisor), utf8_decode($nombre_cliente), utf8_decode($rfc), utf8_decode($type), utf8_decode($estadofac), utf8_decode('$ ' . number_format($total, 2, '.', ',') . ' ' . $cmoneda)));
-            }
-        }
-    
-
-        if ($tipo == '2' || $tipo == '3') {
-            $facturas = $cf->getReporteCarta($f);
-            foreach ($facturas as $reporteactual) {
-                $fid = $reporteactual['idfactura_carta'];
-                $folio = $reporteactual['letra'] . $reporteactual['foliocarta'];
-                $fecha = $reporteactual['fecha_creacion'];
-                $emisor = $reporteactual['factura_rzsocial'];
-                $nombre_cliente = $reporteactual['rzreceptor'];
-                $rfc = $reporteactual['rfcreceptor'];
-                $estado = $reporteactual['status_pago'];
-                $subtotal = $reporteactual['subtotal'];
-                $iva = $reporteactual['subtotaliva'];
-                $ret = $reporteactual['subtotalret'];
-                $totaldescuentos = $reporteactual['totaldescuentos'];
-                $total = $reporteactual['totalfactura'];
-                $tcambio = $reporteactual['tcambio'];
-                $monedaF = $reporteactual['id_moneda'];
-                $cmoneda = $reporteactual['c_moneda'];
-
-                $divideF = explode("-", $fecha);
-                $mes = $cf->translateMonth($divideF[1]);
-                $fecha = $divideF[2] . '/' . $mes . '/' . $divideF[0];
-
-                if ($estado == '1') {
-                    $estadofac = 'Pagada';
-                    $fillcolor = $pdf->SetFillColor(19, 202, 1);
-                    $totalPagadas += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '2') {
-                    $estadofac = 'Pendiente';
-                    $fillcolor = $pdf->SetFillColor(255, 0, 0);
-                    $totalPendientes += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '3') {
-                    $estadofac = 'Cancelada';
-                    $fillcolor = $pdf->SetFillColor(255, 181, 67);
-                    $totalCanceladas += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                } else if ($estado == '4') {
-                    $estadofac = 'Pago Parcial';
-                    $fillcolor = $pdf->SetFillColor(2, 231, 239);
-                    $total = $cf->restanteParcial($fid, $total,'c');
-                    $totalPendientes += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-                }
-
-                $diviva = explode("<impuesto>", $iva);
-                foreach ($diviva as $ivan) {
-                    $traslados = $ivan;
-                    $divt = explode("-", $traslados);
-                    $ivaperiodo += $cf->totalDivisa($divt[0], $tcambio, $idmonedaC, $monedaF);
-                }
-
-                $divret = explode("<impuesto>", $ret);
-                foreach ($divret as $retn) {
-                    $retenciones = $retn;
-                    $divr = explode("-", $retenciones);
-                    $retperiodo += $cf->totalDivisa($divr[0], $tcambio, $idmonedaC, $monedaF);
-                }
-                $descperiodo += $cf->totalDivisa($totaldescuentos, $tcambio, $idmonedaC, $monedaF);
-                $totalPeriodo += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-
-                $pdf->Row(Array(utf8_decode($folio), utf8_decode($fecha), utf8_decode($emisor), utf8_decode($nombre_cliente), utf8_decode($rfc), utf8_decode('Carta'), utf8_decode($estadofac), utf8_decode('$ ' . number_format($total, 2, '.', ',') . ' ' . $cmoneda)));
-            }
-        }
-        }// $tipo, $cf
-
+        $pdf->RowWithColor(
+            array('ABC1234567','26/Dic/2023',' Ficticia S.A. de C.V.','INOV S.A. de C.V.','GEMA841210ABC ','Factura',"Pendiente",'$ 4,755.86 MXN '), 
+            array(
+                'Pendiente' => array(255, 0, 0), // Rojo
+                'Cancelada' => array(165, 42, 42), // Café
+                'Pagada' => array(0, 128, 0) // Verde
+            ), 
+            6 // Índice de la columna "Estado"
+        );
+        
+        $pdf->RowWithColor(
+            array('DEF4567890','18/Dic/2023',' Ficticia S.A. de C.V.','INOV S.A. de C.V.','VEMA841210ABC','Factura',"Cancelada",'$ 1,456.00 MXN '), 
+            array(
+                'Pendiente' => array(255, 0, 0), // Rojo
+                'Cancelada' => array(165, 42, 42), // Café
+                'Pagada' => array(0, 128, 0) // Verde
+            ), 
+            6 // Índice de la columna "Estado"
+        );
+        
+        $pdf->RowWithColor(
+            array('GHI7890123','15/Dic/2023',' Ficticia S.A. de C.V.','INOV S.A. de C.V.','XEMA841210ABC','Factura',"Pagada",'$ 2,560.75 MXN '), 
+            array(
+                'Pendiente' => array(255, 0, 0), // Rojo
+                'Cancelada' => array(165, 42, 42), // Café
+                'Pagada' => array(0, 128, 0) // Verde
+            ), 
+            6 // Índice de la columna "Estado"
+        );
+            
         $pdf->Ln(3);
-        $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
-        $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetTextColor(23, 23, 124);
         $pdf->SetWidths(Array(45, 45, 45));
         $pdf->SetLineHeight(6);
         $pdf->SetX(70);
         $pdf->RowR(Array('Total Facturas Pagadas', 'Total Facturas Pendientes', 'Total Facturas Canceladas'));
 
-        $pdf->SetFillColor(255, 255, 255);
+        //$pdf->SetFillColor(255, 255, 255);
         $pdf->SetTextColor(0, 0, 0);
         $pdf->SetX(70);
         $pdf->RowR(Array(
-            utf8_decode('$ ' . number_format($totalPagadas, 2, '.', ',') . ' ' . '120'), 
-            utf8_decode('$ ' . number_format($totalPendientes, 2, '.', ',') . ' ' . '130'), 
-            utf8_decode('$ ' . number_format($totalCanceladas, 2, '.', ',') . ' ' . '140')));
+            utf8_decode('$ ' . number_format(22222, 2, '.', ',') . ' ' . '120'), 
+            utf8_decode('$ ' . number_format(44444, 2, '.', ',') . ' ' . '130'), 
+            utf8_decode('$ ' . number_format(55555, 2, '.', ',') . ' ' . '140')));
 
-        if ($ivaperiodo > 0) {
+        
             $pdf->Ln(8);
             $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
             $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
             $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
             $pdf->Cell(40, 8, 'Impuestos Trasladados', 1, 0, 'C', 1);
             $pdf->SetTextColor(0, 0, 0);
-            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format($ivaperiodo, 2, '.', ',')), 1, 0, 'C', 0);
-        }
-        if ($retperiodo > 0) {
+            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format(1234.56, 2, '.', ',')), 1, 0, 'C', 0);
+        
             $pdf->Ln(8);
             $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
             $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
             $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
             $pdf->Cell(40, 8, 'Impuestos Retenidos', 1, 0, 'C', 1);
             $pdf->SetTextColor(0, 0, 0);
-            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format($retperiodo, 2, '.', ',')), 1, 0, 'C', 0);
-        }
-        if ($descperiodo > 0) {
+            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format(1234.56, 2, '.', ',')), 1, 0, 'C', 0);
+        
             $pdf->Ln(8);
             $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
             $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
             $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
             $pdf->Cell(40, 8, 'Total Descuentos', 1, 0, 'C', 1);
             $pdf->SetTextColor(0, 0, 0);
-            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format($descperiodo, 2, '.', ',')), 1, 0, 'C', 0);
-        }
-
-        $pdf->Ln(8);
-        $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
-        $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
-        $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
-        $pdf->Cell(40, 8, 'Total del Periodo en ' . '12', 1, 0, 'C', 1);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(35, 8, utf8_decode('$ ' . number_format($totalPeriodo, 2, '.', ',')), 1, 0, 'C', 0);
-
-        /*$cliente = "";
-        if ($clienteB != "") {
-            $cliente = $nombre_cliente;
-        }*/
-                $cliente = "";
-        if (isset($clienteB) && $clienteB != "") {
-            $cliente = $nombre_cliente;
-        }
-
-        //$pdf->Output('Reporte' . $fechainicio . '-' . $fechafin . '' . $cliente . '' . $est . '.pdf', 'I');
+            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format(1234.56, 2, '.', ',')), 1, 0, 'C', 0);
+        
+            $pdf->Ln(8);
+            $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
+            $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
+            $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
+            $pdf->Cell(40, 8, 'Total del Periodo en ' . 'MXN', 1, 0, 'C', 1);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->Cell(35, 8, utf8_decode('$ ' . number_format(1234.56, 2, '.', ',')), 1, 0, 'C', 0);
+    
         break;
     case 7:
         $pdf->SetFont('Arial', '', 15);
@@ -1523,51 +1478,21 @@ switch ($idencabezado) {
         $pdf->RoundedRect(10, $pdf->GetY(), 195, 5, 2, 'FD');
         $pdf->RowNBC(Array(utf8_decode("N° de Folio") ,"Facturas Pagadas","Emisor","Cliente", "RFC Cliente", "Fecha de Pago", "Total Pago"));
 
-        $pdf->SetTextColor(0, 0, 0);
-        $totalpagado = 0;
-        $pdf->SetFont('Arial', '', 9); //fin visual
+        $pdf->setRowColorText($clrtxt);
+        $pdf->SetStyles('');
+        $pdf->SetAligns('C');
+        $pdf->SetRowBorder('B');
+        $pdf->Row(Array('ABC12', 'FCT-12345 - FCT-67890 - FCT-24680 - FCT-13579 - FCT-ABCDE ', 'Comercializadora Ficticia S.A.', 'Inversiones del Norte S.A. de C.V.', 'EMIF920518ABC', '20/Dic/2023 00:00', '$1000.00 MXN'));
+        $pdf->Row(Array('ABC12', 'FCT-67890 - FCT-24680 - FCT-13579 - FCT-ABCDE ', 'Comercializadora Ficticia S.A.', 'Inversiones del Norte S.A. de C.V.', 'EMIF920518ABC', '23/Ene/2023 00:00', '$1089.00 MXN'));
+        $pdf->Row(Array('ABC12', 'FCT-12345 - FCT-67890 - FCT-ABCDE ', 'Comercializadora Ficticia S.A.', 'Inversiones del Norte S.A. de C.V.', 'EMIF920518ABC', '26/Ago/2023 00:00', '$1560.00 MXN'));
 
-            if (isset($pagos) && is_array($pagos)) { // Verificar si $pagos es un array antes de iterar sobre él
-        foreach ($pagos as $reporteactual) {
-            $idpago = $reporteactual['idpago'];
-            $folio = $reporteactual['letra'].$reporteactual['foliopago'];
-            $fechapago = $reporteactual['fechapago'];
-            $horapago = $reporteactual['horapago'];
-            $emisor = $reporteactual['emisor'];
-            $nombre_cliente = $reporteactual['cliente'];
-            $rfc = $reporteactual['rfc'];
-            $total = $reporteactual['totalpagado'];
-            $tcambio = $reporteactual['pago_tcambio'];
-            $monedaF = $reporteactual['pago_idmoneda'];
-            $cmoneda = $reporteactual['c_moneda'];
-            
-            $divFP = explode("-", $fechapago);
-            $mes = $cf->translateMonth($divFP[1]);
-            $fechapago = $divFP[2] . '/' . $mes . "/" . $divFP[0];
-            $cfdis = $cf->getCfdisPDF($idpago);
-
-            $totalpagado += $cf->totalDivisa($total, $tcambio, $idmonedaC, $monedaF);
-
-            $pdf->SetTextColor(0, 0, 0);
-            $pdf->Row(Array($folio, $cfdis, utf8_decode($emisor), utf8_decode($nombre_cliente), utf8_decode($rfc), utf8_decode("$fechapago - $horapago"), utf8_decode('$ ' . number_format($total, 2, '.', ',').' '.$cmoneda)));
-        }
-        } //cierra
-
-        /*if ($clienteB != "") {
-            $nombrecliente = $nombre_cliente;
-        }*/
-        if (isset($clienteB) && $clienteB != "") {  // Verifica si $clienteB está definida y no es vacía
-            $nombrecliente = $nombre_cliente;
-        }
-        
-        $pdf->SetFont('Arial', 'B', 9);
         $pdf->Ln(8);
-        $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
+        $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
         $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
-        $cmonedaT = '344'; //añade valor a la variable 
-        $pdf->Cell(40, 8, 'Total del Periodo en '.$cmonedaT, 1, 0, 'C', 1);
+        $pdf->Cell(120, 8, '', 0, 0, 'C', 0);
+        $pdf->Cell(40, 8, 'Total del Periodo en MXN:', 1, 0, 'C', 1);
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(35, 8, utf8_decode('$ ' . number_format($totalpagado, 2, '.', ',')), 1, 0, 'C', 0);
+        $pdf->Cell(35, 8, utf8_decode('$ ' . number_format(3649.00, 2, '.', ',')), 1, 0, 'C', 0);
         //$pdf->Output('Reporte' . $fechainicio . '-' . $fechafin . '' . $nombrecliente . '.pdf', 'I');
 
         break;
@@ -1595,8 +1520,43 @@ switch ($idencabezado) {
         }
         break;
     case 9:
-        break;
+
+        $pdf->SetFont('Arial', '', 15);
+        $pdf->SetFillColor($rgbc[0], $rgbc[1], $rgbc[2]);
+        $pdf->SetTextColor($rgbs[0], $rgbs[1], $rgbs[2]);
+        $pdf->SetY(36.3);
+        $pdf->SetWidths(Array(195));
+        $pdf->SetLineHeight(8);
+        $pdf->RowT(Array('Reporte de IVA facturado y de recargo'));
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetTextColor(23, 23, 124);
+        $pdf->SetLineHeight(6);
+        $pdf->RowR(Array('Periodo: ' .  "Diciembre/2024" ));
+        $pdf->Ln(5);
+        
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
+        $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
+        $pdf->SetWidths(Array(40, 30, 40, 30, 35, 20));
+        $pdf->SetLineHeight(4.5);
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->RoundedRect(10, $pdf->GetY(), 195, 6, 2, 'FD');
+        $pdf->RowNBC(Array(utf8_decode('UUID'), utf8_decode('RFC Emisor'), utf8_decode('Nombre Emisor'), utf8_decode('RFC Receptor'), utf8_decode('Fecha Emision'), utf8_decode('Monto')));
+        $pdf->Ln(1.5);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(0, 0, 0);
+
+        $pdf->setRowColorText($clrtxt);
+        $pdf->SetStyles('');
+        $pdf->SetAligns('C');
+        $pdf->SetRowBorder('B');
+        $pdf->Row(Array('XXXCXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX','ABC000000DEF','XYZ BANCO INTERNACIONALS.A.INSTITUCION DE BANCA MULTIPLEGRUPO FINANCIERO XYZ','JALJ020500ABC','2022-12-31 03:28:55','$ 3.0'));
+        $pdf->Row(Array('XXXCXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX','ABC000000DEF','XYZ BANCO INTERNACIONALS.A.INSTITUCION DE BANCA MULTIPLEGRUPO FINANCIERO XYZ','JALJ020500ABC','2022-12-31 03:28:55','$ 2.0'));
+        $pdf->Row(Array('XXXCXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX','ABC000000DEF','XYZ BANCO INTERNACIONALS.A.INSTITUCION DE BANCA MULTIPLEGRUPO FINANCIERO XYZ','JALJ020500ABC','2022-12-31 03:28:55','$ 5.0'));
+        $pdf->Row(Array('XXXCXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX','ABC000000DEF','XYZ BANCO INTERNACIONALS.A.INSTITUCION DE BANCA MULTIPLEGRUPO FINANCIERO XYZ','JALJ020500ABC','2022-12-31 03:28:55','$ 8.0'));
+        break;  
     case 10:
+
         $pdf->SetFont('Arial', '', 15);
         $pdf->SetFillColor($rgbc[0], $rgbc[1], $rgbc[2]);
         $pdf->SetTextColor($rgbs[0], $rgbs[1], $rgbs[2]);
@@ -1608,68 +1568,47 @@ switch ($idencabezado) {
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetFillColor(255, 255, 255);
         $pdf->SetLineHeight(6);
-        $pdf->RowR(Array('Del 2024-01-12 al 2024-02-15')); //sustitucion por escrito
+        $pdf->RowR(Array('Del 01/12/2023 al 31/12/2023')); 
         $pdf->Ln(4);
 
-        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
         $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
-        $pdf->SetFont('Arial', 'B', 9);
-        $pdf->SetWidths(Array(25, 20, 35, 25, 30, 35, 25));
+        $pdf->SetWidths(Array(25, 30, 30, 30, 40, 40, 40));
         $pdf->SetLineHeight(4.5);
-        $pdf->RoundedRect(10, $pdf->GetY(), 195, 9, 2, 'FD');
-        $pdf->RowNBC(Array(utf8_decode('Folio Cotizacion'), utf8_decode('Fecha creacion'), utf8_decode('Realizo'), utf8_decode('Total Cot'), utf8_decode('Folio Factura'), utf8_decode('Cliente'), utf8_decode('Total Factura')));
-        $pdf->SetTextColor(0, 0, 0); //fin vista
+        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->RoundedRect(10, $pdf->GetY(), 195, 6, 2, 'FD');
+        $pdf->RowNBC(Array(utf8_decode('Folio'),  utf8_decode('Fecha creacion'), utf8_decode('Realizo'), utf8_decode('Total Cot'), utf8_decode('Folio Factura'), utf8_decode('Cliente')));
+        $pdf->Ln(1.5);
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetTextColor(0, 0, 0);
 
-            if (isset($ventas) && is_array($ventas)) {  // Verificar si $ventas es un array antes de iterar sobre él
-        foreach ($ventas as $reporteactual) {
-            $idcotizacion = $reporteactual['iddatos_cotizacion'];
-            $folio = $reporteactual['letra'] . $reporteactual['foliocotizacion'];
-            $fecha = $reporteactual['fecha_creacion'];
-            $realizo = $reporteactual['documento'];
-            $totalcot = $reporteactual['totalcotizacion'];
-            $idfactura = $reporteactual['expfactura'];
-            $foliofactura = $reporteactual['foliofactura'];
-            $cliente = $reporteactual['razon_social'];
-            $totalfactura = $reporteactual['totalfactura'];
+        //$pdf->RowNBC(Array(utf8_decode('Folio'),  utf8_decode('Fecha creacion'), utf8_decode('Realizo'), utf8_decode('Total Cot'), utf8_decode('Folio Factura'), utf8_decode('Cliente'), utf8_decode('Total Factura')));
 
-            $divideF = explode("-", $fecha);
-            $fecha = $divideF[2] . '/' . $divideF[1] . '/' . $divideF[0];
 
-            $pdf->SetFont('Arial', '', 9);
-            $pdf->SetTextColor(0, 0, 0);
-
-            $pdf->Row(Array($folio, $fecha, $realizo, utf8_decode('$ ' . number_format($totalcot, 2, '.', ',')), utf8_decode($foliofactura), utf8_decode($cliente), utf8_decode('$ ' . number_format($totalfactura, 2, '.', ','))));
-        }}
+        $pdf->setRowColorText($clrtxt);
+        $pdf->SetStyles('');
+        $pdf->SetAligns('C');
+        $pdf->SetRowBorder('B');
+        $pdf->Row(Array('ABCD1234', '05/12/2023', 'Sofia Garcia', '$ 3,255.72', 'FACT-123456', 'Ana Martinez'));
+        $pdf->Row(Array('EFGH5678', '08/12/2023', 'Maria Rodriguez', '$ 1,158.84', 'INV-789012', 'Innovacorp S.A. de C.V.'));
+        $pdf->Row(Array('JKLM1234', '14/12/2023', 'Alejandro Perez', '$ 8,886.96', 'FCT-345678', 'Carlos Lopez'));
+        $pdf->Row(Array('PQRS9012', '26/12/2023', 'Andrea Lopez', '$ 40,114.95', 'REC-901234', 'carolina adviento'));
+        $pdf->Row(Array('XYWZ5678', '08/12/2023', 'Daniel Hernandez', '$ 1,158.84', 'FAC-567890', 'patitosgood S.A de C.V'));
+        $pdf->Row(Array('XYXZ5678', '18/12/2023', 'Juan Martinez', '$ 3,428.67', 'NTF-123ABC', 'Laura Rodriguez'));
 
         $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor($rgbt[0], $rgbt[1], $rgbt[2]);
         $pdf->SetTextColor($rgbtt[0], $rgbtt[1], $rgbtt[2]);
-        $pdf->SetWidths(Array(145));
-        $pdf->SetLineHeight(8);
-        $pdf->RowR(Array("Ventas Individuales"));
-        $pdf->SetFont('Arial', '', 9);
-
-            if (isset($cf)) { // Verificar si $cf está definido antes de usarlo
-        $usuarios = $cf->getUsuariosVentas($f);
-            }
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetWidths(Array(45, 40, 35, 25));
+        $pdf->SetWidths(Array(195)); 
         $pdf->SetLineHeight(4.5);
-        foreach ($usuarios as $actual) {
-            $idusuario = $actual['idusuario'];
-            $nombre = $actual['nombre'] . " " . $actual['apellido_paterno'] . " " . $actual['apellido_materno'];
-            $comision = $actual['comisionporcentaje'];
-            if ($actual['calculo'] == '1') {
-                $calculo = "antes de impuestos";
-            } else if ($actual['calculo'] == '2') {
-                $calculo = "despues de impuestos";
-            }
-            $total = $cf->getTotalVentas($f, $idusuario, $actual['calculo']);
-            $totalcom = $total * ($comision / 100);
-            if ($totalcom > 0) {
-                $pdf->Row(Array(utf8_decode($nombre), utf8_decode("Comision: $comision% $calculo"), utf8_decode("Total Ventas: $ " . number_format($total, 2, '.', ',')), utf8_decode('Comision: $ ' . number_format($totalcot, 2, '.', ','))));
-            }
-        }
+        $pdf->SetTextColor(23, 23, 124);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetLineHeight(6);
+        $pdf->RowR(Array('Ventas Individuales')); 
+        $pdf->Ln(4);
+
         //$pdf->Output('Reporte' . $fechainicio . '-' . $fechafin . '.pdf', 'I');
         break;
     case 11:
@@ -1985,6 +1924,7 @@ switch ($idencabezado) {
         break;
     
     case 12:
+
         
         $pdf->SetY(34.3);
         $pdf->SetX($pdf->margen);
@@ -2075,7 +2015,7 @@ switch ($idencabezado) {
         $pdf->SetWidths(Array(bcdiv(($pdf->body * 0.62),'1',1), bcdiv(($pdf->body * 0.38),'1',1)));
         $pdf->SetStyles('B');
         $pdf->SetAligns(array('R', 'L'));
-        $pdf->Row(array('CANT PRODUCTOS:', '   2'));
+        $pdf->Row(array('CANT :', '   2'));
         $pdf->Ln(1);
 
         $pdf->SetX($pdf->margen);
@@ -2123,6 +2063,7 @@ switch ($idencabezado) {
       
         break;
     case 13:
+
         $pdf->SetFont('Helvetica', '', 15);
         $pdf->SetFillColor($rgbc[0], $rgbc[1], $rgbc[2]);
         $pdf->SetTextColor($rgbs[0], $rgbs[1], $rgbs[2]);
@@ -2132,21 +2073,18 @@ switch ($idencabezado) {
         $pdf->SetY(36.3);
         $dateformat='12/23/2002';
         $pdf->RowT(Array("Fecha de Corte " . $dateformat));
-
         $pdf->SetY(48);
-            if (isset($uid) && isset($cv)) { ////Verificar si las variables están definidas 
-        if ($uid != '0') {
-            $usuario = $cv->getUserbyID($uid);
-            $pdf->SetWidths(Array(22, 173));
-            $pdf->SetRowBorder('NB');
-            $pdf->SetLineHeight(4.5);
-            $pdf->SetSizes(array(13, 13));
-            $pdf->SetStyles(array('B', ''));
-            $pdf->setRowColorText(array($txtbold, $clrtxt));
-            $pdf->Row(Array('Usuario', utf8_decode($usuario)));
-            $pdf->Ln(2);
-        }
-         }
+           
+           
+        $pdf->SetWidths(Array(22, 173));
+        $pdf->SetRowBorder('NB');
+        $pdf->SetLineHeight(4.5);
+        $pdf->SetSizes(array(13, 13));
+        $pdf->SetStyles(array('B', ''));
+        $pdf->setRowColorText(array($txtbold, $clrtxt));
+        $pdf->Row(Array('Usuario', utf8_decode('Maximiliano')));//sustituir
+        $pdf->Ln(2);
+        
 
         $pdf->SetFillColor($rgbfd[0], $rgbfd[1], $rgbfd[2]);
         $pdf->SetWidths(Array(45, 50, 5, 45, 50));
@@ -2158,8 +2096,8 @@ switch ($idencabezado) {
         $pdf->SetSizes(array(13, 13, 13, 13, 13));
         $pdf->SetStyles(array('B', '','', 'B', ''));
         $pdf->setRowColorText(array($txtbold, $clrtxt, '', $txtbold, $clrtxt));
-        $totventas = 0; //valor
-        $totganancia = 0; //valor
+        $totventas = 34242; //valor
+        $totganancia = 4212; //valor
         $pdf->Row(Array('Ventas totales:', "$ " . number_format($totventas, 2, '.', ','),'', 'Ganancias:', "$ " . number_format($totganancia, 2, '.', ',')));
 
         $pdf->Ln(3);
@@ -2171,16 +2109,8 @@ switch ($idencabezado) {
         $pdf->SetStyles(array('B', '', 'B'));
         $pdf->setRowColorText(array($txtbold, $clrtxt, $txtbold));
         $pdf->Row(Array('Entradas de efectivo', '', 'Dinero en caja'));
-        $y = $pdf->GetY();
+        $y_entradas = $pdf->GetY();
 
-        $fondo = 0;
-        $total = 0;
-        if (isset($cv)) { // Verificar si $cv está definido antes de usarlo
-        $datf = $cv->getFondoCaja($uid, $fecha);
-        foreach ($datf as $actual) {
-            $fondo += $actual['fondocaja'];
-            $total += $actual['fondocaja'];
-        }
         $pdf->SetAligns(array('L', 'C'));
         $pdf->SetSizes(array(9, 9));
         $pdf->SetWidths(Array(40, 55));
@@ -2192,96 +2122,24 @@ switch ($idencabezado) {
 
         $pdf->SetRowBorder('B');
         $pdf->SetLineHeight(4.5);
-        $pdf->Row(Array('Dinero inicial en caja:', "$ " . number_format($fondo, 2, '.', ',')));
+        $pdf->Row(Array('Dinero inicial en caja:', '$ 2,000.00'));
+        $pdf->Row(Array('Efectivo:', '$ 540.50'));
+        $pdf->Row(Array('PEDIDO DON MAXI:', '$ 767.00'));
+        $pdf->Row(Array('Total:', '$ 3,307.50'));
+        $y_salidas = $pdf->GetY();
 
-        $entradas = $cv->getMovEfectivo('1', $fecha, $uid);
-        foreach ($entradas as $actual) {
-            $concepto = utf8_decode($actual['conceptomov']);
-            $monto = $actual['montomov'];
-            $total += $actual['montomov'];
-            $pdf->Row(Array(utf8_decode($concepto) . ":", "$ " . number_format($monto, 2, '.', ',')));
-        }
-     
-
-        $pdf->Row(Array('Total:', "$ " . number_format($total, 2, '.', ',')));
-        $y1 = $pdf->GetY();
-
-        $total = 0;
-        $efectivo = 0;
-        $tarjeta = 0;
-        $vales = 0;
-        $entradas = 0;
-        $salidas = 0;
-        $datf = $cv->getVentasByTipo($fecha, 'cash', $uid);
-        foreach ($datf as $actual) {
-            $total += $actual['totalventa'];
-            $efectivo += $actual['totalventa'];
-        }
-
-        $pdf->SetY($y);
+        $pdf->SetY($y_entradas);
         $pdf->SetX(110);
-        $pdf->Row(Array(utf8_decode('Ventas en efectivo:'), "$ " . number_format($efectivo, 2, '.', ',')));
-
-        $datcd = $cv->getVentasByTipo($fecha, 'card', $uid);
-        foreach ($datcd as $actual) {
-            $total += $actual['totalventa'];
-            $tarjeta += $actual['totalventa'];
-        }
-
-        if ($tarjeta > 0) {
-            $pdf->SetX(110);
-            $pdf->Row(Array(utf8_decode('Ventas con tarjeta:'), "$ " . number_format($tarjeta, 2, '.', ',')));
-        }
-
-        $datvl = $cv->getVentasByTipo($fecha, 'val', $uid);
-        foreach ($datvl as $actual) {
-            $total += $actual['totalventa'];
-            $vales += $actual['totalventa'];
-        }
-
-        if ($vales > 0) {
-            $pdf->SetX(110);
-            $pdf->Row(Array(utf8_decode('Ventas con vales:'), "$ " . number_format($vales, 2, '.', ',')));
-        }
-
-        $datf = $cv->getFondoCaja($uid, $fecha);
-        foreach ($datf as $actual) {
-            $total += $actual['fondocaja'];
-            $entradas += $actual['fondocaja'];
-        }
-
-        $ent = $cv->getMovEfectivo('1', $fecha, $uid);
-        foreach ($ent as $actual) {
-            $entradas += $actual['montomov'];
-            $total += $actual['montomov'];
-        }
-
-        if ($entradas > 0) {
-            $pdf->SetX(110);
-            $pdf->Row(Array(utf8_decode('Entradas:'), "$ " . number_format($entradas, 2, '.', ',')));
-        }
-
-        $out = $cv->getMovEfectivo('2', $fecha, $uid);
-        foreach ($out as $actual) {
-            $salidas += $actual['montomov'];
-            $total -= $actual['montomov'];
-        }
-
-        if ($salidas > 0) {
-            $pdf->SetX(110);
-            $pdf->Row(Array(utf8_decode('Salidas:'), "$ " . number_format($salidas, 2, '.', ',')));
-        }
-
+        $pdf->Row(Array(utf8_decode('Ventas en efectivo:'), '$ 34,242.00'));
         $pdf->SetX(110);
-        $pdf->Row(Array(utf8_decode('Total:'), "$ " . number_format($total, 2, '.', ',')));
-        $y2 = $pdf->GetY();
+        $pdf->Row(Array(utf8_decode('Entradas:'), '$ 3,307.50'));
+        $pdf->SetX(110);
+        $pdf->Row(Array(utf8_decode('Salidas:'), '$ 18,270.00'));
+        $pdf->SetX(110);
+        $pdf->Row(Array(utf8_decode('Total:'), '$ 19,279.50'));
+        $pdf->SetY($y_salidas);
 
-        $ylast = $y2;
-        if ($y1 > $y2) {
-            $ylast = $y1;
-        }
 
-        $pdf->SetY($ylast);
         $pdf->Ln(3);
         $pdf->SetAligns('C');
         $pdf->SetRowBorder('NB');
@@ -2292,6 +2150,7 @@ switch ($idencabezado) {
         $pdf->setRowColorText(array($txtbold));
         $pdf->Row(Array('Salidas de efectivo'));
 
+
         $pdf->SetAligns(array('L', 'C'));
         $pdf->SetSizes(array(9, 9));
         $pdf->SetWidths(Array(40, 55));
@@ -2304,27 +2163,18 @@ switch ($idencabezado) {
         $salidas = 0;
         $pdf->SetRowBorder('B');
         $pdf->SetLineHeight(4.5);
-        $out = $cv->getMovEfectivo('2', $fecha, $uid);
-        foreach ($out as $actual) {
-            $concepto = $actual['conceptomov'];
-            $monto = $actual['montomov'];
-            $salidas += $actual['montomov'];
-
-            $pdf->Row(Array(utf8_decode($concepto . ":"), "$ " . number_format($monto, 2, '.', ',')));
-        }
-
-        $pdf->Row(Array(utf8_decode("Total:"), "$ " . number_format($salidas, 2, '.', ',')));
-
+        $pdf->Row(Array('trapitos:', '$ 2,250.00'));
+        $pdf->Row(Array('acuarelas:', '$ 1,000.00'));
+        $pdf->Row(Array('plumon:', '$ 20.00'));
+        $pdf->Row(Array('salsas valentina:', '$ 15,000.00'));
+        $pdf->Row(Array('Total:', '$ 18,270.00'));
         $pdf->isFinished = true;
-
-        $nm = str_replace(" ", "_", $usuario);
-        $pdf->Output('corte_'.$fecha.'_'.$nm.'.pdf', 'I');
-        }//cierra $cv
-
         break;
 }
 
 
-$pdf->isFinished = true;
+
+
+ $pdf->isFinished = true;
 $pdf->Output('./ejemplo.pdf', 'F');
 ?>
