@@ -28,20 +28,20 @@
                     <input id="idfacturaenvio" name="idfacturaenvio" type="hidden"/>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo1">Correo informacion</label>
+                            <label class="label-form text-right mb-2" for="correo1">Correo informacion</label>
                             <div class="input-group">
-                                <input class="form-control text-center input-form" id="correo1" name="nombre_empresa" placeholder="Correo de Informacion" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo1" name="chcorreo1" type="checkbox"/></div>
+                                <input class="form-control text-center input-form mb-3" id="correo1" name="nombre_empresa" placeholder="Correo de Informacion" type="text"/>
+                                <div class="input-group-addon ms-2" ><input class="input-check" id="chcorreo1" name="chcorreo1" type="checkbox"/></div>
                             </div>
                             <div id="correo1-errors">
                             </div>
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo2">Correo facturacion</label>
+                            <label class="label-form text-right mb-2" for="correo2">Correo facturacion</label>
                             <div class="input-group">
                                 <input class="form-control text-center input-form" id="correo2" name="nombre_empresa" placeholder="Correo de Facturacion" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo2" name="chcorreo2" type="checkbox" checked/></div>
+                                <div class="input-group-addon ms-2"><input class="input-check" id="chcorreo2" name="chcorreo2" type="checkbox" checked/></div>
                             </div>
                             <div id="correo2-errors">
                             </div>
@@ -49,20 +49,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo3">Correo Gerencia</label>
+                            <label class="label-form text-right mb-2" for="correo3">Correo Gerencia</label>
                             <div class="input-group">
-                                <input class="form-control text-center input-form" id="correo3" name="nombre_empresa" placeholder="Correo de Facturacion" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo3" name="chcorreo3" type="checkbox"/></div>
+                                <input class="form-control text-center input-for mb-3" id="correo3" name="nombre_empresa" placeholder="Correo de Facturacion" type="text"/>
+                                <div class="input-group-addon ms-2"><input class="input-check" id="chcorreo3" name="chcorreo3" type="checkbox"/></div>
                             </div>
                             <div id="correo3-errors">
                             </div>
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo4">Correo Alternativo 1</label>
+                            <label class="label-form text-right mb-2" for="correo4">Correo Alternativo 1</label>
                             <div class="input-group">
                                 <input class="form-control text-center input-form" id="correo4" name="correo4" placeholder="Correo Alternativo 1" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo4" name="chcorreo4" type="checkbox"/></div>
+                                <div class="input-group-addon ms-2"><input class="input-check" id="chcorreo4" name="chcorreo4" type="checkbox"/></div>
                             </div>
                             <div id="correo4-errors">
                             </div>
@@ -71,20 +71,20 @@
 
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo5">Correo Alternativo 2</label>
+                            <label class="label-form text-right mb-2" for="correo5">Correo Alternativo 2</label>
                             <div class="input-group">
-                                <input class="form-control text-center input-form" id="correo5" name="correo5" placeholder="Correo Alternativo 2" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo5" name="chcorreo5" type="checkbox"/></div>
+                                <input class="form-control text-center input-form mb-3" id="correo5" name="correo5" placeholder="Correo Alternativo 2" type="text"/>
+                                <div class="input-group-addon ms-2"><input class="input-check" id="chcorreo5" name="chcorreo5" type="checkbox"/></div>
                             </div>
                             <div id="correo5-errors">
                             </div>
                         </div>
 
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right" for="correo6">Correo Alternativo 3</label>
+                            <label class="label-form text-right mb-2" for="correo6">Correo Alternativo 3</label>
                             <div class="input-group">
                                 <input class="form-control text-center input-form" id="correo6" name="correo6" placeholder="Correo Alternativo 3" type="text"/>
-                                <div class="input-group-addon"><input class="input-check" id="chcorreo6" name="chcorreo5" type="checkbox"/></div>
+                                <div class="input-group-addon ms-3"><input class="input-check" id="chcorreo6" name="chcorreo5" type="checkbox"/></div>
                             </div>
                             <div id="correo6-errors">
                             </div>
@@ -135,40 +135,44 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="modal-stcfdi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal-stcfdi" tabindex="-1" aria-labelledby="modal-stcfdi-label" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="titulo-modal" id="myModalLabel">Status del CFDI</h4>
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-stcfdi-label">Status del CFDI</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body">
                 <div class="row">
-                    <label class="label-sub" for="cod-status">Codigo Status: </label>
+                    <label class="label-sub" for="cod-status">Codigo Status:</label>
                     <label class="label-form" id="cod-status"></label>
                 </div>
                 
                 <div class="row">
-                    <label class="label-sub" for="estado-cfdi">Estado: </label>
+                    <label class="label-sub" for="estado-cfdi">Estado:</label>
                     <label class="label-form" id="estado-cfdi"></label>
                 </div>
                 
                 <div class="row">
-                    <label class="label-sub" for="cfdi-cancelable">Cancelable: </label>
+                    <label class="label-sub" for="cfdi-cancelable">Cancelable:</label>
                     <label class="label-form" id="cfdi-cancelable"></label>
                 </div>
                 
                 <div class="row">
-                    <label class="label-sub" for="estado-cancelacion">Estado Cancelacion: </label>
+                    <label class="label-sub" for="estado-cancelacion">Estado Cancelacion:</label>
                     <label class="label-form" id="estado-cancelacion"></label>
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-12 text-right" id="div-reset">
+                    <div class="col-md-12 text-end" id="div-reset">
                     </div>	
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <!--<div class="modal fade bs-example-modal-lg" id="enviarwp" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">

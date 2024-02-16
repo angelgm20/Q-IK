@@ -60,9 +60,9 @@ if (isset($_POST['transaccion'])) {
 
             $insertado = $cp->validarCodigo($p);
             if ($insertado) {
-                echo $insertado;
+                echo "producto registrado";
             } else {
-                echo "0No se registro el producto";
+                echo "No registro  producto";
             }
             break;
         case 'listaproductosaltas':
@@ -137,9 +137,9 @@ if (isset($_POST['transaccion'])) {
 
             $actualizado = $cp->valCodigoActualizar($p);
             if ($actualizado) {
-                echo "1Registro guardado correctamente";
+                echo "Registro guardado correctamente";
             } else {
-                echo "0Ah ocurrido un error";
+                echo "ocurrido un error";
             }
             break;
         case 'actualizarinventario':

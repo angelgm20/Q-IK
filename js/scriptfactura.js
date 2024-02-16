@@ -29,6 +29,7 @@ function tablaProductos(uuid = "") {
                 alertify.error(res);
             } else {
                 $("#resultados").html(datos);
+               
             }
         }
     });
@@ -78,10 +79,13 @@ function addCFDI() {
                 if (bandera == '0') {
                     alertify.error(res);
                 } else {
+                    $("#tipo-relacion").val('');
+                    $("#cfdi-rel").val('');
                     cargandoHide();
                     var array = datos.split("<corte>");
                     var p2 = array[1];
                     $("#body-lista-cfdi").html(p2);
+                   
                 }
             }
         });
@@ -143,6 +147,7 @@ function checkIVA(idtmp) {
 }
 
 function setCamposProducto() {
+   
     $("#codigo-producto").val('');
     $("#producto").val('');
     $("#tipo").val('');
@@ -209,9 +214,17 @@ function insertarProductoFactura() {
         chinventario = 1;
     }
     
-    if (isnEmpty(codproducto, "codigo-producto") && isnEmpty(producto, "producto") && isList(clavefiscal, "clave-fiscal") && isnEmpty(tipo, "tipo") && isListUnit(unidad, "clave-unidad") && isPositive(porcentaje, "porganancia") && isPositive(ganancia, "ganancia") && isPositive(pventa, "pventa")) {
-        cargandoHide();
-        cargandoShow();
+    if (
+    validarCodigoProducto (codproducto, "codigo-producto") && 
+    isnEmpty(producto, "producto") &&
+    isList(clavefiscal, "clave-fiscal") &&
+    isnEmpty(tipo, "tipo") && 
+    isListUnit(unidad, "clave-unidad") &&
+    isPositive(porcentaje, "porganancia") && 
+    isPositive(ganancia, "ganancia") && 
+    isPositive(pventa, "pventa")) {
+        //cargandoHide();
+        //cargandoShow();
         $.ajax({
             url: "com.sine.enlace/enlaceproducto.php",
             type: "POST",
@@ -223,8 +236,12 @@ function insertarProductoFactura() {
                 if (bandera == '0') {
                     alertify.error(res);
                 } else {
+                    //loadView('listafactura');
+                    //alertify.success('cliente registrado')
                     tablaProductos();
+                   
                     $("#nuevo-producto").modal('hide');
+                    
                 }
                 cargandoHide();
             }
@@ -265,6 +282,7 @@ function aucompletarUnidad() {
 }
 
 function autocompletarCliente() {
+    
     if ($("#nombre-cliente").val() == '') {
         $("#id-cliente").val('0');
     }
@@ -896,6 +914,7 @@ function insertarFactura() {
         chfirma = 1;
     }
     if ($("#cfdirel").hasClass('in')) {
+        alert(cfdis);
         cfdis = 1;
     }
 
@@ -1005,7 +1024,7 @@ function editarFactura(idFactura) {
 
 function setValoresEditarFactura(datos) {
     changeText("#contenedor-titulo-form-factura", "Editar Factura");
-    changeText("#btn-form-factura", "Guardar cambios <span class='glyphicon glyphicon-floppy-disk'></span>");
+    changeText("#btn-form-factura", "Guardar cambios <span class='fas fa-save'></span>");
 
     var array = datos.split("</tr>");
     var idfactura = array[0];
@@ -1648,9 +1667,11 @@ function cancelarFactura() {
                 alertify.error(res);
             } else {
                 loadView('listafactura');
+                
             }
         }
     });
+    
 }
 
 function imprimir_factura(id) {
@@ -1784,7 +1805,7 @@ function enviarfactura() {
                     alertify.error(res);
                 } else {
                     $("#enviarmail").modal('hide');
-                    alertify.success(res);
+                    alertify.success('res');
                 }
                 cargandoHide();
             }

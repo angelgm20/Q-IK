@@ -82,7 +82,7 @@ class ControladorFactura {
                     <tr>
                         <td>$tiporel</td>
                         <td>$uuid</td>
-                        <td><button $disuuid class='button-list' onclick='eliminarCFDI($idtmp)' title='Eliminar CFDI'><span class='glyphicon glyphicon-remove'></span></button></td>
+                        <td><button $disuuid class='button-list' onclick='eliminarCFDI($idtmp)' title='Eliminar CFDI'><span class='fas fa-times'></span></button></td>
                     </tr>
                      ";
         }
@@ -283,11 +283,12 @@ class ControladorFactura {
         $Timp = 0;
         foreach ($div as $d) {
             $div2 = explode("-", $d);
-            $imp = $importe * $div2[1];
+            $imp = $importe * $div2[1];//ANGEL
             $Timp += $imp;
             if ($Timp > 0) {
                 $row[] = bcdiv($imp, '1', 2) . '-' . $div2[1] . '-' . $div2[2];
             }
+          
         }
         $rearray = implode("<impuesto>", $row);
         return $rearray;
@@ -309,6 +310,8 @@ class ControladorFactura {
         return $rearray . "<cut>" . $Timp;
     }
 
+   
+
     public function incrementarProducto($idtmp) {
         $check = $this->checkProductoTMPAux($idtmp);
         foreach ($check as $actual) {
@@ -324,8 +327,8 @@ class ControladorFactura {
         $cantidad = 0;
 
         $prod = $this->checkProductoAux($idproducto);
-        foreach ($prod as $pactual) {
-            $chinv = $pactual['chinventario'];
+        foreach ($prod as $pactual) { 
+            $chinv = $pactual['chinventario']; //328
             $cantidad = $pactual['cantinv'];
         }
 
@@ -540,7 +543,7 @@ class ControladorFactura {
     }
 
     public function agregar($t, $chinv) {
-        $insertado = false;
+        $insertado = true; 
         $con = new Consultas();
         $datos = "";
         $clvfiscal = "";
@@ -574,6 +577,7 @@ class ControladorFactura {
         $datos = $con->execute($consulta, $valores);
         return $datos;
     }
+   
 
     public function tablaProd($sessionid, $uuid = "") {
         $datos = "<thead class='sin-paddding'>
@@ -617,7 +621,8 @@ class ControladorFactura {
             $obser = str_replace("<ent>", "\n", $observaciones);
 
             if ($obser == "") {
-                $obser = "<span class='glyphicon glyphicon-pencil'></span>";
+                $obser = "<span class='fas fa-pencil-alt'></span>";
+              
             }
 
             $importe = bcdiv($ptotal, '1', 2) - bcdiv($descuento, '1', 2);
@@ -654,16 +659,20 @@ class ControladorFactura {
                 $divcheck = explode("<imp>", $checktraslado);
                 foreach ($divcheck as $t) {
                     if ($t == $tactual['porcentaje'] . "-" . $tactual['impuesto']) {
-                        $iconT = "glyphicon-check";
+                        $iconT = "";
                         $checkedT = "checked";
                         break;
                     } else {
-                        $iconT = "glyphicon-unchecked";
+                        $iconT = "";
                         $checkedT = "";
                     }
                 }
-                $optraslados = $optraslados . "<li data-location='tabla' data-id='$id_tmp'><label class='dropdown-menu-item checkbox'><input type='checkbox' $checkedT value='" . $tactual['porcentaje'] . "' name='chtrastabla$id_tmp' data-impuesto='" . $tactual['impuesto'] . "' data-tipo='" . $tactual['tipoimpuesto'] . "'/><span class='glyphicon $iconT' id='chuso1span'></span>" . $tactual['nombre'] . " (" . $tactual['porcentaje'] . "%)" . "</label></li>";
-            }
+                $optraslados = $optraslados . "<li data-location='tabla' data-id='$id_tmp'><label class='dropdown-item checkbox'>
+                <input type='checkbox' $checkedT value='" . $tactual['porcentaje'] . "' name='chtrastabla$id_tmp' data-impuesto='" . $tactual['impuesto'] . "' data-tipo='" . $tactual['tipoimpuesto'] . "' />
+                <span class='glyphicon $iconT' id='chuso1span'></span>
+                " . $tactual['nombre'] . " (" . $tactual['porcentaje'] . "%)
+            </label></li>";
+                }
 
             $checkedR = "";
             $iconR = "";
@@ -672,16 +681,20 @@ class ControladorFactura {
                 $divcheckR = explode("<imp>", $checkretencion);
                 foreach ($divcheckR as $r) {
                     if ($r == $ractual['porcentaje'] . "-" . $ractual['impuesto']) {
-                        $iconR = "glyphicon-check";
+                        $iconR = "";
                         $checkedR = "checked";
                         break;
                     } else {
-                        $iconR = "glyphicon-unchecked";
+                        $iconR = "";
                         $checkedR = "";
                     }
                 }
-                $opretencion = $opretencion . "<li data-location='tabla' data-id='$id_tmp'><label class='dropdown-menu-item checkbox'><input type='checkbox' $checkedR value='" . $ractual['porcentaje'] . "' name='chrettabla$id_tmp' data-impuesto='" . $ractual['impuesto'] . "' data-tipo='" . $ractual['tipoimpuesto'] . "'/><span class='glyphicon $iconR' id='chuso1span'></span>" . $ractual['nombre'] . " (" . $ractual['porcentaje'] . "%)" . "</label></li>";
-            }
+                 $opretencion = $opretencion . "<li data-location='tabla' data-id='$id_tmp'><label class='dropdown-item checkbox'>
+                 <input type='checkbox' $checkedR value='" . $ractual['porcentaje'] . "' name='chrettabla$id_tmp' data-impuesto='" . $ractual['impuesto'] . "' data-tipo='" . $ractual['tipoimpuesto'] . "' />
+                     <span class='glyphicon $iconR' id='chuso1span'></span>
+                     " . $ractual['nombre'] . " (" . $ractual['porcentaje'] . "%)
+                 </label></li>";
+               }
 
             $sumador_iva += bcdiv($imp, '1', 2);
             $sumador_ret += bcdiv($ret, '1', 2);
@@ -691,55 +704,59 @@ class ControladorFactura {
             if ($cantidad == '1') {
                 $disabledminus = "disabled";
             }
-            $datos .= "
-                    <tr>
-                        <td>$clvfiscal</td>
-                        <td><div class='input-group'><span class='input-group-btn'>
-                        <button type='button' class='btn btn-xs btn-default btn-number' $disabledminus $disuuid data-type='minus' data-field='quant[1]' onclick='reducirCantidad($id_tmp);'>
-                        <span class='glyphicon glyphicon-minus'></span>
-                        </button></span>
-                        <button $disuuid class='badge btn btn-info btn-xs center-block' data-toggle='modal' data-target='#modal-cantidad' onclick='setCantidad($id_tmp,$cantidad)'><div class='badge' id='badcant$id_tmp'> $cantidad</div></button>
-                            <span class='input-group-btn'>
-                            <button type='button' class='btn btn-xs btn-default btn-number' data-type='plus' onclick='incrementarCantidad($id_tmp);' $disuuid>
-                            <span class='glyphicon glyphicon-plus'></span>
-                            </button>
-                            </span></div></td>
-                        <td>$nombre</td>
-                        <td>$ " . number_format(bcdiv($pventa, '1', 2), 2, '.', ',') . "</td>
-                        <td>$ " . number_format(bcdiv($ptotal, '1', 2), 2, '.', ',') . "</td>
-                        <td>$ " . number_format(bcdiv($descuento, '1', 2), 2, '.', ',') . "</td>
-                        <td>
-                            <div class='input-group'>
-                                <div class='dropdown'>
-                                    <button type='button' class='button-impuesto dropdown-toggle' data-toggle='dropdown' $disuuid>Traslados <span class='caret'></span></button>
-                                    <ul class='dropdown-menu'>
-                                        $optraslados
-                                    </ul>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class='input-group'>
-                                <div class='dropdown'>
-                                    <button type='button' class='button-impuesto dropdown-toggle' data-toggle='dropdown' $disuuid>Retenciones <span class='caret'></span></button>
-                                    <ul class='dropdown-menu'>
-                                        $opretencion
-                                    </ul>
-                                </div>
-                            </div>
-                        </td>
-                        <td title='Da click para agregar Observaciones' data-toggle='modal' data-target='#modal-observaciones' onclick=\"setIDTMP($id_tmp,'$observaciones');\" style='vertical-align:middle; cursor: pointer; color: #17177C; text-align:center;'>$obser </td>
-                        <td><div class='dropdown'>
-                        <button class='button-list dropdown-toggle' title='Editar'  type='button' data-toggle='dropdown' $disuuid><span class='glyphicon glyphicon-edit'></span>
-                        <span class='caret'></span></button>
-                        <ul class='dropdown-menu dropdown-menu-right'>
-                        <li><a data-toggle='modal' data-target='#editar-producto' onclick='editarConcepto($id_tmp);'>Editar en Factura <span class='glyphicon glyphicon-edit'></span></a></li>
-                        <li><a data-toggle='modal' data-target='#nuevo-producto' onclick='editarProductoFactura($idproducto,$id_tmp);'>Editar en Productos <span class='glyphicon glyphicon-edit'></span></a></li>
-                        <li><a onclick='eliminar($id_tmp,$cantidad,$idproducto); return false;'>Eliminar <span class='glyphicon glyphicon-remove'></span></a></li>
+            $datos .= " 
+            <tr>
+                <td>$clvfiscal</td>
+                <td>
+                    <div class='btn-group'>
+                        <button type='button' class='btn btn-outline-secondary btn-sm ' $disabledminus $disuuid data-type='minus' data-field='quant[1]' onclick='reducirCantidad($id_tmp);'>
+                            <i class='fas fa-minus'></i>
+                        </button>
+                        <button $disuuid class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#modal-cantidad' onclick='setCantidad($id_tmp,$cantidad)'>
+                            <div class='badge' id='badcant$id_tmp'>$cantidad</div>
+                        </button>
+                        <button type='button' class='btn btn-outline-secondary btn-sm ' data-type='plus' onclick='incrementarCantidad($id_tmp);' $disuuid>
+                            <i class='fas fa-plus'></i>
+                        </button>
+                    </div>
+                </td>
+                <td>$nombre</td>
+                <td>$ " . number_format(bcdiv($pventa, '1', 2), 2, '.', ',') . "</td>
+                <td>$ " . number_format(bcdiv($ptotal, '1', 2), 2, '.', ',') . "</td>
+                <td>$ " . number_format(bcdiv($descuento, '1', 2), 2, '.', ',') . "</td>
+                <td>
+                    <div class='input-group'>
+                        <div class='dropdown'>
+                            <button type='button' class='button-impuesto dropdown-toggle' data-bs-toggle='dropdown' $disuuid>Traslados <span class='caret'></span></button>
+                            <ul class='dropdown-menu'>
+                                $optraslados
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class='input-group'>
+                        <div class='dropdown'>
+                            <button type='button' class='button-impuesto dropdown-toggle' data-bs-toggle='dropdown' $disuuid>Retenciones <span class='caret'></span></button>
+                            <ul class='dropdown-menu'>
+                                $opretencion
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                <td title='Da click para agregar Observaciones' data-bs-toggle='modal' data-bs-target='#modal-observaciones' onclick=\"setIDTMP($id_tmp,'$observaciones');\" style='vertical-align:middle; cursor: pointer; color: #17177C; text-align:center;'>$obser</td>
+                <td>
+                    <div class='dropdown'>
+                        <button class='button-list dropdown-toggle' title='Editar'  type='button' data-bs-toggle='dropdown' $disuuid><i class='fas fa-edit'></i> <span class='caret'></span></button>
+                        <ul class='dropdown-menu dropdown-menu-end'>
+                            <li class='px-2' ><a data-bs-toggle='modal' data-bs-target='#editar-producto' onclick='editarConcepto($id_tmp);'>Editar Factura <i class='fas fa-edit'></i></a></li>
+                            <li class='px-2' ><a data-bs-toggle='modal' data-bs-target='#nuevo-producto' onclick='editarProductoFactura($idproducto,$id_tmp);'>Editar Productos <i class='fas fa-edit'></i></a></li>
+                            <li class='px-2'><a onclick='eliminar($id_tmp,$cantidad,$idproducto); return false;'>Eliminar <i class='fas fa-trash'></i></a></li>
                         </ul>
-                        </div></td>
-                    </tr>
-                     ";
+                    </div>
+                </td>
+            </tr>
+            ";
         }
 
         $total_factura = ((bcdiv($sumador_total, '1', 2) + bcdiv($sumador_iva, '1', 2)) - bcdiv($sumador_ret, '1', 2)) - bcdiv($sumador_descuento, '1', 2);
@@ -1653,11 +1670,11 @@ class ControladorFactura {
 
         $consulta = "UPDATE `datos_factura` SET $updfolio idcliente=:idcliente, nombrecliente=:cliente, rfcreceptor=:rfcreceptor, rzreceptor=:rzreceptor, dircliente=:dircliente, cpreceptor=:cpreceptor, regfiscalreceptor=:regfiscalreceptor, chfirmar=:chfirmar, id_metodo_pago=:idmetodopago,id_forma_pago=:idformapago,id_moneda=:idmoneda, tcambio=:tcambio, id_uso_cfdi=:iduso,id_tipo_comprobante=:tipocomprobante, iddatosfacturacion=:iddatos, cfdisrel=:cfdisrel, periodoglobal=:periodo, mesperiodo=:mesp, anhoperiodo=:anhop WHERE iddatos_factura=:idfactura;";
         $valores = array("idfactura" => $f->getIddatos_factura(),
-            "rfc" => $rfc,
+            /*"rfc" => $rfc,
             "rzsocial" => $rzsocial,
             "clvreg" => $clvreg,
             "regimen" => $regimen,
-            "codp" => $codpos,
+            "codp" => $codpos,*/
             "serie" => $serie,
             "letra" => $letra,
             "folio" => $nfolio,
@@ -2091,7 +2108,7 @@ class ControladorFactura {
     public function listaServiciosHistorial($pag, $REF, $numreg) {
         require_once '../com.sine.common/pagination.php';
         $idlogin = $_SESSION[sha1("idusuario")];
-        $datos = "<thead class='sin-paddding'>
+        $datos = "<thead class='sin-padding'>
             <tr>
                 <th></th>
                 <th>N°Folio </th>
@@ -2106,6 +2123,7 @@ class ControladorFactura {
                 <th>Total </th>
                 <th>Moneda </th>
                 <th>Opcion</th>
+                
             </tr>
         </thead>
         <tbody>";
@@ -2245,39 +2263,42 @@ class ControladorFactura {
                             </div>
                         <td>
                             <div class='small-tooltip icon tip'>
-                                <span style='color: $colorB;' class='click-row glyphicon glyphicon-bell'></span>
+                                <span style='color: $colorB;' class='click-row fas fa-bell'></span>
                                 <span class='tiptext'>$titbell</span>
                             </div>
                         </td>
                         <td>$ " . number_format($subtotal, 2, '.', ',') . "</td>
                         <td>$ " . number_format($iva, 2, '.', ',') . "</td>
                         <td>$ " . number_format($ret, 2, '.', ',') . "</td>
-                        <td>$ " . number_format($total, 2, '.', ',') . "</td>
+                        <td>$" . number_format($total, 2, '.', ',') . "</td>
                         <td>$cmoneda</td>
                         <td align='center'><div class='dropdown'>
-                        <button class='button-list dropdown-toggle' title='Opciones'  type='button' data-toggle='dropdown'><span class='glyphicon glyphicon-option-vertical'></span>
+                        <button class='button-list dropdown-toggle' title='Opciones'  type='button' data-bs-toggle='dropdown'><span class='fas fa-ellipsis-v'></span>
                         <span class='caret'></span></button>
-                        <ul class='dropdown-menu dropdown-menu-right'>";
+                        <ul class='dropdown-menu dropdown-menu-end'>";
 
             if ($div[0] == '1') {
-                $datos .= "<li><a onclick='editarFactura($idfactura);'>Editar Factura <span class='glyphicon glyphicon-edit'></span></a></li>";
+                $datos .= "<li class='px-2'><a onclick='editarFactura($idfactura);'>Editar Factura <span class='glyphicon fas fa-edit'></span></a></li>";
             }
             if ($div[1] == '1') {
-                $datos .= "<li><a onclick=\"eliminarFactura('$idfactura');\">Eliminar Factura <span class='glyphicon glyphicon-remove'></span></a></li>";
+                $datos .= "<li class='px-2'><a onclick=\"eliminarFactura('$idfactura');\">Eliminar Factura <span class='far fa-times-circle'></span></a></li>";
             }
 
-            $datos .= "<li><a onclick=\"imprimir_factura($idfactura);\">Ver Factura <span class='glyphicon glyphicon-eye-open'></span></a></li>
-                        <li><a href='./com.sine.imprimir/imprimirxml.php?f=$idfactura&t=a' target='_blank'>Ver XML <span class='glyphicon glyphicon-download-alt'></span></a></li>
-                        <li><a $timbre>$tittimbre <span class='glyphicon glyphicon-bell'></span></a></li>
-                        <li><a data-toggle='modal' data-target='#enviarmail' onclick='showCorreos($idfactura);'>Enviar <span class='glyphicon glyphicon-envelope'></span></a></li>";
+            $datos .= " <li class='px-2'><a onclick=\"imprimir_factura($idfactura);\">Ver Factura <span class='fas fa-eye'></span></a></li>
+                        <li class='px-2'><a href='./com.sine.imprimir/imprimirxml.php?f=$idfactura&t=a' target='_blank'>Ver XML <span class='fas fa-download'></span></a></li>
+                        <li class='px-2'><a $timbre>$tittimbre <span class='fas fa-bell'></span></a></li>
+                        <li class='px-2'><a data-bs-toggle='modal' data-bs-target='#enviarmail' onclick='showCorreos($idfactura);'>Enviar <span class='fas fa-envelope'></span></a></li>";
 
             if ($div[2] == '1') {
-                $datos .= "<li><a onclick='copiarFactura($idfactura);'>Copiar Factura <span class='glyphicon glyphicon-copy'></span></a></li>";
+                $datos .= "<li class='px-2'><a onclick='copiarFactura($idfactura);'>Copiar Factura <span class='fas fa-clipboard'></span></a></li>";
             }
 
             if ($uuid != "") {
-                $datos .= "<li><a data-toggle='modal' data-target='#modal-stcfdi' onclick='checkStatusCancelacion($idfactura);'>Comprobar estado del CFDI <span class='glyphicon glyphicon-ok-sign'></span></a></li>";
+                $datos .= "<li class='px-2'><a data-bs-toggle='modal' data-bs-target='#modal-stcfdi' onclick='checkStatusCancelacion(\"".$idfactura."\");'>Comprobar estado del CFDI <i class='fas fa-check-circle'></i></a></li>";
             }
+            
+
+
 
             $datos .= "</ul>
                         </div></td>
@@ -2665,15 +2686,15 @@ class ControladorFactura {
         $datos = "<thead>
                     <tr>
                         <th class='col-md-1'>Codigo </th>
-                        <th >Producto/Servicio </th>
+                        <th class='col-md-6'>Producto/Servicio   </th>
                         <th class='col-md-1'>Cantidad </th>
-                        <th class='col-md-1'>P. Venta </th>
+                        <th class='col-md-1'>P.Venta </th>
                         <th class='col-md-1'>Importe </th>
-                        <th class='col-md-1'>% Desc.</th>
+                        <th class='col-md-1'>%.Desc </th>
                         <th class='col-md-1'>Traslados</th>
                         <th class='col-md-1'>Retenciones</th>
                         <th class='col-md-1'>Total</th>
-                        <th><span class='glyphicon glyphicon-plus'></span> </th>
+                        <th><span class='fas fa-plus'></span> </th>
                     </tr>
                   </thead>
                   <tbody>";
@@ -2723,6 +2744,7 @@ class ControladorFactura {
                     $checkedT = "";
                 }
                 $optraslados .= "<li data-location='lista' data-id='$idprod'><label class='dropdown-menu-item checkbox'><input type='checkbox' $checkedT value='" . $tactual['porcentaje'] . "' name='chtraslado$idprod' data-impuesto='" . $tactual['impuesto'] . "' data-tipo='" . $tactual['tipoimpuesto'] . "'/><span class='glyphicon $iconT' id='chuso1span'></span>" . $tactual['nombre'] . " (" . $tactual['porcentaje'] . "%)" . "</label></li>";
+
             }
 
             $checkedR = "";
@@ -2752,7 +2774,7 @@ class ControladorFactura {
                         <td><input class='form-control input-modal text-center input-sm' id='pordescuento_$idprod' name='pordescuento_$idprod' value='0' type='number' oninput='calcularDescuento($idprod)'/> <input class='form-control input-modal text-center input-sm' id='descuento_$idprod' name='descuento_$idprod' value='0' type='hidden'/></td>
                         <td><div class='input-group'>
                         <div class='dropdown'>
-                        <button type='button' class='btn btn-sm btn-default dropdown-toggle' data-toggle='dropdown'>Traslados <span class='caret'></span></button>
+                        <button type='button' class='btn btn-sm btn-default dropdown-bs-toggle' data-bs-toggle='dropdown'>Traslados <span class='caret'></span></button>
                         <ul class='dropdown-menu'>
                             $optraslados
                         </ul>
@@ -2760,14 +2782,14 @@ class ControladorFactura {
                         </div></td>
                         <td><div class='input-group'>
                         <div class='dropdown'>
-                        <button type='button' class='btn btn-sm btn-default dropdown-toggle' data-toggle='dropdown'>Retenciones <span class='caret'></span></button>
+                        <button type='button' class='btn btn-sm btn-default dropdown-bs-toggle' data-bs-toggle='dropdown'>Retenciones <span class='caret'></span></button>
                         <ul class='dropdown-menu'>
                             $opretencion
                         </ul>
                         </div>
                         </div></td>
                         <td><input class='form-control input-modal text-center input-sm' disabled id='total_$idprod' name='pventa' value='$total' type='text'/></td>
-                        <td><button title='Agregar Producto' class='button-add-prod' onclick='agregarProducto($idprod);'><span class='glyphicon glyphicon-plus'></span></button></td>
+                        <td><button title='Agregar Producto' class='button-add-prod' onclick='agregarProducto($idprod);'><span class='fas fa-plus'></span></button></td>
                     </tr>
                      ";
             $finales++;
@@ -3121,7 +3143,7 @@ class ControladorFactura {
         $xml->loadXML($xmlFile);
         $xsl = new DOMDocument();
         $xsl->load($xslFile);
-        $proc = new XSLTProcessor;
+        $proc = new XSLTProcessor; //3146
         $proc->importStyleSheet($xsl);
         $cadenaOriginal = $proc->transformToXML($xml);
         $fichero = "../vendor/recursos/cadenaOriginal.txt";
@@ -3389,10 +3411,10 @@ class ControladorFactura {
                 echo '0No se envio el mensaje';
                 echo '0Mailer Error: ' . $mail->ErrorInfo;
             } else {
-                return '1Se ha enviado la factura';
+                return 'Se ha enviado la factura';
             }
         } else {
-            return "0No se ha configurado un correo de envio para esta area";
+            return "No se configuro correo de envio";
         }
     }
 

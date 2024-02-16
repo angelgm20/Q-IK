@@ -5,6 +5,9 @@ $(document).ready(function () {
     getDiasHorario();
 });
 
+
+
+
 function getUserFirstSession() {
     $.ajax({
         url: "com.sine.enlace/enlaceinicio.php",
@@ -1383,6 +1386,38 @@ function isnEmpty(val, id) {
 }
 
 //VALIDACIONES ESPECIFICAS+++++++++++++++++++++++++++++++++
+
+    function validarCodigoProducto(codigo, id) {
+        // Expresión regular que acepta letras (mayúsculas y minúsculas), números y espacios
+        var regex = /^[a-zA-Z0-9\s]*$/;
+        // Verificar si el campo está vacío
+        if (codigo.trim() === "") {
+            $("#" + id).css("border-color", "red");
+            $("#" + id + "-errors").text("Este campo no puede estar vacío");
+            $("#" + id + "-errors").css("color", "red");
+            $("#" + id).focus();
+            return false;
+        } else if (!regex.test(codigo)) { // Verificar si el campo contiene caracteres no permitidos
+            // Filtrar caracteres no permitidos y actualizar el valor del campo
+            $("#" + id).val(codigo.replace(/[^a-zA-Z0-9\s]/g, ''));
+            return false;
+        } else {
+            // Limpiar mensajes de error y establecer el borde del campo en verde
+            $("#" + id + "-errors").text("");
+            $("#" + id).css("border-color", "green");
+            return true;
+        }
+    }
+
+ 
+
+
+
+
+
+
+
+
 function validarRFC(rfc, id) {
     var regexRFC = /^[a-zA-Z]{3,4}\d{6}[a-zA-Z\d]{3}$/;
     rfc = rfc.toUpperCase();
@@ -1698,6 +1733,7 @@ function isNumber(val, id) {
         return false;
     }
 }
+
 
 
 

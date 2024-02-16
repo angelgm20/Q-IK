@@ -175,9 +175,9 @@ if (isset($_POST['transaccion'])) {
 
             $insertado = $cp->validarCodigo($p, $sessionid);
             if ($insertado) {
-                echo $insertado;
+                echo "Registro insertado";
             } else {
-                echo "0No se registro el producto";
+                echo "No registro producto";
             }
             break;
         case 'insertarpago':
@@ -325,7 +325,7 @@ if (isset($_POST['transaccion'])) {
 
             $datos = $cf->checkConcepto($t);
             if ($datos != "") {
-                echo $datos;
+                echo 'datos';
             } else {
                 echo "0No se han econtrado datos";
             }
@@ -437,7 +437,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo "1Registro eliminado";
             } else {
-                echo "0No se han econtrado datos";
+                echo "No se econtro datos";
             }
             break;
         case 'emisor':
@@ -540,7 +540,7 @@ if (isset($_POST['transaccion'])) {
 
             $datos = $cf->checkInventario($t);
             if ($datos != "") {
-                echo $datos;
+                echo '$datos';
             } else {
                 echo "0Ah ocurrido un error";
             }
@@ -552,9 +552,9 @@ if (isset($_POST['transaccion'])) {
             $retenciones = $_POST['retenciones'];
             $eliminado = $cf->modificarChIva($idtmp, $traslados, $retenciones);
             if ($eliminado) {
-                echo $eliminado;
+                echo '$eliminado';
             } else {
-                echo "0No se han encontrado datos";
+                echo "No se encontro datos";
             }
             break;
         case 'agregarobservaciones':
@@ -599,7 +599,7 @@ if (isset($_POST['transaccion'])) {
             $sessionid = session_id();
             $datos = $cf->productosFactura($tag, $sessionid);
             if ($datos != "") {
-                echo $datos;
+                echo "datos";
             } else {
                 echo "0Ah ocurrido un error";
             }
@@ -614,7 +614,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo $eliminado;
             } else {
-                echo "0No se han encontrado datos";
+                echo "No se encontro datos";
             }
             break;
         case 'eliminarpago':
@@ -666,7 +666,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo "1Registro eliminado";
             } else {
-                echo "0No se han encontrado datos";
+                echo "factura cancelada";
             }
             break;
         case 'loadpagos':
@@ -717,9 +717,9 @@ if (isset($_POST['transaccion'])) {
             $idfactura = $_POST['idfactura'];
             $cadena = $cf->checkSaldo($idfactura);
             if ($cadena != "") {
-                echo $cadena;
+                echo '$cadena';
             } else {
-                echo "";
+                echo "no tienes saldo";
             }
             break;
         case 'modestado':

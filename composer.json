@@ -2,7 +2,7 @@
     "name": "sine/tecnologias",
     "require": {
         "lunasoft/sw-sdk-php": "dev-master",
-        "phpmailer/phpmailer": "^5.2",
+        "phpmailer/phpmailer": "^6.9",
         "arielcr/numero-a-letras": "dev-master",
         "phpoffice/phpspreadsheet": "1.8.2"
     }
