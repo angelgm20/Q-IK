@@ -521,6 +521,9 @@ function loadOpcionesFolios(id = "" , serie = "", folio = "") {
     });
 }
 
+
+
+
 function loadOpcionesImpuestos(t) {
     //cargandoShow();
     $.ajax({
@@ -1408,14 +1411,6 @@ function isnEmpty(val, id) {
             return true;
         }
     }
-
- 
-
-
-
-
-
-
 
 
 function validarRFC(rfc, id) {

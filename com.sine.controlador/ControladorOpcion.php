@@ -664,7 +664,7 @@ class ControladorOpcion {
         return $consultado;
     }
 
-    public function opcionesFolios($id, $serie, $folio) {
+    public function opcionesFolios($id, $comprobante, $folio) {
         $datos = $this->getFoliosAux();
         $op = "";
     	$check = false;

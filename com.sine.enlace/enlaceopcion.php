@@ -128,7 +128,7 @@ if (isset($_POST['transaccion'])) {
             $id = $_POST['id'];
     		$serie = $_POST['serie'];
             $folio = $_POST['folio'];
-            $datos = $co->opcionesFolios($id, $serie, $folio);
+            $datos = $co->opcionesFolios($id, $folio,  $serie );
             echo $datos;
             break;
         case 'correolist':

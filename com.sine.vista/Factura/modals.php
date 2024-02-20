@@ -21,7 +21,7 @@
 <div class="modal fade bs-example-modal-lg" id="enviarmail" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Seleccionar correo(s): </h4>
             <div class="modal-body">
                 <div id="datosproducto" class="outer_div" >

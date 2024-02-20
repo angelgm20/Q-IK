@@ -1,7 +1,7 @@
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Buscar productos</h4>
             <div class="modal-body">
                 <form class="form-horizontal" onsubmit="return false;">
@@ -39,7 +39,7 @@
 <div class="modal fade" id="modal-cantidad" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Editar Cantidad</h4>
             <div class="modal-body">
                 <input type="hidden" class="form-control" id="idcant">
@@ -67,7 +67,7 @@
 <div class="modal fade" id="modal-observaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Editar Observaciones de Producto</h4>
             <div class="modal-body">
                 <input type="hidden" class="form-control" id="idtmp">
@@ -95,8 +95,9 @@
 <div class="modal fade bs-example-modal-lg" id="nuevo-producto" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="label-nuevo-producto">Agregar nuevo producto</h4>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      
             <div class="modal-body">
                 <form id="form-producto" onsubmit="return false;">
 
@@ -238,7 +239,7 @@
 <div class="modal fade bs-example-modal-lg" id="editar-producto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Editar Producto en Factura</h4>
             <div class="modal-body">
                 <form id="form-producto-editar" onsubmit="return false;">

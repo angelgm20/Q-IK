@@ -1,5 +1,4 @@
 <?php
-
 require_once '../com.sine.dao/Consultas.php';
 require_once '../vendor/autoload.php';
 require_once '../com.sine.modelo/Session.php';
@@ -15,7 +14,6 @@ use SWServices\SatQuery\SatQueryService as consultaCfdiSAT;
 date_default_timezone_set("America/Mexico_City");
 
 class ControladorFactura {
-
     function __construct() {
         
     }
@@ -116,6 +114,10 @@ class ControladorFactura {
         $consultado = $consultas->getResults($consulta, $val);
         return $consultado;
     }
+   
+    
+  
+    
 
     public function cfdisRelacionados($tag, $sessionid, $uuidTim) {
         $productos = $this->getcfdisRelacionados($tag);
@@ -763,9 +765,9 @@ class ControladorFactura {
 
         $datos .= "</tbody><tfoot><tr>
         <th colspan='3'></th>
-	<th>SUBTOTAL</th>
-	<th colspan='2'>$ " . number_format(bcdiv($sumador_total, '1', 2), 2, '.', ',') . "</th>
-	<th></th></tr>";
+        <th>SUBTOTAL</th>
+        <th colspan='2'>$ " . number_format(bcdiv($sumador_total, '1', 2), 2, '.', ',') . "</th>
+        <th></th></tr>";
 
         if ($sumador_iva > 0) {
             $datos .= "<tr>
@@ -790,11 +792,11 @@ class ControladorFactura {
         }
         $datos .= "<tr>
         <th colspan='3'></th>
-	<th>TOTAL</th>
-	<th colspan='2'>$ " . number_format(bcdiv($total_factura, '1', 2), 2, '.', ',') . "</th>
-	<th></th></tr></tfoot>";
-        return $datos;
-    }
+        <th>TOTAL</th>
+        <th colspan='2'>$ " . number_format(bcdiv($total_factura, '1', 2), 2, '.', ',') . "</th>
+        <th></th></tr></tfoot>";
+            return $datos;
+        }
 
     public function gettmppagoAux($idfactura) {
         $consultado = false;
@@ -1015,7 +1017,7 @@ class ControladorFactura {
         }
         if ($prod == 0) {
             $validar = true;
-            echo "0No se han agregado productos a la factura.";
+            echo "0debes agregar un producto o selecionar un concepto.";
         }
         return $validar;
     }
@@ -2903,667 +2905,669 @@ class ControladorFactura {
     	
         ////$fecha = $this->getFechaFactura($difverano, $difinvierno); Esta es la funcion que tenia David, la sustitui para poder timbrar
    
-   ///// Se usa para obtener la fecha 
-    $f = getdate();
+        ///// Se usa para obtener la fecha 
+            $f = getdate();
 
-        $d = $f['mday'];
-        $m = $f['mon'];
-        $y = $f['year'];
-        $h = $f['hours']-1;
-        $mi = $f['minutes'];
-        $s = $f['seconds'];
-        if ($d < 10) {
-            $d = "0$d";
-        }
-        if ($m < 10) {
-            $m = "0$m";
-        }
-        if ($h < 10) {
-            $h = "0$h";
-        }
-        if ($mi < 10) {
-            $mi = "0$mi";
-        }
-        if ($s < 10) {
-            $s = "0$s";
-        }
-        $fecha = $y . '-' . $m . '-' . $d . 'T' . $h . ':' . $mi . ':' . $s;
-    
-    
-    ///final de obtener la fecha
-    
-		
-        $raiz->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-        $raiz->setAttributeNS('http://www.w3.org/2001/XMLSchema-instance', 'schemaLocation', 'http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd');
-        $raiz->setAttribute('Version', '4.0');
-        $raiz->setAttribute('Serie', $serie);
-        $raiz->setAttribute('Folio', $letra . $folio);
-        $raiz->setAttribute('Fecha', $fecha);
-        $raiz->setAttribute('FormaPago', $c_formapago);
-        $raiz->setAttribute('SubTotal', bcdiv($subtotal, '1', 2));
-        if ($totdescuentos > 0) {
-            $raiz->setAttribute('Descuento', bcdiv($totdescuentos, '1', 2));
-        }
-        $raiz->setAttribute('TipoCambio', $tcambio);
-        $raiz->setAttribute('Moneda', $c_moneda);
-        $raiz->setAttribute('Total', bcdiv($total, '1', 2));
-        $raiz->setAttribute('TipoDeComprobante', $c_tipoComprobante);
-        $raiz->setAttribute('Exportacion', '01');
-        $raiz->setAttribute('MetodoPago', $c_metodopago);
-        $raiz->setAttribute('LugarExpedicion', utf8_decode($cp));
-        $raiz->setAttribute('NoCertificado', $nocertificado);
-        //Convertir certificado a B64 con openssl: enc -in "CSD/00001000000407565367.cer" -a -A -out "cerB64.txt" 
-        $raiz->setAttribute('Certificado', $csd);
+                $d = $f['mday'];
+                $m = $f['mon'];
+                $y = $f['year'];
+                $h = $f['hours']-1;
+                $mi = $f['minutes'];
+                $s = $f['seconds'];
+                if ($d < 10) {
+                    $d = "0$d";
+                }
+                if ($m < 10) {
+                    $m = "0$m";
+                }
+                if ($h < 10) {
+                    $h = "0$h";
+                }
+                if ($mi < 10) {
+                    $mi = "0$mi";
+                }
+                if ($s < 10) {
+                    $s = "0$s";
+                }
+                $fecha = $y . '-' . $m . '-' . $d . 'T' . $h . ':' . $mi . ':' . $s;
+            
+            
+             ///final de obtener la fecha
+            
+                
+                $raiz->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+                $raiz->setAttributeNS('http://www.w3.org/2001/XMLSchema-instance', 'schemaLocation', 'http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd');
+                $raiz->setAttribute('Version', '4.0');
+                $raiz->setAttribute('Serie', $serie);
+                $raiz->setAttribute('Folio', $letra . $folio);
+                $raiz->setAttribute('Fecha', $fecha);
+                $raiz->setAttribute('FormaPago', $c_formapago);
+                $raiz->setAttribute('SubTotal', bcdiv($subtotal, '1', 2));
+                if ($totdescuentos > 0) {
+                    $raiz->setAttribute('Descuento', bcdiv($totdescuentos, '1', 2));
+                }
+                $raiz->setAttribute('TipoCambio', $tcambio);
+                $raiz->setAttribute('Moneda', $c_moneda);
+                $raiz->setAttribute('Total', bcdiv($total, '1', 2));
+                $raiz->setAttribute('TipoDeComprobante', $c_tipoComprobante);
+                $raiz->setAttribute('Exportacion', '01');
+                $raiz->setAttribute('MetodoPago', $c_metodopago);
+                $raiz->setAttribute('LugarExpedicion', utf8_decode($cp));
+                $raiz->setAttribute('NoCertificado', $nocertificado);
+                //Convertir certificado a B64 con openssl: enc -in "CSD/00001000000407565367.cer" -a -A -out "cerB64.txt" 
+                $raiz->setAttribute('Certificado', $csd);
 
-        if ($rfcCliente == "XAXX010101000") {
-            $global = $xml->createElement('cfdi:InformacionGlobal');
-            $global = $raiz->appendChild($global);
-            $global->setAttribute('Periodicidad', $periodoglob);
-            $global->setAttribute('Meses', $mesperiodo);
-            $global->setAttribute('Año', $anhoperiodo);
-        }
+                if ($rfcCliente == "XAXX010101000") {
+                    $global = $xml->createElement('cfdi:InformacionGlobal');
+                    $global = $raiz->appendChild($global);
+                    $global->setAttribute('Periodicidad', $periodoglob);
+                    $global->setAttribute('Meses', $mesperiodo);
+                    $global->setAttribute('Año', $anhoperiodo);
+                }
 
-        $cfdis = $this->getDistinctCfdisRelacionados($tag);
-        foreach ($cfdis as $relactual) {
-            $tiporel = $relactual['tiporel'];
+                $cfdis = $this->getDistinctCfdisRelacionados($tag);
+                foreach ($cfdis as $relactual) {
+                    $tiporel = $relactual['tiporel'];
 
-            $cfdisrel = $xml->createElement('cfdi:CfdiRelacionados');
-            $cfdisrel = $raiz->appendChild($cfdisrel);
-            $cfdisrel->setAttribute('TipoRelacion', $tiporel);
+                    $cfdisrel = $xml->createElement('cfdi:CfdiRelacionados');
+                    $cfdisrel = $raiz->appendChild($cfdisrel);
+                    $cfdisrel->setAttribute('TipoRelacion', $tiporel);
 
-            $cfdis2 = $this->getcfdisRelacionadosByTipo($tag, $tiporel);
-            foreach ($cfdis2 as $relactual2) {
-                $uuid = $relactual2['uuid'];
-                $cfdirel = $xml->createElement('cfdi:CfdiRelacionado');
-                $cfdirel = $cfdisrel->appendChild($cfdirel);
-                $cfdirel->setAttribute('UUID', $uuid);
+                    $cfdis2 = $this->getcfdisRelacionadosByTipo($tag, $tiporel);
+                    foreach ($cfdis2 as $relactual2) {
+                        $uuid = $relactual2['uuid'];
+                        $cfdirel = $xml->createElement('cfdi:CfdiRelacionado');
+                        $cfdirel = $cfdisrel->appendChild($cfdirel);
+                        $cfdirel->setAttribute('UUID', $uuid);
+                    }
+                }
+
+                $emisor = $xml->createElement('cfdi:Emisor');
+                $emisor = $raiz->appendChild($emisor);
+                $emisor->setAttribute('Rfc', $rfcemisor);
+                $emisor->setAttribute('Nombre', strtoupper($rzemisor));
+                $emisor->setAttribute('RegimenFiscal', $clvregemisor);
+
+                $receptor = $xml->createElement('cfdi:Receptor');
+                $receptor = $raiz->appendChild($receptor);
+                $receptor->setAttribute('Rfc', $rfcCliente);
+                $receptor->setAttribute('Nombre', strtoupper($razonSocial));
+                $receptor->setAttribute('DomicilioFiscalReceptor', $cpreceptor);
+                $divreg = explode("-", $regfiscalreceptor);
+                $receptor->setAttribute('RegimenFiscalReceptor', $divreg[0]);
+                $receptor->setAttribute('UsoCFDI', $cuso);
+                $baseT = 0;
+                $baseR = 0;
+
+                $conceptos = $xml->createElement('cfdi:Conceptos');
+                $conceptos = $raiz->appendChild($conceptos);
+                $detallefactura = $this->getDetalle($tag);
+                foreach ($detallefactura as $detalleactual) {
+                    $claveFiscal = $detalleactual['clvfiscal'];
+                    $precioV = $detalleactual['precio'];
+                    $cantidad = $detalleactual['cantidad'];
+                    $unidad = $detalleactual['clvunidad'];
+                    $descripcion = $detalleactual['factura_producto'];
+                    $totalu = $detalleactual['totalunitario'];
+                    $impdescuento = $detalleactual['impdescuento'];
+                    $traslados = $detalleactual['traslados'];
+                    $retenciones = $detalleactual['retenciones'];
+                    $objimp = "01";
+                    $importe = bcdiv($totalu, '1', 2) - bcdiv($impdescuento, '1', 2);
+
+                    $divfiscal = explode("-", $claveFiscal);
+                    $cfiscal = $divfiscal[0];
+
+                    $divunit = explode("-", $unidad);
+                    $cunidad = $divunit[0];
+                    $descunidad = $divunit[1];
+
+                    $concepto = $xml->createElement('cfdi:Concepto');
+                    $concepto = $conceptos->appendChild($concepto);
+                    $concepto->setAttribute('ClaveProdServ', $cfiscal);
+                    $concepto->setAttribute('Cantidad', $cantidad);
+                    $concepto->setAttribute('ClaveUnidad', $cunidad);
+                    $concepto->setAttribute('Unidad', $descunidad);
+                    $concepto->setAttribute('Descripcion', utf8_decode($descripcion));
+                    $concepto->setAttribute('ValorUnitario', bcdiv($precioV, '1', 2));
+                    $concepto->setAttribute('Importe', bcdiv($totalu, '1', 2));
+                    if ($traslados != "" || $retenciones != "") {
+                        $objimp = "02";
+                    }
+                    $concepto->setAttribute('ObjetoImp', $objimp);
+
+                    if ($impdescuento > 0) {
+                        $concepto->setAttribute('Descuento', bcdiv($impdescuento, '1', 2));
+                    }
+
+                    if ($traslados != "" || $retenciones != "") {
+                        $impuestos = $xml->createElement('cfdi:Impuestos');
+                        $impuestos = $concepto->appendChild($impuestos);
+                        $baseT += bcdiv($importe, '1', 2);
+                    }
+
+                    if ($traslados != "") {
+                        $nodetraslados = $xml->createElement('cfdi:Traslados');
+                        $nodetraslados = $impuestos->appendChild($nodetraslados);
+
+                        $divt = explode("<impuesto>", $traslados);
+                        foreach ($divt as $tras) {
+                            $divt = explode("-", $tras);
+                            $imp = "00$divt[2]";
+                            $traslado = $xml->createElement('cfdi:Traslado');
+                            $traslado = $nodetraslados->appendChild($traslado);
+                            $traslado->setAttribute('Base', bcdiv($importe, '1', 2));
+                            $traslado->setAttribute('Impuesto', $imp);
+                            $traslado->setAttribute('TipoFactor', 'Tasa');
+                            $traslado->setAttribute('TasaOCuota', bcdiv($divt[1], '1', 6));
+                            $traslado->setAttribute('Importe', bcdiv($divt[0], '1', 2));
+                        }
+                    }
+
+                    if ($retenciones != "") {
+                        $noderet = $xml->createElement('cfdi:Retenciones');
+                        $noderet = $impuestos->appendChild($noderet);
+
+                        $divr = explode("<impuesto>", $retenciones);
+                        foreach ($divr as $ret) {
+                            $divr = explode("-", $ret);
+                            $imp = "00$divr[2]";
+                            $retencion = $xml->createElement('cfdi:Retencion');
+                            $retencion = $noderet->appendChild($retencion);
+                            $retencion->setAttribute('Base', bcdiv($importe, '1', 2));
+                            $retencion->setAttribute('Impuesto', $imp);
+                            $retencion->setAttribute('TipoFactor', 'Tasa');
+                            $retencion->setAttribute('TasaOCuota', bcdiv($divr[1], '1', 6));
+                            $retencion->setAttribute('Importe', bcdiv($divr[0], '1', 2));
+                        }
+                    }
+                }
+
+                if ($subiva != "" || $subret != "") {
+                    $impuestosT = $xml->createElement('cfdi:Impuestos');
+                    $impuestosT = $raiz->appendChild($impuestosT);
+                }
+
+                $totalR = 0;
+                if ($subret != "" && $subret != "0.00--") {
+                    $noderet = $xml->createElement('cfdi:Retenciones');
+                    $noderet = $impuestosT->appendChild($noderet);
+                    $div2 = explode("<impuesto>", $subret);
+                    foreach ($div2 as $ret1) {
+                        $divr = explode("-", $ret1);
+                        $impr = "00$divr[2]";
+                        $retencion = $xml->createElement('cfdi:Retencion');
+                        $retencion = $noderet->appendChild($retencion);
+                        $retencion->setAttribute('Impuesto', $impr);
+                        $retencion->setAttribute('Importe', bcdiv($divr[0], '1', 2));
+                        $totalR += bcdiv($divr[0], '1', 2);
+                    }
+                    $impuestosT->setAttribute('TotalImpuestosRetenidos', bcdiv($totalR, '1', 2));
+                }
+
+                $totalT = 0;
+                if ($subiva != "" && $subiva != "0.00--") {
+                    $nodetraslados = $xml->createElement('cfdi:Traslados');
+                    $nodetraslados = $impuestosT->appendChild($nodetraslados);
+                    $div1 = explode("<impuesto>", $subiva);
+                    foreach ($div1 as $tras1) {
+                        $divt = explode("-", $tras1);
+                        $imp = "00$divt[2]";
+                        $traslado = $xml->createElement('cfdi:Traslado');
+                        $traslado = $nodetraslados->appendChild($traslado);
+                        $traslado->setAttribute('Base', bcdiv($baseT, '1', 2));
+                        $traslado->setAttribute('Impuesto', $imp);
+                        $traslado->setAttribute('TipoFactor', 'Tasa');
+                        $traslado->setAttribute('TasaOCuota', bcdiv($divt[1], '1', 6));
+                        $traslado->setAttribute('Importe', bcdiv($divt[0], '1', 2));
+                        $totalT += bcdiv($divt[0], '1', 2);
+                    }
+                    $impuestosT->setAttribute('TotalImpuestosTrasladados', bcdiv($totalT, '1', 2));
+                }
+
+                $sello = $this->SelloXML($xml->saveXML(), $rfcemisor);
+                $obj = json_decode($sello);
+                $xml2 = new DOMDocument("1.0", "UTF-8");
+                $xml2->loadXML($xml->saveXML());
+                $c = $xml2->getElementsByTagNameNS('http://www.sat.gob.mx/cfd/4', 'Comprobante')->item(0);
+                $c->setAttribute('Sello', $obj->sello); 
+                $doc = "../XML/XML2.xml";
+                $xml2->save($doc);
+                $timbre = $this->timbrado($xml2->saveXML(), $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp);
+                return $timbre;
+            }   
+ 
+            
+        function SelloXML($doc, $rfc) {
+            $xmlFile = $doc;
+            $carpeta = '../temporal/' . $rfc . '/';
+            $xslFile = "../vendor/recursos/cadenaoriginal_4_0.xslt";
+            $xml = new DOMDocument("1.0", "UTF-8");
+            $xml->loadXML($xmlFile);
+            $xsl = new DOMDocument();
+            $xsl->load($xslFile);
+            $proc = new XSLTProcessor;
+            $proc->importStyleSheet($xsl);
+            $cadenaOriginal = $proc->transformToXML($xml);
+            $fichero = "../vendor/recursos/cadenaOriginal.txt";
+            file_put_contents($fichero, $cadenaOriginal, LOCK_EX);
+            $params = array(
+                "cadenaOriginal" => "../vendor/recursos/cadenaOriginal.txt",
+                //Archivo key pem: pkcs8 -inform DET -in CSD/cer.key -passin pass:12345678a -out llaveprivada.pem
+                "archivoKeyPem" => $carpeta . 'keyPEM.pem',
+                //archivo cer pem: x509 -inform der -in CSD/cer.cer -out certificado.pem
+                "archivoCerPem" => $carpeta . 'csdPEM.pem'
+            );
+            try {
+                $result = Sellar::ObtenerSello($params);
+                return $result;
+            } catch (Exception $e) {
+                echo '0Caught exception: ', $e->getMessage(), "\n";
             }
         }
-
-        $emisor = $xml->createElement('cfdi:Emisor');
-        $emisor = $raiz->appendChild($emisor);
-        $emisor->setAttribute('Rfc', $rfcemisor);
-        $emisor->setAttribute('Nombre', strtoupper($rzemisor));
-        $emisor->setAttribute('RegimenFiscal', $clvregemisor);
-
-        $receptor = $xml->createElement('cfdi:Receptor');
-        $receptor = $raiz->appendChild($receptor);
-        $receptor->setAttribute('Rfc', $rfcCliente);
-        $receptor->setAttribute('Nombre', strtoupper($razonSocial));
-        $receptor->setAttribute('DomicilioFiscalReceptor', $cpreceptor);
-        $divreg = explode("-", $regfiscalreceptor);
-        $receptor->setAttribute('RegimenFiscalReceptor', $divreg[0]);
-        $receptor->setAttribute('UsoCFDI', $cuso);
-        $baseT = 0;
-        $baseR = 0;
-
-        $conceptos = $xml->createElement('cfdi:Conceptos');
-        $conceptos = $raiz->appendChild($conceptos);
-        $detallefactura = $this->getDetalle($tag);
-        foreach ($detallefactura as $detalleactual) {
-            $claveFiscal = $detalleactual['clvfiscal'];
-            $precioV = $detalleactual['precio'];
-            $cantidad = $detalleactual['cantidad'];
-            $unidad = $detalleactual['clvunidad'];
-            $descripcion = $detalleactual['factura_producto'];
-            $totalu = $detalleactual['totalunitario'];
-            $impdescuento = $detalleactual['impdescuento'];
-            $traslados = $detalleactual['traslados'];
-            $retenciones = $detalleactual['retenciones'];
-            $objimp = "01";
-            $importe = bcdiv($totalu, '1', 2) - bcdiv($impdescuento, '1', 2);
-
-            $divfiscal = explode("-", $claveFiscal);
-            $cfiscal = $divfiscal[0];
-
-            $divunit = explode("-", $unidad);
-            $cunidad = $divunit[0];
-            $descunidad = $divunit[1];
-
-            $concepto = $xml->createElement('cfdi:Concepto');
-            $concepto = $conceptos->appendChild($concepto);
-            $concepto->setAttribute('ClaveProdServ', $cfiscal);
-            $concepto->setAttribute('Cantidad', $cantidad);
-            $concepto->setAttribute('ClaveUnidad', $cunidad);
-            $concepto->setAttribute('Unidad', $descunidad);
-            $concepto->setAttribute('Descripcion', utf8_decode($descripcion));
-            $concepto->setAttribute('ValorUnitario', bcdiv($precioV, '1', 2));
-            $concepto->setAttribute('Importe', bcdiv($totalu, '1', 2));
-            if ($traslados != "" || $retenciones != "") {
-                $objimp = "02";
-            }
-            $concepto->setAttribute('ObjetoImp', $objimp);
-
-            if ($impdescuento > 0) {
-                $concepto->setAttribute('Descuento', bcdiv($impdescuento, '1', 2));
+      
+ 
+            function generarXML($filename, $content) {
+                $f = fopen($filename, "w");
+                fwrite($f, pack("CCC", 0xef, 0xbb, 0xbf));
+                fwrite($f, $content);
+                fclose($f);
             }
 
-            if ($traslados != "" || $retenciones != "") {
-                $impuestos = $xml->createElement('cfdi:Impuestos');
-                $impuestos = $concepto->appendChild($impuestos);
-                $baseT += bcdiv($importe, '1', 2);
-            }
+            function timbrado($doc, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp) {
+                $swaccess = $this->getSWAccess();
+                $div = explode("</tr>", $swaccess);
+                $url = $div[0];
+                $token = $div[1];
+                $params = array(
+                    "url" => $url,
+                    "token" => $token
+                );
 
-            if ($traslados != "") {
-                $nodetraslados = $xml->createElement('cfdi:Traslados');
-                $nodetraslados = $impuestos->appendChild($nodetraslados);
-
-                $divt = explode("<impuesto>", $traslados);
-                foreach ($divt as $tras) {
-                    $divt = explode("-", $tras);
-                    $imp = "00$divt[2]";
-                    $traslado = $xml->createElement('cfdi:Traslado');
-                    $traslado = $nodetraslados->appendChild($traslado);
-                    $traslado->setAttribute('Base', bcdiv($importe, '1', 2));
-                    $traslado->setAttribute('Impuesto', $imp);
-                    $traslado->setAttribute('TipoFactor', 'Tasa');
-                    $traslado->setAttribute('TasaOCuota', bcdiv($divt[1], '1', 6));
-                    $traslado->setAttribute('Importe', bcdiv($divt[0], '1', 2));
+                try {
+                    //header("Content-type: text/plain");
+                    $stamp = StampService::Set($params);
+                    $result = $stamp::StampV4($doc);
+                    if ($result->status == "error") {
+                        return '0' . $result->message . " " . $result->messageDetail;
+                    } else if ($result->status == "success") {
+                        $guardar = $this->guardarTimbre($result, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp);
+                        var_dump($result);
+                        return $guardar;
+                    }
+                } catch (Exception $e) {
+                    //header("Content-type: text/plain");
+                    echo "0" . $e->getMessage();
                 }
             }
 
-            if ($retenciones != "") {
-                $noderet = $xml->createElement('cfdi:Retenciones');
-                $noderet = $impuestos->appendChild($noderet);
+            private function guardarTimbre($result, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp) {
+                $actualizado = false;
+                $consulta = "UPDATE `datos_factura` SET factura_rfcemisor=:rfc, factura_rzsocial=:rzsocial, factura_clvregimen=:clvreg, factura_regimen=:regimen, factura_cpemisor=:cpemisor, cadenaoriginal=:cadena, nocertificadosat=:certSAT, nocertificadocfdi=:certCFDI, uuid=:uuid, sellosat=:selloSAT, sellocfdi=:selloCFDI, fechatimbrado=:fechatimbrado, qrcode=:qrcode, cfdistring=:cfdi, tipofactura=:tipo WHERE iddatos_factura=:id;";
+                $valores = array("rfc" => $rfcemisor,
+                    "rzsocial" => $rzemisor,
+                    "clvreg" => $clvregemisor,
+                    "regimen" => $regemisor,
+                    "cpemisor" => $cp,
+                    "cadena" => $result->data->cadenaOriginalSAT,
+                    "certSAT" => $result->data->noCertificadoSAT,
+                    "certCFDI" => $result->data->noCertificadoCFDI,
+                    "uuid" => $result->data->uuid,
+                    "selloSAT" => $result->data->selloSAT,
+                    "selloCFDI" => $result->data->selloCFDI,
+                    "fechatimbrado" => $result->data->fechaTimbrado,
+                    "qrcode" => $result->data->qrCode,
+                    "cfdi" => $result->data->cfdi,
+                    "tipo" => '1',
+                    "id" => $idfactura);
+                $consultas = new Consultas();
+                $actualizado = $consultas->execute($consulta, $valores);
+                $timbres = $this->updateTimbres();
+                return '+Timbre Guardado';
+            }
 
-                $divr = explode("<impuesto>", $retenciones);
-                foreach ($divr as $ret) {
-                    $divr = explode("-", $ret);
-                    $imp = "00$divr[2]";
-                    $retencion = $xml->createElement('cfdi:Retencion');
-                    $retencion = $noderet->appendChild($retencion);
-                    $retencion->setAttribute('Base', bcdiv($importe, '1', 2));
-                    $retencion->setAttribute('Impuesto', $imp);
-                    $retencion->setAttribute('TipoFactor', 'Tasa');
-                    $retencion->setAttribute('TasaOCuota', bcdiv($divr[1], '1', 6));
-                    $retencion->setAttribute('Importe', bcdiv($divr[0], '1', 2));
+            private function updateTimbres() {
+                $actualizado = false;
+                $consulta = "UPDATE `contador_timbres` SET  timbresUtilizados=timbresUtilizados+1, timbresRestantes=timbresRestantes-1 WHERE idtimbres=:idtimbres;";
+                $valores = array("idtimbres" => '1');
+                $consultas = new Consultas();
+                $actualizado = $consultas->execute($consulta, $valores);
+                return $actualizado;
+            }
+
+            public function getUUID($idfactura) {
+                $datos = "";
+                $uuid = $this->getUUIDAux($idfactura);
+                foreach ($uuid as $u) {
+                    $uuid = $u['uuid'];
+                    $folio = $u['letra'] . $u['folio_interno_fac'];
+                    $rfc = $u['rfc'];
+                    $pass = $u['passcsd'];
+                    $csd = $u['csd'];
+                    $key = $u['keyb64'];
+                    $datos = "$uuid</tr>$folio</tr>$rfc</tr>$pass</tr>$csd</tr>$key";
+                }
+                return $datos;
+            }
+
+            public function getUUIDAux($idfactura) {
+                $consultado = false;
+                $consulta = "SELECT f.uuid,f.letra,f.folio_interno_fac,d.rfc,d.passcsd, d.keyb64, d.csd FROM datos_factura f inner join datos_facturacion d on (f.iddatosfacturacion=d.id_datos) where iddatos_factura=:id;";
+                $val = array("id" => $idfactura);
+                $consultas = new Consultas();
+                $consultado = $consultas->getResults($consulta, $val);
+                return $consultado;
+            }
+
+            function cancelarTimbre($idfactura, $motivo, $reemplazo) {
+                $swaccess = $this->getSWAccess();
+                $div = explode("</tr>", $swaccess);
+                $url = $div[0];
+                $token = $div[1];
+
+                $get = $this->getUUID($idfactura);
+                $divideU = explode("</tr>", $get);
+                $uuid = $divideU[0];
+                $rfc = $divideU[2];
+                $pass = $divideU[3];
+                $csd = $divideU[4];
+                $key = $divideU[5];
+
+                if ($motivo == '01') {
+                    $params = array(
+                        "url" => $url,
+                        "token" => $token,
+                        "uuid" => $uuid,
+                        "password" => $pass,
+                        "rfc" => $rfc,
+                        "motivo" => $motivo,
+                        "foliosustitucion" => $reemplazo,
+                        "cerB64" => $csd,
+                        "keyB64" => $key
+                    );
+                } else {
+                    $params = array(
+                        "url" => $url,
+                        "token" => $token,
+                        "uuid" => $uuid,
+                        "password" => $pass,
+                        "rfc" => $rfc,
+                        "motivo" => $motivo,
+                        "cerB64" => $csd,
+                        "keyB64" => $key
+                    );
+                }
+
+                try {
+                    header('Content-type: text/plain');
+                    $cancelationService = CancelationService::Set($params);
+                    $result = $cancelationService::CancelationByCSD();
+                    if ($result->status == "error") {
+                        return '0' . $result->message . " " . $result->messageDetail;
+                    } else if ($result->status == "success") {
+                        $guardar = $this->cancelarFactura($idfactura, $result->data->acuse);
+                        var_dump($result);
+                        return $guardar;
+                    }
+                } catch (Exception $e) {
+                    echo 'Caught exception: ', $e->getMessage(), "\n";
                 }
             }
-        }
 
-        if ($subiva != "" || $subret != "") {
-            $impuestosT = $xml->createElement('cfdi:Impuestos');
-            $impuestosT = $raiz->appendChild($impuestosT);
-        }
-
-        $totalR = 0;
-        if ($subret != "" && $subret != "0.00--") {
-            $noderet = $xml->createElement('cfdi:Retenciones');
-            $noderet = $impuestosT->appendChild($noderet);
-            $div2 = explode("<impuesto>", $subret);
-            foreach ($div2 as $ret1) {
-                $divr = explode("-", $ret1);
-                $impr = "00$divr[2]";
-                $retencion = $xml->createElement('cfdi:Retencion');
-                $retencion = $noderet->appendChild($retencion);
-                $retencion->setAttribute('Impuesto', $impr);
-                $retencion->setAttribute('Importe', bcdiv($divr[0], '1', 2));
-                $totalR += bcdiv($divr[0], '1', 2);
+            public function cancelarFactura($idfactura, $cfdi) {
+                $actualizado = false;
+                $consulta = "UPDATE `datos_factura` set status_pago=:estado, cfdicancel=:cfdi WHERE iddatos_factura=:id;);";
+                $valores = array("id" => $idfactura,
+                    "estado" => '3',
+                    "cfdi" => $cfdi);
+                $con = new Consultas();
+                $actualizado = $con->execute($consulta, $valores);
+                return $actualizado;
             }
-            $impuestosT->setAttribute('TotalImpuestosRetenidos', bcdiv($totalR, '1', 2));
-        }
 
-        $totalT = 0;
-        if ($subiva != "" && $subiva != "0.00--") {
-            $nodetraslados = $xml->createElement('cfdi:Traslados');
-            $nodetraslados = $impuestosT->appendChild($nodetraslados);
-            $div1 = explode("<impuesto>", $subiva);
-            foreach ($div1 as $tras1) {
-                $divt = explode("-", $tras1);
-                $imp = "00$divt[2]";
-                $traslado = $xml->createElement('cfdi:Traslado');
-                $traslado = $nodetraslados->appendChild($traslado);
-                $traslado->setAttribute('Base', bcdiv($baseT, '1', 2));
-                $traslado->setAttribute('Impuesto', $imp);
-                $traslado->setAttribute('TipoFactor', 'Tasa');
-                $traslado->setAttribute('TasaOCuota', bcdiv($divt[1], '1', 6));
-                $traslado->setAttribute('Importe', bcdiv($divt[0], '1', 2));
-                $totalT += bcdiv($divt[0], '1', 2);
+            private function getConfigMailAux() {
+                $consultado = false;
+                $consulta = "SELECT * FROM correoenvio WHERE chuso1=:id;";
+                $consultas = new Consultas();
+                $valores = array("id" => '1');
+                $consultado = $consultas->getResults($consulta, $valores);
+                return $consultado;
             }
-            $impuestosT->setAttribute('TotalImpuestosTrasladados', bcdiv($totalT, '1', 2));
-        }
 
-        $sello = $this->SelloXML($xml->saveXML(), $rfcemisor);
-        $obj = json_decode($sello);
-        $xml2 = new DOMDocument("1.0", "UTF-8");
-        $xml2->loadXML($xml->saveXML());
-        $c = $xml2->getElementsByTagNameNS('http://www.sat.gob.mx/cfd/4', 'Comprobante')->item(0);
-        $c->setAttribute('Sello', $obj->sello);
-        $doc = "../XML/XML2.xml";
-        $xml2->save($doc);
-        $timbre = $this->timbrado($xml2->saveXML(), $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp);
-        return $timbre;
-    }
-
-    function SelloXML($doc, $rfc) {
-        $xmlFile = $doc;
-        $carpeta = '../temporal/' . $rfc . '/';
-        $xslFile = "../vendor/recursos/cadenaoriginal_4_0.xslt";
-        $xml = new DOMDocument("1.0", "UTF-8");
-        $xml->loadXML($xmlFile);
-        $xsl = new DOMDocument();
-        $xsl->load($xslFile);
-        $proc = new XSLTProcessor; //3146
-        $proc->importStyleSheet($xsl);
-        $cadenaOriginal = $proc->transformToXML($xml);
-        $fichero = "../vendor/recursos/cadenaOriginal.txt";
-        file_put_contents($fichero, $cadenaOriginal, LOCK_EX);
-        $params = array(
-            "cadenaOriginal" => "../vendor/recursos/cadenaOriginal.txt",
-            //Archivo key pem: pkcs8 -inform DET -in CSD/cer.key -passin pass:12345678a -out llaveprivada.pem
-            "archivoKeyPem" => $carpeta . 'keyPEM.pem',
-            //archivo cer pem: x509 -inform der -in CSD/cer.cer -out certificado.pem
-            "archivoCerPem" => $carpeta . 'csdPEM.pem'
-        );
-        try {
-            $result = Sellar::ObtenerSello($params);
-            return $result;
-        } catch (Exception $e) {
-            echo '0Caught exception: ', $e->getMessage(), "\n";
-        }
-    }
-
-    function generarXML($filename, $content) {
-        $f = fopen($filename, "w");
-        fwrite($f, pack("CCC", 0xef, 0xbb, 0xbf));
-        fwrite($f, $content);
-        fclose($f);
-    }
-
-    function timbrado($doc, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp) {
-        $swaccess = $this->getSWAccess();
-        $div = explode("</tr>", $swaccess);
-        $url = $div[0];
-        $token = $div[1];
-        $params = array(
-            "url" => $url,
-            "token" => $token
-        );
-
-        try {
-            //header("Content-type: text/plain");
-            $stamp = StampService::Set($params);
-            $result = $stamp::StampV4($doc);
-            if ($result->status == "error") {
-                return '0' . $result->message . " " . $result->messageDetail;
-            } else if ($result->status == "success") {
-                $guardar = $this->guardarTimbre($result, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp);
-                var_dump($result);
-                return $guardar;
+            private function getConfigMail() {
+                $datos = "";
+                $get = $this->getConfigMailAux();
+                foreach ($get as $actual) {
+                    $correo = $actual['correo'];
+                    $pass = $actual['password'];
+                    $remitente = $actual['remitente'];
+                    $correoremitente = $actual['correoremitente'];
+                    $host = $actual['host'];
+                    $puerto = $actual['puerto'];
+                    $seguridad = $actual['seguridad'];
+                    $datos = "$correo</tr>$pass</tr>$remitente</tr>$correoremitente</tr>$host</tr>$puerto</tr>$seguridad";
+                }
+                return $datos;
             }
-        } catch (Exception $e) {
-            //header("Content-type: text/plain");
+
+            public function mail($sm) {
+                require_once '../com.sine.controlador/ControladorConfiguracion.php';
+                $cc = new ControladorConfiguracion();
+                $body = $cc->getMailBody('1');
+                $divM = explode("</tr>", $body);
+                $asunto = $divM[1];
+                $saludo = $divM[2];
+                $msg = $divM[3];
+                $logo = $divM[4];
+
+                $config = $this->getConfigMail();
+                if ($config != "") {
+                    $div = explode("</tr>", $config);
+                    $correoenvio = $div[0];
+                    $pass = $div[1];
+                    $remitente = $div[2];
+                    $correoremitente = $div[3];
+                    $host = $div[4];
+                    $puerto = $div[5];
+                    $seguridad = $div[6];
+
+                    $mail = new PHPMailer;
+                    $mail->isSMTP();
+                    $mail->Mailer = 'smtp';
+                    $mail->SMTPAuth = true;
+                    $mail->Host = $host;
+                    $mail->Port = $puerto;
+                    $mail->SMTPSecure = $seguridad;
+
+                    $mail->Username = $correoenvio;
+                    $mail->Password = $pass;
+                    $mail->From = $correoremitente;
+                    $mail->FromName = $remitente;
+
+                    $mail->Subject = utf8_decode($asunto);
+                    $mail->isHTML(true);
+                    $mail->Body = $this->bodyMail($asunto, $saludo, $sm->getRazonsocial(), $msg, $logo);
+
+                    if ($sm->getChmail1() == '1') {
+                        $mail->addAddress($sm->getMailalt1());
+                    }
+                    if ($sm->getChmail2() == '1') {
+                        $mail->addAddress($sm->getMailalt2());
+                    }
+                    if ($sm->getChmail3() == '1') {
+                        $mail->addAddress($sm->getMailalt3());
+                    }
+                    if ($sm->getChmail4() == '1') {
+                        $mail->addAddress($sm->getMailalt4());
+                    }
+                    if ($sm->getChmail5() == '1') {
+                        $mail->addAddress($sm->getMailalt5());
+                    }
+                    if ($sm->getChmail6() == '1') {
+                        $mail->addAddress($sm->getMailalt6());
+                    }
+
+                    $mail->addStringAttachment($sm->getPdfstring(), $sm->getFolio() . "_" . $sm->getRfcemisor() . "_" . $sm->getUuid() . ".pdf");
+                    if ($sm->getCfdistring() != "") {
+                        $mail->addStringAttachment($sm->getCfdistring(), $sm->getFolio() . "_" . $sm->getRfcemisor() . "_" . $sm->getUuid() . ".xml");
+                    }
+                    if (!$mail->send()) {
+                        echo '0No se envio el mensaje';
+                        echo '0Mailer Error: ' . $mail->ErrorInfo;
+                    } else {
+                        return 'Se ha enviado la factura';
+                    }
+                } else {
+                    return "No se configuro correo de envio";
+                }
+            }
+
+            private function bodyMail($asunto, $saludo, $nombre, $msg, $logo) {
+                $archivo = "../com.sine.dao/configuracion.ini";
+                $ajustes = parse_ini_file($archivo, true);
+                if (!$ajustes) {
+                    throw new Exception("No se puede abrir el archivo " . $archivo);
+                }
+                $rfcfolder = $ajustes['cron']['rfcfolder'];
+
+                $txt = str_replace("<corte>", "</p><p style='font-size:18px; text-align: justify;'>", $msg);
+                $message = "<html>
+                                <body>
+                                    <table width='100%' bgcolor='#e0e0e0' cellpadding='0' cellspacing='0' border='0' style='border-radius: 25px;'>
+                                        <tr>
+                                            <td>
+                                                <table align='center' width='100%' border='0' cellpadding='0' cellspacing='0' style='max-width:650px; border-radius: 20px; background-color:#fff; font-family:sans-serif;'>
+                                                    <thead>
+                                                        <tr height='80'>
+                                                            <th align='left' colspan='4' style='padding: 6px; background-color:#f5f5f5; border-radius: 20px; border-bottom:solid 1px #bdbdbd;' ><img src='https://q-ik.mx/$rfcfolder/img/$logo' height='100px'/></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr align='center' height='10' style='font-family:sans-serif; '>
+                                                            <td style='background-color:#09096B; text-align:center; border-radius: 5px;'></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan='4' style='padding:15px;'>
+                                                                <h1>$asunto</h1>
+                                                                <p style='font-size:20px;'>$saludo $nombre</p>
+                                                                <hr/>
+                                                                <p style='font-size:18px; text-align: justify;'>$txt</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </body>
+                            </html>";
+                return $message;
+            }
+
+            /* public function sendMSG($file, $cod, $number) {
+            $fullnumb = $cod . $number;
+            $sid = "AC6256c8483286f5e0fd804de145ba42bf";
+            $token = "aabd7bf61f0efdf18965ffbef4f261bd";
+            $twilio = new Client($sid, $token);
+            try {
+            $message = $twilio->messages->create("whatsapp:+$fullnumb", // to
+            ["from" => "whatsapp:+14155238886",
+            "body" => "Hola BB",
+            "mediaUrl" => ["https://q-ik.mx/SineFacturacion/pdf/facturaFAC20200025.pdf"]]);
+            return $message->sid;
+            } catch (Exception $e) {
+            header("Content-type: text/plain");
             echo "0" . $e->getMessage();
-        }
-    }
-
-    private function guardarTimbre($result, $idfactura, $rfcemisor, $rzemisor, $clvregemisor, $regemisor, $cp) {
-        $actualizado = false;
-        $consulta = "UPDATE `datos_factura` SET factura_rfcemisor=:rfc, factura_rzsocial=:rzsocial, factura_clvregimen=:clvreg, factura_regimen=:regimen, factura_cpemisor=:cpemisor, cadenaoriginal=:cadena, nocertificadosat=:certSAT, nocertificadocfdi=:certCFDI, uuid=:uuid, sellosat=:selloSAT, sellocfdi=:selloCFDI, fechatimbrado=:fechatimbrado, qrcode=:qrcode, cfdistring=:cfdi, tipofactura=:tipo WHERE iddatos_factura=:id;";
-        $valores = array("rfc" => $rfcemisor,
-            "rzsocial" => $rzemisor,
-            "clvreg" => $clvregemisor,
-            "regimen" => $regemisor,
-            "cpemisor" => $cp,
-            "cadena" => $result->data->cadenaOriginalSAT,
-            "certSAT" => $result->data->noCertificadoSAT,
-            "certCFDI" => $result->data->noCertificadoCFDI,
-            "uuid" => $result->data->uuid,
-            "selloSAT" => $result->data->selloSAT,
-            "selloCFDI" => $result->data->selloCFDI,
-            "fechatimbrado" => $result->data->fechaTimbrado,
-            "qrcode" => $result->data->qrCode,
-            "cfdi" => $result->data->cfdi,
-            "tipo" => '1',
-            "id" => $idfactura);
-        $consultas = new Consultas();
-        $actualizado = $consultas->execute($consulta, $valores);
-        $timbres = $this->updateTimbres();
-        return '+Timbre Guardado';
-    }
-
-    private function updateTimbres() {
-        $actualizado = false;
-        $consulta = "UPDATE `contador_timbres` SET  timbresUtilizados=timbresUtilizados+1, timbresRestantes=timbresRestantes-1 WHERE idtimbres=:idtimbres;";
-        $valores = array("idtimbres" => '1');
-        $consultas = new Consultas();
-        $actualizado = $consultas->execute($consulta, $valores);
-        return $actualizado;
-    }
-
-    public function getUUID($idfactura) {
-        $datos = "";
-        $uuid = $this->getUUIDAux($idfactura);
-        foreach ($uuid as $u) {
-            $uuid = $u['uuid'];
-            $folio = $u['letra'] . $u['folio_interno_fac'];
-            $rfc = $u['rfc'];
-            $pass = $u['passcsd'];
-            $csd = $u['csd'];
-            $key = $u['keyb64'];
-            $datos = "$uuid</tr>$folio</tr>$rfc</tr>$pass</tr>$csd</tr>$key";
-        }
-        return $datos;
-    }
-
-    public function getUUIDAux($idfactura) {
-        $consultado = false;
-        $consulta = "SELECT f.uuid,f.letra,f.folio_interno_fac,d.rfc,d.passcsd, d.keyb64, d.csd FROM datos_factura f inner join datos_facturacion d on (f.iddatosfacturacion=d.id_datos) where iddatos_factura=:id;";
-        $val = array("id" => $idfactura);
-        $consultas = new Consultas();
-        $consultado = $consultas->getResults($consulta, $val);
-        return $consultado;
-    }
-
-    function cancelarTimbre($idfactura, $motivo, $reemplazo) {
-        $swaccess = $this->getSWAccess();
-        $div = explode("</tr>", $swaccess);
-        $url = $div[0];
-        $token = $div[1];
-
-        $get = $this->getUUID($idfactura);
-        $divideU = explode("</tr>", $get);
-        $uuid = $divideU[0];
-        $rfc = $divideU[2];
-        $pass = $divideU[3];
-        $csd = $divideU[4];
-        $key = $divideU[5];
-
-        if ($motivo == '01') {
-            $params = array(
-                "url" => $url,
-                "token" => $token,
-                "uuid" => $uuid,
-                "password" => $pass,
-                "rfc" => $rfc,
-                "motivo" => $motivo,
-                "foliosustitucion" => $reemplazo,
-                "cerB64" => $csd,
-                "keyB64" => $key
-            );
-        } else {
-            $params = array(
-                "url" => $url,
-                "token" => $token,
-                "uuid" => $uuid,
-                "password" => $pass,
-                "rfc" => $rfc,
-                "motivo" => $motivo,
-                "cerB64" => $csd,
-                "keyB64" => $key
-            );
-        }
-
-        try {
-            header('Content-type: text/plain');
-            $cancelationService = CancelationService::Set($params);
-            $result = $cancelationService::CancelationByCSD();
-            if ($result->status == "error") {
-                return '0' . $result->message . " " . $result->messageDetail;
-            } else if ($result->status == "success") {
-                $guardar = $this->cancelarFactura($idfactura, $result->data->acuse);
-                var_dump($result);
-                return $guardar;
             }
-        } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
-        }
-    }
+            } */
 
-    public function cancelarFactura($idfactura, $cfdi) {
-        $actualizado = false;
-        $consulta = "UPDATE `datos_factura` set status_pago=:estado, cfdicancel=:cfdi WHERE iddatos_factura=:id;);";
-        $valores = array("id" => $idfactura,
-            "estado" => '3',
-            "cfdi" => $cfdi);
-        $con = new Consultas();
-        $actualizado = $con->execute($consulta, $valores);
-        return $actualizado;
-    }
+            public function actualizarDiasHorario($primer, $ultimo) {
+                Session::start();
+                $_SESSION[sha1("primerdomingo")] = $primer;
+                $_SESSION[sha1("ultimodomingo")] = $ultimo;
 
-    private function getConfigMailAux() {
-        $consultado = false;
-        $consulta = "SELECT * FROM correoenvio WHERE chuso1=:id;";
-        $consultas = new Consultas();
-        $valores = array("id" => '1');
-        $consultado = $consultas->getResults($consulta, $valores);
-        return $consultado;
-    }
-
-    private function getConfigMail() {
-        $datos = "";
-        $get = $this->getConfigMailAux();
-        foreach ($get as $actual) {
-            $correo = $actual['correo'];
-            $pass = $actual['password'];
-            $remitente = $actual['remitente'];
-            $correoremitente = $actual['correoremitente'];
-            $host = $actual['host'];
-            $puerto = $actual['puerto'];
-            $seguridad = $actual['seguridad'];
-            $datos = "$correo</tr>$pass</tr>$remitente</tr>$correoremitente</tr>$host</tr>$puerto</tr>$seguridad";
-        }
-        return $datos;
-    }
-
-    public function mail($sm) {
-        require_once '../com.sine.controlador/ControladorConfiguracion.php';
-        $cc = new ControladorConfiguracion();
-        $body = $cc->getMailBody('1');
-        $divM = explode("</tr>", $body);
-        $asunto = $divM[1];
-        $saludo = $divM[2];
-        $msg = $divM[3];
-        $logo = $divM[4];
-
-        $config = $this->getConfigMail();
-        if ($config != "") {
-            $div = explode("</tr>", $config);
-            $correoenvio = $div[0];
-            $pass = $div[1];
-            $remitente = $div[2];
-            $correoremitente = $div[3];
-            $host = $div[4];
-            $puerto = $div[5];
-            $seguridad = $div[6];
-
-            $mail = new PHPMailer;
-            $mail->isSMTP();
-            $mail->Mailer = 'smtp';
-            $mail->SMTPAuth = true;
-            $mail->Host = $host;
-            $mail->Port = $puerto;
-            $mail->SMTPSecure = $seguridad;
-
-            $mail->Username = $correoenvio;
-            $mail->Password = $pass;
-            $mail->From = $correoremitente;
-            $mail->FromName = $remitente;
-
-            $mail->Subject = utf8_decode($asunto);
-            $mail->isHTML(true);
-            $mail->Body = $this->bodyMail($asunto, $saludo, $sm->getRazonsocial(), $msg, $logo);
-
-            if ($sm->getChmail1() == '1') {
-                $mail->addAddress($sm->getMailalt1());
-            }
-            if ($sm->getChmail2() == '1') {
-                $mail->addAddress($sm->getMailalt2());
-            }
-            if ($sm->getChmail3() == '1') {
-                $mail->addAddress($sm->getMailalt3());
-            }
-            if ($sm->getChmail4() == '1') {
-                $mail->addAddress($sm->getMailalt4());
-            }
-            if ($sm->getChmail5() == '1') {
-                $mail->addAddress($sm->getMailalt5());
-            }
-            if ($sm->getChmail6() == '1') {
-                $mail->addAddress($sm->getMailalt6());
+                $actualizado = false;
+                $consultas = new Consultas();
+                $consulta = "UPDATE `horario_verano` SET primerdomingoabril=:primer, ultimodomingooctubre=:ultimo WHERE idhorario_verano=:id;";
+                $valores = array("id" => '1',
+                    "primer" => $primer,
+                    "ultimo" => $ultimo);
+                $actualizado = $consultas->execute($consulta, $valores);
+                return $actualizado;
             }
 
-            $mail->addStringAttachment($sm->getPdfstring(), $sm->getFolio() . "_" . $sm->getRfcemisor() . "_" . $sm->getUuid() . ".pdf");
-            if ($sm->getCfdistring() != "") {
-                $mail->addStringAttachment($sm->getCfdistring(), $sm->getFolio() . "_" . $sm->getRfcemisor() . "_" . $sm->getUuid() . ".xml");
+            public function getInfoGlobal($clvp, $clvm) {
+                $periodo = "";
+                $datosP = $this->getPeriodicidadbyClvAux($clvp);
+                foreach ($datosP as $actualP) {
+                    $periodo = $actualP['descripcion_periodoglobal'];
+                }
+                
+                $mes = "";
+                $datosM = $this->getMesbyClvAux($clvm);
+                foreach ($datosM as $actualM) {
+                    $mes = $actualM['descripcion_meses'];
+                }
+
+                $datos = "$periodo</tr>$mes";
+                return $datos;
             }
-            if (!$mail->send()) {
-                echo '0No se envio el mensaje';
-                echo '0Mailer Error: ' . $mail->ErrorInfo;
-            } else {
-                return 'Se ha enviado la factura';
+
+            private function getPeriodicidadbyClvAux($clv) {
+                $consultado = false;
+                $con = new Consultas();
+                $consulta = "SELECT * FROM catalogo_periodoglobal WHERE c_periodoglobal=:clv;";
+                $val = array("clv" => $clv);
+                $consultado = $con->getResults($consulta, $val);
+                return $consultado;
             }
-        } else {
-            return "No se configuro correo de envio";
+
+            private function getMesbyClvAux($clv) {
+                $consultado = false;
+                $con = new Consultas();
+                $consulta = "SELECT * FROM catalogo_meses WHERE c_meses=:clv;";
+                $val = array("clv" => $clv);
+                $consultado = $con->getResults($consulta, $val);
+                return $consultado;
+            }
+
+            public function checkStatusCFDI($idfactura) {
+                $datos = false;
+                $factura = $this->getFacturaById($idfactura);
+                foreach ($factura as $actual) {
+                    $emisor = $actual['factura_rfcemisor'];
+                    $receptor = $actual['rfcreceptor'];
+                    $total = $actual['totalfactura'];
+                    $uuid = $actual['uuid'];
+                    $cfdistring = $actual['cfdistring'];
+                }
+
+                $xml = simplexml_load_string($cfdistring);
+                $comprobante = $xml->xpath('/cfdi:Comprobante');
+                $attr = $comprobante[0]->attributes();
+                $sello = $attr['Sello'];
+                $subsello = substr($sello, -8);
+                //$soapUrl = "https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc";
+                $soapUrl = "https://pruebacfdiconsultaqr.cloudapp.net/ConsultaCFDIService.svc";
+                $consultaCfdi = consultaCfdiSAT::ServicioConsultaSAT($soapUrl, $emisor, $receptor, $total, $uuid, $subsello);
+                $codstatus = $consultaCfdi->CodigoEstatus;
+                $estado = $consultaCfdi->Estado;
+                $cancelable = $consultaCfdi->EsCancelable;
+                $statusCancelacion = $consultaCfdi->EstatusCancelacion;
+
+                if (is_array($consultaCfdi->EsCancelable)) {
+                    $cancelable = "";
+                }
+
+                if (is_array($consultaCfdi->EstatusCancelacion)) {
+                    $statusCancelacion = "";
+                }
+                $reset = "";
+                if ($statusCancelacion === "Solicitud rechazada") {
+                    $reset = "<button class='button-modal' onclick='resetCfdi($idfactura)' id='btn-reset-cfdi'>Restaurar Factura <span class='glyphicon glyphicon-repeat'></span></button>";
+                }
+                $datos = "$codstatus</tr>$estado</tr>$cancelable</tr>$statusCancelacion</tr>$reset";
+                return $datos;
+            }
+
         }
-    }
-
-    private function bodyMail($asunto, $saludo, $nombre, $msg, $logo) {
-        $archivo = "../com.sine.dao/configuracion.ini";
-        $ajustes = parse_ini_file($archivo, true);
-        if (!$ajustes) {
-            throw new Exception("No se puede abrir el archivo " . $archivo);
-        }
-        $rfcfolder = $ajustes['cron']['rfcfolder'];
-
-        $txt = str_replace("<corte>", "</p><p style='font-size:18px; text-align: justify;'>", $msg);
-        $message = "<html>
-                        <body>
-                            <table width='100%' bgcolor='#e0e0e0' cellpadding='0' cellspacing='0' border='0' style='border-radius: 25px;'>
-                                <tr>
-                                    <td>
-                                        <table align='center' width='100%' border='0' cellpadding='0' cellspacing='0' style='max-width:650px; border-radius: 20px; background-color:#fff; font-family:sans-serif;'>
-                                            <thead>
-                                                <tr height='80'>
-                                                    <th align='left' colspan='4' style='padding: 6px; background-color:#f5f5f5; border-radius: 20px; border-bottom:solid 1px #bdbdbd;' ><img src='https://q-ik.mx/$rfcfolder/img/$logo' height='100px'/></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr align='center' height='10' style='font-family:sans-serif; '>
-                                                    <td style='background-color:#09096B; text-align:center; border-radius: 5px;'></td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan='4' style='padding:15px;'>
-                                                        <h1>$asunto</h1>
-                                                        <p style='font-size:20px;'>$saludo $nombre</p>
-                                                        <hr/>
-                                                        <p style='font-size:18px; text-align: justify;'>$txt</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </body>
-                    </html>";
-        return $message;
-    }
-
-    /* public function sendMSG($file, $cod, $number) {
-      $fullnumb = $cod . $number;
-      $sid = "AC6256c8483286f5e0fd804de145ba42bf";
-      $token = "aabd7bf61f0efdf18965ffbef4f261bd";
-      $twilio = new Client($sid, $token);
-      try {
-      $message = $twilio->messages->create("whatsapp:+$fullnumb", // to
-      ["from" => "whatsapp:+14155238886",
-      "body" => "Hola BB",
-      "mediaUrl" => ["https://q-ik.mx/SineFacturacion/pdf/facturaFAC20200025.pdf"]]);
-      return $message->sid;
-      } catch (Exception $e) {
-      header("Content-type: text/plain");
-      echo "0" . $e->getMessage();
-      }
-      } */
-
-    public function actualizarDiasHorario($primer, $ultimo) {
-        Session::start();
-        $_SESSION[sha1("primerdomingo")] = $primer;
-        $_SESSION[sha1("ultimodomingo")] = $ultimo;
-
-        $actualizado = false;
-        $consultas = new Consultas();
-        $consulta = "UPDATE `horario_verano` SET primerdomingoabril=:primer, ultimodomingooctubre=:ultimo WHERE idhorario_verano=:id;";
-        $valores = array("id" => '1',
-            "primer" => $primer,
-            "ultimo" => $ultimo);
-        $actualizado = $consultas->execute($consulta, $valores);
-        return $actualizado;
-    }
-
-    public function getInfoGlobal($clvp, $clvm) {
-        $periodo = "";
-        $datosP = $this->getPeriodicidadbyClvAux($clvp);
-        foreach ($datosP as $actualP) {
-            $periodo = $actualP['descripcion_periodoglobal'];
-        }
-        
-        $mes = "";
-        $datosM = $this->getMesbyClvAux($clvm);
-        foreach ($datosM as $actualM) {
-            $mes = $actualM['descripcion_meses'];
-        }
-
-        $datos = "$periodo</tr>$mes";
-        return $datos;
-    }
-
-    private function getPeriodicidadbyClvAux($clv) {
-        $consultado = false;
-        $con = new Consultas();
-        $consulta = "SELECT * FROM catalogo_periodoglobal WHERE c_periodoglobal=:clv;";
-        $val = array("clv" => $clv);
-        $consultado = $con->getResults($consulta, $val);
-        return $consultado;
-    }
-
-    private function getMesbyClvAux($clv) {
-        $consultado = false;
-        $con = new Consultas();
-        $consulta = "SELECT * FROM catalogo_meses WHERE c_meses=:clv;";
-        $val = array("clv" => $clv);
-        $consultado = $con->getResults($consulta, $val);
-        return $consultado;
-    }
-
-    public function checkStatusCFDI($idfactura) {
-        $datos = false;
-        $factura = $this->getFacturaById($idfactura);
-        foreach ($factura as $actual) {
-            $emisor = $actual['factura_rfcemisor'];
-            $receptor = $actual['rfcreceptor'];
-            $total = $actual['totalfactura'];
-            $uuid = $actual['uuid'];
-            $cfdistring = $actual['cfdistring'];
-        }
-
-        $xml = simplexml_load_string($cfdistring);
-        $comprobante = $xml->xpath('/cfdi:Comprobante');
-        $attr = $comprobante[0]->attributes();
-        $sello = $attr['Sello'];
-        $subsello = substr($sello, -8);
-        //$soapUrl = "https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc";
-        $soapUrl = "https://pruebacfdiconsultaqr.cloudapp.net/ConsultaCFDIService.svc";
-        $consultaCfdi = consultaCfdiSAT::ServicioConsultaSAT($soapUrl, $emisor, $receptor, $total, $uuid, $subsello);
-        $codstatus = $consultaCfdi->CodigoEstatus;
-        $estado = $consultaCfdi->Estado;
-        $cancelable = $consultaCfdi->EsCancelable;
-        $statusCancelacion = $consultaCfdi->EstatusCancelacion;
-
-        if (is_array($consultaCfdi->EsCancelable)) {
-            $cancelable = "";
-        }
-
-        if (is_array($consultaCfdi->EstatusCancelacion)) {
-            $statusCancelacion = "";
-        }
-        $reset = "";
-        if ($statusCancelacion === "Solicitud rechazada") {
-            $reset = "<button class='button-modal' onclick='resetCfdi($idfactura)' id='btn-reset-cfdi'>Restaurar Factura <span class='glyphicon glyphicon-repeat'></span></button>";
-        }
-        $datos = "$codstatus</tr>$estado</tr>$cancelable</tr>$statusCancelacion</tr>$reset";
-        return $datos;
-    }
-
-}

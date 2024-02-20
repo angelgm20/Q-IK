@@ -1,5 +1,4 @@
 <?php
-
 require_once '../com.sine.modelo/Factura.php';
 require_once '../com.sine.modelo/Pago.php';
 require_once '../com.sine.modelo/TMP.php';
@@ -635,7 +634,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo $eliminado;
             } else {
-                echo "0No se han encontrado datos";
+                echo "incrementado";
             }
             break;
         case 'reducir':
@@ -645,7 +644,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo $eliminado;
             } else {
-                echo "0No se han encontrado datos";
+                echo "red";
             }
             break;
         case 'modificartmp':
@@ -656,7 +655,7 @@ if (isset($_POST['transaccion'])) {
             if ($eliminado) {
                 echo $eliminado;
             } else {
-                echo "0No se han encontrado datos";
+                echo "inc";
             }
             break;
         case 'cancelar':
@@ -717,7 +716,7 @@ if (isset($_POST['transaccion'])) {
             $idfactura = $_POST['idfactura'];
             $cadena = $cf->checkSaldo($idfactura);
             if ($cadena != "") {
-                echo '$cadena';
+                echo $cadena;
             } else {
                 echo "no tienes saldo";
             }

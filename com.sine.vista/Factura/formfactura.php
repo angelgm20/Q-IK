@@ -27,8 +27,8 @@ include("buscarProductos.php");
             <div class="col-md-4">
                 <label class="label-form text-right mb-2" for="folio">Folio</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <select class="form-select w-100 p-2 mb-3" id="folio" name="folio">
-                        <option value="" id="option-default-folio">- - - -</option>
+                    <select class="form-select w-100 p-2 " id="folio" name="folio"  >
+                        <option value="" id="option-default-folio">- - - - -</option  >
                         <optgroup id="foliofactura" class="contenedor-folios text-left"> </optgroup>
                     </select>
                     <div id="folio-errors"></div>
@@ -57,15 +57,15 @@ include("buscarProductos.php");
 
         <div class="row">
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="razon-emisor">Razon Social</label>
+                <label class="label-form text-right mt-3 mb-2" for="razon-emisor">Razon Social</label>
                 <div class="form-group">
-                    <input class="input-form text-center form-control mb-3" disabled id="razon-emisor" name="razon-emisor" placeholder="Razon Social Emisor" type="text"/>
+                    <input class="input-form text-center form-control mb-3 " disabled id="razon-emisor" name="razon-emisor" placeholder="Razon Social Emisor" type="text"/>
                     <div id="razon-emisor-errors"></div>
                 </div>
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="regimen-emisor">Regimen Fiscal</label>
+                <label class="label-form text-right  mt-3 mb-2" for="regimen-emisor">Regimen Fiscal</label>
                 <div class="form-group">
                     <input class="input-form text-center form-control" disabled id="regimen-emisor" name="regimen-emisor" placeholder="Regimen fiscal" type="text"/>
                     <div id="regimen-emisor-errors"></div>
@@ -73,7 +73,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="cp-emisor">Codigo Postal</label>
+                <label class="label-form text-right mt-3 mb-2" for="cp-emisor">Codigo Postal</label>
                 <div class="form-group">
                     <input class="input-form text-center form-control" disabled id="cp-emisor" name="cp-emisor" placeholder="Codigo Postal" type="text"/>
                     <div id="cp-emisor-errors"></div>
@@ -94,7 +94,7 @@ include("buscarProductos.php");
         <div class="row">
             <div class="col-md-4">
                 <div class="new-tooltip icon tip">
-                    <label class="label-form text-right mb-2" for="nombre-cliente">Cliente</label> <span class="fas fa-question-circle"></span>
+                    <label class="label-form text-right mb-2" for="nombre-cliente">Cliente</label><label class="mark-required text-right">*</label> <span class="fas fa-question-circle"></span>
                     <span class="tiptext">Puede realizar la busqueda por Nombre, Apellidos, Empresa o RFC de un cliente que haya registrado previamente y el sistema cargara los datos de forma automatica, si no realizo registro puede dejar este campo en blanco e ingresar los datos necesarios.</span>
                 </div>
                 <div class="form-group">

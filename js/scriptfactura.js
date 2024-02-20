@@ -64,7 +64,7 @@ function getTipoCambio(idmoneda = "") {
     });
 }
 
-function addCFDI() {
+/*function addCFDI() {
     var rel = $("#tipo-relacion").val();
     var cfdi = $("#cfdi-rel").val();
     if (isnEmpty(rel, "tipo-relacion") && isnEmpty(cfdi, "cfdi-rel")) {
@@ -86,6 +86,34 @@ function addCFDI() {
                     var p2 = array[1];
                     $("#body-lista-cfdi").html(p2);
                    
+                }
+            }
+        });
+    }
+}*/
+function addCFDI() {
+    var rel = $("#tipo-relacion").val();
+    var cfdi = $("#cfdi-rel").val();
+    if (isnEmpty(rel, "tipo-relacion") && isnEmpty(cfdi, "cfdi-rel")) {
+        $.ajax({
+            url: "com.sine.enlace/enlacefactura.php",
+            type: "POST",
+            data: {transaccion: "addcfdi", rel: rel, cfdi: cfdi},
+            success: function (datos) {
+                var texto = datos.toString();
+                var bandera = texto.substring(0, 1);
+                var res = texto.substring(1, 1000);
+                if (bandera == '0') {
+                    alertify.error(res);
+                } else {
+                    $("#tipo-relacion").val('');
+                    $("#cfdi-rel").val('');
+                    cargandoHide();
+                    // Parsear la respuesta del servidor
+                    var array = datos.split("<corte>");
+                    var p2 = array[1];
+                    // Mostrar los datos en la tabla
+                    $("#body-lista-cfdi").html(p2);
                 }
             }
         });
@@ -215,14 +243,14 @@ function insertarProductoFactura() {
     }
     
     if (
-    validarCodigoProducto (codproducto, "codigo-producto") && 
-    isnEmpty(producto, "producto") &&
-    isList(clavefiscal, "clave-fiscal") &&
-    isnEmpty(tipo, "tipo") && 
-    isListUnit(unidad, "clave-unidad") &&
-    isPositive(porcentaje, "porganancia") && 
-    isPositive(ganancia, "ganancia") && 
-    isPositive(pventa, "pventa")) {
+        validarCodigoProducto (codproducto, "codigo-producto") && 
+        isnEmpty(producto, "producto") &&
+        isList(clavefiscal, "clave-fiscal") &&
+        isnEmpty(tipo, "tipo") && 
+        isListUnit(unidad, "clave-unidad") &&
+        isPositive(porcentaje, "porganancia") && 
+        isPositive(ganancia, "ganancia") && 
+        isPositive(pventa, "pventa")) {
         //cargandoHide();
         //cargandoShow();
         $.ajax({
@@ -248,7 +276,7 @@ function insertarProductoFactura() {
         });
     }
 }
-
+//autocompletar-----------------
 function aucompletarRegimen() {
     $('#regfiscal-cliente').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=regimenfiscal",
@@ -307,6 +335,30 @@ function autocompletarCliente() {
     });
 }
 
+function autocompletarCFiscal() {
+    $('#editar-cfiscal').autocomplete({
+        source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catfiscal",
+        appendTo: "#editar-producto",
+        select: function (event, ui) {
+            var a = ui.item.value;
+            var id = ui.item.id;
+        }
+    });
+}
+
+function autocompletarCUnidad() {
+    $('#editar-cunidad').autocomplete({
+        source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catunidad",
+        appendTo: "#editar-producto",
+        select: function (event, ui) {
+
+            var a = ui.item.value;
+            var id = ui.item.id;
+        }
+    });
+}
+//----------------------------------
+//calcular
 function calcularImporteEditar() {
     var cantidad = $("#editar-cantidad").val() || '';
     var precio = $("#editar-precio").val() || '';
@@ -338,30 +390,7 @@ function calcularDescuentoEditar() {
     $("#editar-impdesc").val(descuento);
     $("#editar-total").val(total);
 }
-
-function autocompletarCFiscal() {
-    $('#editar-cfiscal').autocomplete({
-        source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catfiscal",
-        appendTo: "#editar-producto",
-        select: function (event, ui) {
-            var a = ui.item.value;
-            var id = ui.item.id;
-        }
-    });
-}
-
-function autocompletarCUnidad() {
-    $('#editar-cunidad').autocomplete({
-        source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catunidad",
-        appendTo: "#editar-producto",
-        select: function (event, ui) {
-
-            var a = ui.item.value;
-            var id = ui.item.id;
-        }
-    });
-}
-
+//--------
 function editarConcepto(idtmp) {
     $.ajax({
         url: "com.sine.enlace/enlacefactura.php",
@@ -630,6 +659,8 @@ function agregarObservaciones() {
                 tablaProductos(uuid);
             }
             cargandoHide();
+            $('#modal-observaciones').modal('hide');
+
         }
     });
 }
@@ -917,12 +948,34 @@ function insertarFactura() {
         alert(cfdis);
         cfdis = 1;
     }
-
-    if (isnEmpty(iddatosF, "datos-facturacion") && isnEmpty(rfccliente, "rfc-cliente") && isnEmpty(razoncliente, "razon-cliente") && isnEmpty(regfiscal, "regfiscal-cliente") && isnEmpty(codpostal, "cp-cliente") && isnEmpty(tipoComprobante, "tipo-comprobante") && isnEmpty(idformapago, "id-forma-pago") && isnEmpty(idmetodopago, "id-metodo-pago") && isnEmpty(idmoneda, "id-moneda") && isnEmpty(tcambio, "tipo-cambio") && isnEmpty(iduso, "id-uso")) {
+    if (
+        //isnEmpty(folio, "folio") &&
+    isnEmpty(iddatosF, "datos-facturacion") &&
+     isnEmpty(rfccliente, "rfc-cliente") &&
+     isnEmpty(cliente, "nombre-cliente") &&
+      isnEmpty(razoncliente, "razon-cliente") &&
+       isnEmpty(regfiscal, "regfiscal-cliente") &&
+        isnEmpty(codpostal, "cp-cliente") &&
+         isnEmpty(tipoComprobante, "tipo-comprobante") &&
+          isnEmpty(idformapago, "id-forma-pago") &&
+           isnEmpty(idmetodopago, "id-metodo-pago") &&
+            isnEmpty(idmoneda, "id-moneda") &&
+             isnEmpty(tcambio, "tipo-cambio") && 
+             isnEmpty(iduso, "id-uso")) {
         $.ajax({
             url: "com.sine.enlace/enlacefactura.php",
             type: "POST",
-            data: {transaccion: "insertarfactura", folio: folio, fecha_creacion: fecha_creacion, idcliente: idcliente, cliente:cliente, rfccliente: rfccliente, razoncliente: razoncliente, regfiscal: regfiscal, dircliente: dircliente, codpostal: codpostal, idformapago: idformapago, idmetodopago: idmetodopago, idmoneda: idmoneda, tcambio: tcambio, iduso: iduso, tipocomprobante: tipoComprobante, iddatosF: iddatosF, chfirma: chfirma, cfdis: cfdis, idcotizacion: idcotizacion, periodicidad: periodicidad, mesperiodo: mesperiodo, anhoperiodo: anhoperiodo},
+            data: {transaccion: "insertarfactura",
+             folio: folio, fecha_creacion: fecha_creacion,
+            idcliente: idcliente, cliente:cliente,
+             rfccliente: rfccliente, razoncliente: razoncliente,
+            regfiscal: regfiscal, dircliente: dircliente,
+             codpostal: codpostal, idformapago: idformapago,
+              idmetodopago: idmetodopago, idmoneda: idmoneda,
+               tcambio: tcambio, iduso: iduso, tipocomprobante: tipoComprobante,
+            iddatosF: iddatosF, chfirma: chfirma, cfdis: cfdis,
+             idcotizacion: idcotizacion, periodicidad: periodicidad,
+              mesperiodo: mesperiodo, anhoperiodo: anhoperiodo},
             success: function (datos) {
                 var texto = datos.toString();
                 var bandera = texto.substring(0, 1);
@@ -938,6 +991,58 @@ function insertarFactura() {
         });
     }
 
+}
+
+function actualizarFactura(idfactura) {
+    var folio = $("#folio").val();
+    var iddatosF = $("#datos-facturacion").val();
+    var idcliente = $("#id-cliente").val();
+    var cliente = $("#nombre-cliente").val();
+    var rfccliente = $("#rfc-cliente").val();
+    var razoncliente = $("#razon-cliente").val();
+    var regfiscal = $("#regfiscal-cliente").val();
+    var dircliente = $("#direccion-cliente").val();
+    var codpostal = $("#cp-cliente").val();
+    var tipoComprobante = $("#tipo-comprobante").val();
+    var idmetodopago = $("#id-metodo-pago").val();
+    var idformapago = $("#id-forma-pago").val();
+    var idmoneda = $("#id-moneda").val();
+    var tcambio = $("#tipo-cambio").val();
+    var iduso = $("#id-uso").val();
+    var periodicidad = $("#periodicidad-factura").val();
+    var mesperiodo = $("#mes-periodo").val();
+    var anhoperiodo = $("#anho-periodo").val();
+    var tag = $("#tagfactura").val();
+    var chfirmar = 0;
+    var cfdis = 0;
+    if ($("#chfirma").prop('checked')) {
+        chfirmar = 1;
+    }
+
+    if ($("#cfdirel").hasClass('in')) {
+        cfdis = 1;
+    }
+
+    if (isnEmpty(iddatosF, "datos-facturacion") && isnEmpty(rfccliente, "rfc-cliente") && isnEmpty(razoncliente, "razon-cliente") && isnEmpty(regfiscal, "regfiscal-cliente") && isnEmpty(codpostal, "cp-cliente") && isnEmpty(tipoComprobante, "tipo-comprobante") && isnEmpty(idformapago, "id-forma-pago") && isnEmpty(idmetodopago, "id-metodo-pago") && isnEmpty(idmoneda, "id-moneda") && isnEmpty(tcambio, "tipo-cambio") && isnEmpty(iduso, "id-uso")) {
+        $.ajax({
+            url: "com.sine.enlace/enlacefactura.php",
+            type: "POST",
+            data: {transaccion: "actualizarFactura", folio: folio, idcliente: idcliente, cliente:cliente, rfccliente: rfccliente, razoncliente: razoncliente, regfiscal: regfiscal, dircliente: dircliente, codpostal: codpostal, idformapago: idformapago, idmetodopago: idmetodopago, idmoneda: idmoneda, tcambio: tcambio, iduso: iduso, tipocomprobante: tipoComprobante, idfactura: idfactura, iddatosF: iddatosF, chfirmar: chfirmar, cfdis: cfdis, periodicidad: periodicidad, mesperiodo: mesperiodo, anhoperiodo: anhoperiodo, tag: tag},
+            success: function (datos) {
+                var texto = datos.toString();
+                var bandera = texto.substring(0, 1);
+                var res = texto.substring(1, 1000);
+                if (bandera == '0') {
+                    alertify.error(res);
+                } else {
+                    //alert(datos);
+                    alertify.success('Factura Actualizada');
+                    loadView('listafactura');
+                }
+                cargandoHide();
+            }
+        });
+    }
 }
 
 function buscarProducto(pag = "") {
@@ -1173,57 +1278,7 @@ function setValoresEditarFactura(datos) {
 
 }
 
-function actualizarFactura(idfactura) {
-    var folio = $("#folio").val();
-    var iddatosF = $("#datos-facturacion").val();
-    var idcliente = $("#id-cliente").val();
-    var cliente = $("#nombre-cliente").val();
-    var rfccliente = $("#rfc-cliente").val();
-    var razoncliente = $("#razon-cliente").val();
-    var regfiscal = $("#regfiscal-cliente").val();
-    var dircliente = $("#direccion-cliente").val();
-    var codpostal = $("#cp-cliente").val();
-    var tipoComprobante = $("#tipo-comprobante").val();
-    var idmetodopago = $("#id-metodo-pago").val();
-    var idformapago = $("#id-forma-pago").val();
-    var idmoneda = $("#id-moneda").val();
-    var tcambio = $("#tipo-cambio").val();
-    var iduso = $("#id-uso").val();
-    var periodicidad = $("#periodicidad-factura").val();
-    var mesperiodo = $("#mes-periodo").val();
-    var anhoperiodo = $("#anho-periodo").val();
-    var tag = $("#tagfactura").val();
-    var chfirmar = 0;
-    var cfdis = 0;
-    if ($("#chfirma").prop('checked')) {
-        chfirmar = 1;
-    }
 
-    if ($("#cfdirel").hasClass('in')) {
-        cfdis = 1;
-    }
-
-    if (isnEmpty(iddatosF, "datos-facturacion") && isnEmpty(rfccliente, "rfc-cliente") && isnEmpty(razoncliente, "razon-cliente") && isnEmpty(regfiscal, "regfiscal-cliente") && isnEmpty(codpostal, "cp-cliente") && isnEmpty(tipoComprobante, "tipo-comprobante") && isnEmpty(idformapago, "id-forma-pago") && isnEmpty(idmetodopago, "id-metodo-pago") && isnEmpty(idmoneda, "id-moneda") && isnEmpty(tcambio, "tipo-cambio") && isnEmpty(iduso, "id-uso")) {
-        $.ajax({
-            url: "com.sine.enlace/enlacefactura.php",
-            type: "POST",
-            data: {transaccion: "actualizarFactura", folio: folio, idcliente: idcliente, cliente:cliente, rfccliente: rfccliente, razoncliente: razoncliente, regfiscal: regfiscal, dircliente: dircliente, codpostal: codpostal, idformapago: idformapago, idmetodopago: idmetodopago, idmoneda: idmoneda, tcambio: tcambio, iduso: iduso, tipocomprobante: tipoComprobante, idfactura: idfactura, iddatosF: iddatosF, chfirmar: chfirmar, cfdis: cfdis, periodicidad: periodicidad, mesperiodo: mesperiodo, anhoperiodo: anhoperiodo, tag: tag},
-            success: function (datos) {
-                var texto = datos.toString();
-                var bandera = texto.substring(0, 1);
-                var res = texto.substring(1, 1000);
-                if (bandera == '0') {
-                    alertify.error(res);
-                } else {
-                    //alert(datos);
-                    alertify.success('Factura Actualizada');
-                    loadView('listafactura');
-                }
-                cargandoHide();
-            }
-        });
-    }
-}
 
 function eliminarFactura(idFactura) {
     alertify.confirm("Esta seguro que desea eliminar esta factura?", function () {
@@ -1379,11 +1434,13 @@ function setValoresCopiarFactura(datos) {
 
 function checkFolios() {
     var comprobante = $("#tipo-comprobante").val();
+    var serie = ''; 
+    var folio = '';
     if (comprobante == '1' || comprobante == '2') {
         $.ajax({
             url: 'com.sine.enlace/enlaceopcion.php',
             type: 'POST',
-            data: {transaccion: 'opcionesfolio', id: comprobante},
+            data: {transaccion: 'opcionesfolio', id: comprobante, serie: serie, folio: folio},
             success: function (datos) {
                 var texto = datos.toString();
                 var bandera = texto.substring(0, 1);
@@ -1394,7 +1451,7 @@ function checkFolios() {
 
                     $(".contenedor-folios").html(datos);
                 }
-                //cargandoHide();
+                cargandoHide();
             }
         });
     }
@@ -1476,6 +1533,7 @@ function loadDocumento() {
         }
     });
 }
+
 function buscarFactura(pag = "") {
     var REF = $("#buscar-factura").val();
     var numreg = $("#num-reg").val();
@@ -1612,7 +1670,7 @@ function setCantidad(idtmp, cant) {
 function modificarCantidad() {
     var idtmp = $("#idcant").val();
     var cant = $("#cantidad-producto").val();
-    $.ajax({
+     $.ajax({
         url: "com.sine.enlace/enlacefactura.php",
         type: "POST",
         data: {transaccion: "modificartmp", idtmp: idtmp, cant: cant},
@@ -1625,10 +1683,13 @@ function modificarCantidad() {
             } else {
                 tablaProductos();
                 cargandoHide();
+                $('#modal-cantidad').modal('hide');
             }
         }
-    });
+    
+     });
 }
+
 
 function eliminar(idtemp, cantidad, idproducto) {
     alertify.confirm("Esta seguro que desea eliminar este producto?", function () {
@@ -1979,3 +2040,4 @@ function getClientebyRFC() {
         });
     }
 }
+
