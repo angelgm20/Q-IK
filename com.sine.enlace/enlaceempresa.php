@@ -67,6 +67,7 @@ if (isset($_POST['transaccion'])) {
             $result = implode(':', $par);
             $divide2 = explode(":", $result);
             $numcert = $divide2[1] . $divide2[3] . $divide2[5] . $divide2[7] . $divide2[9] . $divide2[11] . $divide2[13] . $divide2[15] . $divide2[17] . $divide2[19] . $divide2[21] . $divide2[23] . $divide2[25] . $divide2[27] . $divide2[29] . $divide2[31] . $divide2[33] . $divide2[35] . $divide2[37] . $divide2[39];
+       
 
             $c->setNombreEmpresa($nombre);
             $c->setRfc($rfc);
@@ -114,7 +115,7 @@ if (isset($_POST['transaccion'])) {
 
             $actualizado = $cu->saveDatos($c);
             if ($actualizado != "") {
-                echo $actualizado;
+                echo print_r($actualizado);
             } else {
                 echo "0Error: no guardo el registro ";
             }
@@ -240,7 +241,7 @@ if (isset($_POST['transaccion'])) {
             $c->setCp($cp);
             $c->setFolioFiscal($folio);
             $c->setRegimenFiscal($regimen);
-    		$c->setCorreo($correo);
+            $c->setCorreo($correo);
             $c->setTelefono($telefono);
             $c->setIdbanco($idbanco);
             $c->setSucursal($sucursal);
@@ -283,6 +284,16 @@ if (isset($_POST['transaccion'])) {
                 echo $datos;
             } else {
                 echo "0No se han econtrado datos";
+            }
+            break;
+        case 'eliminarempresa':
+            $cu = new ControladorEmpresa();
+            $did = $_POST['did'];
+            $eliminado = $cu->quitarEmpresa($did);
+            if ($eliminado) {
+                echo "Registro eliminado";
+            } else {
+                echo "no se elimino";
             }
             break;
         default:

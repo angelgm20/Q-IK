@@ -1413,7 +1413,7 @@ function isnEmpty(val, id) {
     }
 
 
-function validarRFC(rfc, id) {
+/*function validarRFC(rfc, id) {
     var regexRFC = /^[a-zA-Z]{3,4}\d{6}[a-zA-Z\d]{3}$/;
     rfc = rfc.toUpperCase();
     var rfcInput = $("#rfc");
@@ -1430,7 +1430,7 @@ rfcInput.val(rfcInput.val().toUpperCase());
         return true;
     }
          
-}
+}*/
 
 function validEmail(correo, id) {
     var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]{1,2}$/;

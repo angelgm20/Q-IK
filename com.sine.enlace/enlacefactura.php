@@ -13,7 +13,6 @@ if (isset($_POST['transaccion'])) {
         case 'insertarfactura':
             $f = new Factura();
             $cf = new ControladorFactura();
-            
             $folio = $_POST['folio'];
             $idcliente = $_POST['idcliente'];
             $cliente = $_POST['cliente'];
@@ -335,7 +334,7 @@ if (isset($_POST['transaccion'])) {
             if ($datos != "") {
                 echo $datos;
             } else {
-                echo "0No se han econtrado datos";
+                echo "No se han econtrado datos";
             }
             break;
         case 'getdatospago':
@@ -446,7 +445,7 @@ if (isset($_POST['transaccion'])) {
             if ($folio) {
                 echo $folio;
             } else {
-                echo "0No se han econtrado datos";
+                echo "No se han econtrado datos";
             }
             break;
         case 'foliopago':
@@ -539,7 +538,7 @@ if (isset($_POST['transaccion'])) {
 
             $datos = $cf->checkInventario($t);
             if ($datos != "") {
-                echo '$datos';
+                echo json_encode($datos); //541
             } else {
                 echo "0Ah ocurrido un error";
             }

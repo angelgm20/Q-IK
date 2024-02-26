@@ -25,7 +25,7 @@ class ControladorEmpresa {
             $firma = $actual['firma'];
             $rfc = $actual['rfc'];
             $img = $this->getFirmaEmpresaB64($rfc, $firma);
-            
+
             $insertado = false;
             $consulta = "UPDATE `datos_facturacion` set firma=:firma WHERE id_datos=:id;);";
             $valores = array("firma" => $img,
@@ -63,8 +63,8 @@ class ControladorEmpresa {
 
     public function getEmpresa($condicion) {
         $consultado = false;
-        $consulta = "select * from datos_facturacion as s inner join municipio as m on (s.idmunicipio=m.id_municipio) inner join estado as e on (s.idestado=e.id_estado) $condicion;";
         $c = new Consultas();
+        $consulta = "SELECT * FROM datos_facturacion s INNER JOIN municipio m ON (s.idmunicipio=m.id_municipio) INNER JOIN estado e ON (s.idestado=e.id_estado) $condicion;";
         $consultado = $c->getResults($consulta, null);
         return $consultado;
     }
@@ -82,8 +82,12 @@ class ControladorEmpresa {
         $datos = "";
         $permisos = $this->getPermisoById($idusuario);
         foreach ($permisos as $actual) {
+            $lista = $actual['listadatos'];
             $editar = $actual['editardatos'];
-            $datos .= "$editar";
+            $eliminar = $actual['eliminardatos'];
+            $descargar = $actual['descargardatos'];
+
+            $datos .= "$lista</tr>$editar</tr>$eliminar</tr>$descargar";
         }
         return $datos;
     }
@@ -100,7 +104,7 @@ class ControladorEmpresa {
                 <th class='col-md-2'>Razon Social</th>
                 <th>Direccion</th>
                 <th>Regimen Fiscal</th>
-                <th><span class='glyphicon glyphicon-edit'></span></th>
+                <th><span class='fas fa-edit'></span></th>
             </tr>
         </thead>
         <tbody>";
@@ -108,66 +112,74 @@ class ControladorEmpresa {
         if ($nom == "") {
             $condicion = "ORDER BY s.nombre_contribuyente";
         } else {
-            //$condicionfolio="AND  nombre LIKE '%$Nombr%' AND (d.RazonSocial LIKE '%$Razon%' OR d.Rfc LIKE '%$Razon%')  ORDER BY nombre DESC";
-            $condicion = "where (s.nombre_contribuyente LIKE '%$nom%' or s.rfc LIKE '%$nom%') ORDER BY s.nombre_contribuyente";
+            $condicion = "WHERE (s.nombre_contribuyente LIKE '%$nom%') OR (s.rfc LIKE '%$nom%') ORDER BY s.nombre_contribuyente";
         }
 
-        $numrows = $this->getNumrows($condicion);
-        $page = (isset($pag) && !empty($pag)) ? $pag : 1;
-        $per_page = $numreg;
-        $adjacents = 4;
-        $offset = ($page - 1) * $per_page;
-        $total_pages = ceil($numrows / $per_page);
-        $con = $condicion . " LIMIT $offset,$per_page ";
-        $empresa = $this->getEmpresa($con);
-        $finales = 0;
         $permisos = $this->getPermisos($idlogin);
-        foreach ($empresa as $datossine) {
-            $id = $datossine['id_datos'];
-            $nombre = $datossine['nombre_contribuyente'];
-            $rfc = $datossine['rfc'];
-            $razonsocial = $datossine['razon_social'];
-            $calle = $datossine['calle'];
-            $numero_interior = $datossine['numero_interior'];
-            $numero_exterior = $datossine['numero_exterior'];
-            $colonia = $datossine['colonia'];
-            $municipio = $datossine['municipio'];
-            $estado = $datossine['estado'];
-            $pais = $datossine['pais'];
-            $codigo_postal = $datossine['codigo_postal'];
-            $regimenfiscal = $datossine['regimen_fiscal'];
-            $color = $datossine['color'];
-            $direccion = "$calle #$numero_exterior, Col. $colonia";
+        $divp = explode("</tr>", $permisos);
 
-            $datos .= "<tr>
+        if ($divp[0] == '1') {
+            $numrows = $this->getNumrows($condicion);
+            $page = (isset($pag) && !empty($pag)) ? $pag : 1;
+            $per_page = $numreg;
+            $adjacents = 4;
+            $offset = ($page - 1) * $per_page;
+            $total_pages = ceil($numrows / $per_page);
+            $con = $condicion . " LIMIT $offset,$per_page ";
+            $empresa = $this->getEmpresa($con);
+            $finales = 0;
+            foreach ($empresa as $datossine) {
+                $id = $datossine['id_datos'];
+                $nombre = $datossine['nombre_contribuyente'];
+                $rfc = $datossine['rfc'];
+                $razonsocial = $datossine['razon_social'];
+                $calle = $datossine['calle'];
+                $numero_interior = $datossine['numero_interior'];
+                $numero_exterior = $datossine['numero_exterior'];
+                $colonia = $datossine['colonia'];
+                $municipio = $datossine['municipio'];
+                $estado = $datossine['estado'];
+                $pais = $datossine['pais'];
+                $codigo_postal = $datossine['codigo_postal'];
+                $regimenfiscal = $datossine['regimen_fiscal'];
+                $color = $datossine['color'];
+                $direccion = "$calle #$numero_exterior, Col. $colonia,";
+
+                $datos .= "<tr>
                          <td style='background-color: $color;'></td>
                          <td>$nombre</td>
                          <td>$rfc</td>
                          <td>$razonsocial</td>
-                         <td>$direccion, $codigo_postal, $municipio, $estado, $pais</td>
+                         <td>$direccion $codigo_postal, $municipio, $estado, $pais</td>
                          <td>$regimenfiscal</td>
                          <td align='center'>
                          <div class='dropdown'>
-                            <button class='button-list dropdown-toggle' title='Opciones'  type='button' data-toggle='dropdown'><span class='glyphicon glyphicon-option-vertical'></span>
+                            <button class='button-list dropdown-bs-toggle' title='Opciones'  type='button' data-bs-toggle='dropdown'><span class='fas fa-ellipsis-v'></span>
                             <span class='caret'></span></button>
                             <ul class='dropdown-menu dropdown-menu-right'>";
-            if ($permisos == '1') {
-                $datos .= "<li><a onclick='editarEmpresa($id)'>Editar Datos <span class='glyphicon glyphicon-edit'></span></a></li>";
-            }    
-            $datos .= "<li><a onclick=\"descargarArchivos($id);\">Descargar Archivos <span class='glyphicon glyphicon-download-alt'></span></a></li>
-                            </ul>
+                if ($divp[3] == '1') {
+                    $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick=\"descargarArchivos($id);\">Desc. Archivos <span class='text-muted small fas fa-download'></span></a></li>";
+                }
+                if ($divp[1] == '1') {
+                    $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='editarEmpresa($id)'>Editar Datos <span class='text-muted small far fa-edit'></span></a></li>";
+                }
+                if ($divp[2] == '1') {
+                    $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='eliminarEmpresa($id)'>Eliminar Datos <span class='text-muted small fas fa-trash-alt'></span></a></li>";
+                }
+                $datos .= "</ul>
                             </div>
                          </td>
                     </tr>";
-            $finales++;
+                $finales++;
+            }
+            $inicios = $offset + 1;
+            $finales += $inicios - 1;
+            $function = "buscarEmpresa";
+            if ($finales == 0) {
+                $datos .= "<tr><td class='text-center' colspan='11'>No se encontraron registros</td></tr>";
+            }
+            $datos .= "</tbody><tfoot><tr><th colspan='11'>Mostrando $inicios al $finales de $numrows registros " . paginate($page, $total_pages, $adjacents, $function) . "</th></tr></tfoot>";
         }
-        $inicios = $offset + 1;
-        $finales += $inicios - 1;
-        $function = "buscarEmpresa";
-        if ($finales == 0) {
-            $datos .= "<tr><td class='text-center' colspan='11'>No se encontraron registros</td></tr>";
-        }
-        $datos .= "</tbody><tfoot><tr><th colspan='11'>Mostrando $inicios al $finales de $numrows registros " . paginate($page, $total_pages, $adjacents, $function) . "</th></tr></tfoot>";
         return $datos;
     }
 
@@ -277,7 +289,7 @@ class ControladorEmpresa {
         $datos = "";
         $check = $this->getError($c);
         if ($check != "") {
-            $datos = "0Error la contraseña es incorrecta " . $check;
+            $datos = "0Error la contraseñaaaa es incorrecta " . $check;
         } else {
             $datos = $this->insertarDatos($c);
         }
@@ -332,20 +344,20 @@ class ControladorEmpresa {
             "clabe3" => $c->getClabe3(),
             "oxxo3" => $c->getOxxo3(),
             "firma" => $c->getFirma(),
-            "difhorarioverano" => $div[0], 
+            "difhorarioverano" => $div[0],
             "difhorarioinvierno" => $div[1]);
         $insertado = $con->execute($consulta, $valores);
         return $insertado;
     }
-    
+
     public function getZonaHoraria($codpostal) {
         $dif = "0No";
         $servidor = "localhost";
         $basedatos = "sineacceso";
         $puerto = "3306";
         $mysql_user = "root";
-        $mysql_password = "S1ne15QvikXJWc";
-        
+        $mysql_password = "";//S1ne15QvikXJWc
+
         try {
             $db = new PDO("mysql:host=$servidor;port=$puerto;dbname=$basedatos", $mysql_user, $mysql_password);
             $stmttable = $db->prepare("SELECT * FROM catalogo_codpostal WHERE c_CodigoPostal='$codpostal'");
@@ -355,7 +367,7 @@ class ControladorEmpresa {
             if ($stmttable->execute()) {
                 $resultado = $stmttable->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($resultado as $actual) {
-                    $dif = $actual["Diferencia_Horaria_Verano"]."</tr>".$actual["Diferencia_Horaria_Invierno"];
+                    $dif = $actual["Diferencia_Horaria_Verano"] . "</tr>" . $actual["Diferencia_Horaria_Invierno"];
                 }
                 return "$dif";
             } else {
@@ -385,7 +397,7 @@ class ControladorEmpresa {
     public function modificarEmpresa($c) {
         $diferencias = $this->getZonaHoraria($c->getCp());
         $div = explode("</tr>", $diferencias);
-        
+
         $firma = $c->getFirma();
         if ($firma == "empty") {
             $firma = $c->getFirmaanterior();
@@ -406,10 +418,10 @@ class ControladorEmpresa {
             $numcsd = $this->getNumCSDPrevio($c->getIdempresa());
         }
 
-        /*$rfcprev = $this->getRFCPrevio($c->getIdempresa());
-        if ($c->getRfc() != $rfcprev) {
-            $mover = $this->moverArchivos($rfcprev, $c->getRfc());
-        }*/
+        /* $rfcprev = $this->getRFCPrevio($c->getIdempresa());
+          if ($c->getRfc() != $rfcprev) {
+          $mover = $this->moverArchivos($rfcprev, $c->getRfc());
+          } */
 
         $passcsd = "";
         if ($c->getPasscsd() != "") {
@@ -459,7 +471,7 @@ class ControladorEmpresa {
             "clabe3" => $c->getClabe3(),
             "oxxo3" => $c->getOxxo3(),
             "firma" => $firma,
-            "difverano" => $div[0], 
+            "difverano" => $div[0],
             "difinvierno" => $div[1],
             "id" => $c->getIdempresa());
         $con = new Consultas();
@@ -619,6 +631,41 @@ class ControladorEmpresa {
             $datos = "<tr><td class='text-center' colspan='11'>No se encontraron registros</td></tr>";
         }
         return $datos;
+    }
+
+    private function getRFCEmpresa($did) {
+        $rfc = "";
+        $datos = $this->getEmpresaById($did);
+        foreach ($datos as $actual) {
+            $rfc = $actual['rfc'];
+        }
+        return $rfc;
+    }
+
+    public function quitarEmpresa($did) {
+        $rfc = $this->getRFCEmpresa($did);
+        $eliminado = $this->eliminarEmpresa($did, $rfc);
+        return $eliminado;
+    }
+
+    private function eliminarEmpresa($did, $rfc) {
+        $eliminado = false;
+        $consultas = new Consultas();
+        $consulta = "DELETE FROM `datos_facturacion` WHERE id_datos=:id;";
+        $valores = array("id" => $did);
+        $eliminado = $consultas->execute($consulta, $valores);
+        $this->eliminarArchivos($rfc);
+        return $eliminado;
+    }
+
+    private function eliminarArchivos($rfc) {
+        $carpeta1 = "../temporal/$rfc/";
+        $files = scandir($carpeta1);
+        foreach ($files as $fname) {
+            if ($fname != '.' && $fname != '..') {
+                unlink($carpeta1 . $fname);
+            }
+        }
     }
 
 }

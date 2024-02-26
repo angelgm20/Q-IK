@@ -223,7 +223,7 @@ function addinventario() {
     }
 }
 
-function insertarProductoFactura() {
+/*function insertarProductoFactura() {
     var codproducto = $("#codigo-producto").val();
     var producto = $("#producto").val();
     var descripcion = $("#descripcion").val();
@@ -270,6 +270,47 @@ function insertarProductoFactura() {
                    
                     $("#nuevo-producto").modal('hide');
                     
+                }
+                cargandoHide();
+            }
+        });
+    }
+}*/
+function insertarProductoFactura() {
+    var codproducto = $("#codigo-producto").val();
+    var producto = $("#producto").val();
+    var descripcion = $("#descripcion").val();
+    var clavefiscal = $("#clave-fiscal").val();
+    var tipo = $("#tipo").val();
+    var unidad = $("#clave-unidad").val();
+    var pcompra = $("#pcompra").val();
+    var porcentaje = $("#porganancia").val();
+    var ganancia = $("#ganancia").val();
+    var pventa = $("#pventa").val();
+    var idproveedor = $("#id-proveedor").val() || '0';
+    var imagen = $('#filename').val();
+    var chinventario = 0;
+    var cantidad = $("#cantidad").val();
+    if ($("#chinventario").prop('checked')) {
+        chinventario = 1;
+    }
+    
+    if (validarCodigoProducto(codproducto, "codigo-producto") && isnEmpty(producto, "producto") && isList(clavefiscal, "clave-fiscal") && isnEmpty(tipo, "tipo") && isListUnit(unidad, "clave-unidad") && isPositive(porcentaje, "porganancia") && isPositive(ganancia, "ganancia") && isPositive(pventa, "pventa")) {
+        cargandoHide();
+        cargandoShow();
+        $.ajax({
+            url: "com.sine.enlace/enlaceproducto.php",
+            type: "POST",
+            data: {transaccion: "insertarproducto", codproducto: codproducto, producto: producto, tipo: tipo, unidad: unidad, descripcion: descripcion, pcompra: pcompra, porcentaje: porcentaje, ganancia: ganancia, pventa: pventa, clavefiscal: clavefiscal, idproveedor: idproveedor, imagen: imagen, chinventario: chinventario, cantidad: cantidad, insert: 'f'},
+            success: function (datos) {
+                var texto = datos.toString();
+                var bandera = texto.substring(0, 1);
+                var res = texto.substring(1, 1000);
+                if (bandera == '0') {
+                    alertify.error(res);
+                } else {
+                    tablaProductos();
+                    $("#nuevo-producto").modal('hide');
                 }
                 cargandoHide();
             }
@@ -889,6 +930,37 @@ function setvaloresRegistrarPago(datos) {
     loadFolioPago();
     cargandoHide();
 }
+function loadFolioPago(iddatos = "") {
+    cargandoHide();
+    cargandoShow();
+    if (iddatos == "") {
+        iddatos = $("#datos-facturacion").val();
+    }
+
+    $.ajax({
+        url: 'com.sine.enlace/enlacepago.php',
+        type: 'POST',
+        data: {transaccion: 'emisor', iddatos: iddatos},
+        success: function (datos) {
+            var texto = datos.toString();
+            var bandera = texto.substring(0, 1);
+            var res = texto.substring(1, 5000);
+            if (bandera == "") {
+                alertify.error(res);
+                cargandoHide();
+            } else {
+                //alert(datos);
+                var array = datos.split("</tr>");
+
+                $("#rfc-emisor").val(array[0]);
+                $("#razon-emisor").val(array[1]);
+                $("#regimen-emisor").val(array[2] + "-" + array[3]);
+                $("#cp-emisor").val(array[4]);
+                cargandoHide();
+            }
+        }
+    });
+}
 
 function tablaPagos(idfactura, estado) {
     $.ajax({
@@ -1319,7 +1391,7 @@ function copiarFactura(idFactura) {
                 alertify.error(res);
             } else {
                 loadView('factura');
-                window.setTimeout("setValoresCopiarFactura('" + datos + "')", 600);
+                window.setTimeout("setValoresCopiarFactura('" + datos + "')", 900);
                 window.setTimeout("cargandoHide()", 750);
             }
         }
@@ -1327,6 +1399,7 @@ function copiarFactura(idFactura) {
 }
 
 function setValoresCopiarFactura(datos) {
+    
     var array = datos.split("</tr>");
     var idfactura = array[0];
     var serie = array[1];
@@ -1359,6 +1432,7 @@ function setValoresCopiarFactura(datos) {
     var periodoG = array[28];
     var mesperiodo = array[29];
     var anhoperiodo = array[30];
+    var cpemisor = array[31];
 
     if (cfdisrel == '1') {
         $.ajax({
@@ -1399,6 +1473,7 @@ function setValoresCopiarFactura(datos) {
         }
     });
 
+    loadOpcionesFolios('0', serie, letra+folio);
     loadOpcionesFacturacion(iddatos);
     $("#rfc-emisor").val(rfcemisor);
     $("#razon-emisor").val(rzsocial);
@@ -1427,9 +1502,12 @@ function setValoresCopiarFactura(datos) {
     if (chfirmar == '1') {
         $("#chfirma").attr('checked', true);
     }
+    $("#form-factura").append("<input type='hidden' id='uuidfactura' name='uuidfactura' value='" + uuid + "'/>");
+    $("#form-factura").append("<input type='hidden' id='tagfactura' name='tagfactura' value='" + tag + "'/>");
+    $("#btn-form-factura").attr("onclick", "insertarFactura(" + idfactura + ");");
 
-    loadDatosFactura();
-    getTipoCambio();
+    loadDatosFactura(iddatos);
+    getTipoCambio(idmoneda);
 }
 
 function checkFolios() {
@@ -1813,12 +1891,12 @@ function cancelarTimbre(idfactura) {
 
 function enviarfactura() {
     var idfactura = $("#idfacturaenvio").val();
-    var mailalt1 = "ejemplo@ejemplo.com";
-    var mailalt2 = "ejemplo@ejemplo.com";
-    var mailalt3 = "ejemplo@ejemplo.com";
-    var mailalt4 = "ejemplo@ejemplo.com";
-    var mailalt5 = "ejemplo@ejemplo.com";
-    var mailalt6 = "ejemplo@ejemplo.com";
+    var mailalt1 = "garciamartinezjoseangel69@gmail.com";
+    var mailalt2 = "garciamartinezjoseangel69@gmail.com";
+    var mailalt3 = "garciamartinezjoseangel69@gmail.com";
+    var mailalt4 = "garciamartinezjoseangel69@gmail.com";
+    var mailalt5 = "garciamartinezjoseangel69@gmail.com";
+    var mailalt6 = "garciamartinezjoseangel69@gmail.com";
     var chcorreo1 = 0;
     var chcorreo2 = 0;
     var chcorreo3 = 0;

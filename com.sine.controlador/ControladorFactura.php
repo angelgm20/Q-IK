@@ -285,7 +285,7 @@ class ControladorFactura {
         $Timp = 0;
         foreach ($div as $d) {
             $div2 = explode("-", $d);
-            $imp = $importe * $div2[1];//ANGEL
+            $imp = $importe * $div2[1];
             $Timp += $imp;
             if ($Timp > 0) {
                 $row[] = bcdiv($imp, '1', 2) . '-' . $div2[1] . '-' . $div2[2];
@@ -714,7 +714,7 @@ class ControladorFactura {
                         <button type='button' class='btn btn-outline-secondary btn-sm ' $disabledminus $disuuid data-type='minus' data-field='quant[1]' onclick='reducirCantidad($id_tmp);'>
                             <i class='fas fa-minus'></i>
                         </button>
-                        <button $disuuid class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#modal-cantidad' onclick='setCantidad($id_tmp,$cantidad)'>
+                        <button $disuuid class='badge rounded-pill text-bg-info' data-bs-toggle='modal' data-bs-target='#modal-cantidad' onclick='setCantidad($id_tmp,$cantidad)'>
                             <div class='badge' id='badcant$id_tmp'>$cantidad</div>
                         </button>
                         <button type='button' class='btn btn-outline-secondary btn-sm ' data-type='plus' onclick='incrementarCantidad($id_tmp);' $disuuid>
@@ -751,9 +751,9 @@ class ControladorFactura {
                     <div class='dropdown'>
                         <button class='button-list dropdown-toggle' title='Editar'  type='button' data-bs-toggle='dropdown' $disuuid><i class='fas fa-edit'></i> <span class='caret'></span></button>
                         <ul class='dropdown-menu dropdown-menu-end'>
-                            <li class='px-2' ><a data-bs-toggle='modal' data-bs-target='#editar-producto' onclick='editarConcepto($id_tmp);'>Editar Factura <i class='fas fa-edit'></i></a></li>
-                            <li class='px-2' ><a data-bs-toggle='modal' data-bs-target='#nuevo-producto' onclick='editarProductoFactura($idproducto,$id_tmp);'>Editar Productos <i class='fas fa-edit'></i></a></li>
-                            <li class='px-2'><a onclick='eliminar($id_tmp,$cantidad,$idproducto); return false;'>Eliminar <i class='fas fa-trash'></i></a></li>
+                            <li class='notification-link py-1 ps-3' ><a class='text-decoration-none text-secondary-emphasis'  data-bs-toggle='modal' data-bs-target='#editar-producto' onclick='editarConcepto($id_tmp);'>Editar Factura <i class='text-muted small fas fa-edit'></i></a></li>
+                            <li class='notification-link py-1 ps-3' ><a class='text-decoration-none text-secondary-emphasis'  data-bs-toggle='modal' data-bs-target='#nuevo-producto' onclick='editarProductoFactura($idproducto,$id_tmp);'>Editar Productos <i class='text-muted small fas fa-edit'></i></a></li>
+                            <li class='notification-link py-1 ps-3' ><a  class='text-decoration-none text-secondary-emphasis' onclick='eliminar($id_tmp,$cantidad,$idproducto); return false;'>Eliminar <i class='text-muted small fas fa-trash'></i></a></li>
                         </ul>
                     </div>
                 </td>
@@ -2280,23 +2280,24 @@ class ControladorFactura {
                         <ul class='dropdown-menu dropdown-menu-end'>";
 
             if ($div[0] == '1') {
-                $datos .= "<li class='px-2'><a onclick='editarFactura($idfactura);'>Editar Factura <span class='glyphicon fas fa-edit'></span></a></li>";
+                //$datos .= "<li class='px-2'><a onclick='editarFactura($idfactura);'>Editar Factura <span class='glyphicon fas fa-edit'></span></a></li>";
+                $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='editarFactura($idfactura);'>Editar Factura <span class='text-muted small fas fa-edit'></span></a></li>";
             }
             if ($div[1] == '1') {
-                $datos .= "<li class='px-2'><a onclick=\"eliminarFactura('$idfactura');\">Eliminar Factura <span class='far fa-times-circle'></span></a></li>";
+                $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick=\"eliminarFactura('$idfactura');\">Eliminar Factura <span class=' text-muted small fas fa-times'></span></a></li>";
             }
 
-            $datos .= " <li class='px-2'><a onclick=\"imprimir_factura($idfactura);\">Ver Factura <span class='fas fa-eye'></span></a></li>
-                        <li class='px-2'><a href='./com.sine.imprimir/imprimirxml.php?f=$idfactura&t=a' target='_blank'>Ver XML <span class='fas fa-download'></span></a></li>
-                        <li class='px-2'><a $timbre>$tittimbre <span class='fas fa-bell'></span></a></li>
-                        <li class='px-2'><a data-bs-toggle='modal' data-bs-target='#enviarmail' onclick='showCorreos($idfactura);'>Enviar <span class='fas fa-envelope'></span></a></li>";
+            $datos .= " <li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick=\"imprimir_factura($idfactura);\">Ver Factura <span class=' text-muted small fas fa-eye'></span></a></li>
+                        <li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' href='./com.sine.imprimir/imprimirxml.php?f=$idfactura&t=a' target='_blank'>Ver XML <span class=' text-muted small fas fa-download'></span></a></li>
+                        <li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' $timbre>$tittimbre <span class='text-muted small fas fa-bell'></span></a></li>
+                        <li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' data-bs-toggle='modal' data-bs-target='#enviarmail' onclick='showCorreos($idfactura);'>Enviar <span class=' text-muted small fas fa-envelope'></span></a></li>";
 
             if ($div[2] == '1') {
-                $datos .= "<li class='px-2'><a onclick='copiarFactura($idfactura);'>Copiar Factura <span class='fas fa-clipboard'></span></a></li>";
+                $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='copiarFactura($idfactura);'>Copiar Factura <span class='text-muted small fas fa-clipboard'></span></a></li>";
             }
 
             if ($uuid != "") {
-                $datos .= "<li class='px-2'><a data-bs-toggle='modal' data-bs-target='#modal-stcfdi' onclick='checkStatusCancelacion(\"".$idfactura."\");'>Comprobar estado del CFDI <i class='fas fa-check-circle'></i></a></li>";
+                $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' data-bs-toggle='modal' data-bs-target='#modal-stcfdi' onclick='checkStatusCancelacion(\"".$idfactura."\");'>Comprobar estado del CFDI <i class='text-muted small fas fa-check-circle'></i></a></li>";
             }
             
 

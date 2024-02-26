@@ -97,29 +97,29 @@ function insertarDatos() {
     var interior = $("#num-int-empresa").val();
     var exterior = $("#num-ext-empresa").val();
     var colonia = $("#colonia-empresa").val();
-    var idmunicipio = $("#id-municipio").val();
-    var pais = $("#pais-empresa").val();
     var cp = $("#cp-empresa").val();
+    var idestado = $("#id-estado").val();
+    var idmunicipio = $("#id-municipio").val() || '0';
+    var pais = $("#pais-empresa").val();
     var regimen = $("#regimen-empresa").val();
     var correo = $("#correo-electronico").val();
     var telefono = $("#telefono").val();
-    var idestado = $("#id-estado").val();
-    var idbanco = $("#id-banco").val();
+    var idbanco = $("#id-banco").val() || '0';
     var sucursal = $("#sucursal").val();
     var cuenta = $("#cuenta").val();
     var clabe = $("#clabe").val();
     var oxxo = $("#tarjeta-oxxo").val();
-    var idbanco1 = $("#id-banco1").val();
+    var idbanco1 = $("#id-banco1").val() || '0';
     var sucursal1 = $("#sucursal1").val();
     var cuenta1 = $("#cuenta1").val();
     var clabe1 = $("#clabe1").val();
     var oxxo1 = $("#tarjeta-oxxo1").val();
-    var idbanco2 = $("#id-banco2").val();
+    var idbanco2 = $("#id-banco2").val() || '0';
     var sucursal2 = $("#sucursal2").val();
     var cuenta2 = $("#cuenta2").val();
     var clabe2 = $("#clabe2").val();
     var oxxo2 = $("#tarjeta-oxxo2").val();
-    var idbanco3 = $("#id-banco3").val();
+    var idbanco3 = $("#id-banco3").val() || '0';
     var sucursal3 = $("#sucursal3").val();
     var cuenta3 = $("#cuenta3").val();
     var clabe3 = $("#clabe3").val();
@@ -130,22 +130,6 @@ function insertarDatos() {
     var canvas = document.getElementById('firma-canvas');
     var firma = canvas.toDataURL();
     var firmaanterior = $("#firma-actual").val();
-
-    if (idbanco == "") {
-        idbanco = '0';
-    }
-
-    if (idbanco1 == "") {
-        idbanco1 = '0';
-    }
-
-    if (idbanco2 == "") {
-        idbanco2 = '0';
-    }
-
-    if (idbanco3 == "") {
-        idbanco3 = '0';
-    }
 
     if (isnEmpty(nombre, "nombre-empresa") && isnEmpty(rfc, "rfc-empresa") && isnEmpty(razon, "razon-empresa") && isnEmpty(calle, "calle-empresa") && isnEmpty(exterior, "num-ext-empresa") && isnEmpty(colonia, "colonia-empresa") && isnEmpty(cp, "cp-empresa") && isnEmpty(idestado, "id-estado") && isnEmpty(idmunicipio, "id-municipio") && isnEmpty(pais, "pais-empresa") && isList(regimen, "regimen-empresa") && isEmail(correo, "correo-electronico") && isnEmpty(telefono, "telefono") && isnEmpty(csd, "certificado-csd") && isnEmpty(key, "archivo-key") && isnEmpty(passkey, "password-key")) {
         cargandoHide();
@@ -242,7 +226,7 @@ function editarEmpresa(idempresa) {
 function setValoresEditarEmpresa(datos) {
     // alert (datos);
     changeText("#contenedor-titulo-form-empresa", "Editar datos");
-    changeText("#btn-form-empresa", "Guardar cambios <span class='glyphicon glyphicon-floppy-disk'></span></a>");
+    changeText("#btn-form-empresa", "Guardar cambios <span class='fas fa-save'></span></a>");
     var array = datos.split("</tr>");
     var idEmpresa = array[0];
     var nombre = array[1];
@@ -357,7 +341,6 @@ function errorKEY() {
             var res = texto.substring(1, 1000);
             if (bandera == '0') {
                 alertify.error(res);
-
             } else {
                 alert(datos);
             }
@@ -601,8 +584,8 @@ function eliminarEmpresa(did) {
                 if (bandera == '0') {
                     alertify.error(res);
                 } else {
-                    alertify.success('Se eliminaron correctamente los datos')
                     loadView('listaempresa');
+                    alertify.success('Se eliminaron correctamente los datos');
                 }
                 cargandoHide();
             }

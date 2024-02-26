@@ -1,33 +1,35 @@
-<form action="com.sine.enlace/enlaceempresa.php" onsubmit="return false;" id="form-empresa">
+<form action="com.sine.enlace/enlaceempresa.php" onsubmit="return false;" id="form-empresa" style="height: 100%;">
     <div class="col-md-12"><div class="titulo-lista" id="contenedor-titulo-form-empresa">Nuevos Datos de Facturacion </div> </div>
-    <div id="div-space">
-    </div>
+   
+
     <div class="div-form">
         <div class="row">
-            <div class="col-md-12 text-right">
-                <label class="mark-required text-right">*</label> <label class="label-required text-right"> Campo Obligatorio</label>
+            <div class="col-md-12 d-flex justify-content-end align-items-center">
+                <label class="mark-required ">*</label>
+                <label class="label-required">Campo Obligatorio</label>
             </div>
         </div>
+        
+        
         
         <div class="row">
             <div class="col-md-8">
             </div>
             <div class="new-tooltip icon tip col-md-2">
-                <label class="label-sub click-label" onclick="validarRFC();">Validar RFC <span class="glyphicon glyphicon-pencil"></span></label>
+                <label class="label-sub click-label" onclick="validarRFC();">Validar RFC <span class="fas fa-pencil-alt"></span></label>
                 <span class="tiptext">Se abrira una ventana directamente a la herramienta de validacion del SAT para verificar el RFC de su cliente.</span>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="nombre-empresa" >Nombre</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="nombre-empresa" >Nombre</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="nombre-empresa" name="nombre-empresa" placeholder="Nombre del Contribuyente" type="text" maxlength="100"/>
+                    <input class="form-control text-center input-form mb-3" id="nombre-empresa" name="nombre-empresa" placeholder="Nombre del Contribuyente" type="text" maxlength="100"/>
                     <div id="nombre-empresa-errors"></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <label class="label-form text-right" for="rfc-empresa" >RFC</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="rfc-empresa" >RFC</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="rfc-empresa" name="rfc-empresa" placeholder="RFC" type="text" maxlength="13"/>
                     <div id="rfc-empresa-errors"></div>
@@ -37,15 +39,15 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="razon-social" >Razon Social</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="razon-social" >Razon Social</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="razon-social" name="razon-social" placeholder="Razon social" type="text" maxlength="100"/>
+                    <input class="form-control text-center input-form mb-3" id="razon-social" name="razon-social" placeholder="Razon social" type="text" maxlength="100"/>
                     <div id="razon-social-errors"></div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="color-datos" >Color distintivo</label>
+                <label class="label-form text-right mb-2" for="color-datos" >Color distintivo</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="color-datos" name="color-datos" placeholder="Razon social" type="color" value="#ffffff"/>
                     <div id="color-datos-errors"></div>
@@ -55,15 +57,15 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="calle-empresa" >Calle</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="calle-empresa" >Calle</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="calle-empresa" name="calle-empresa" placeholder="Calle" type="text"/>
+                    <input class="form-control text-center input-form mb-3" id="calle-empresa" name="calle-empresa" placeholder="Calle" type="text"/>
                     <div id="calle-empresa-errors"></div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="num-int-empresa" >Número interior</label>
+                <label class="label-form text-right mb-2" for="num-int-empresa" >Número interior</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="num-int-empresa" name="num-int-empresa" placeholder="Número interior" type="text"/>
                     <div id="num-int-empresa-errors"></div>
@@ -73,14 +75,14 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="num-ext-empresa" >Número exterior</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="num-ext-empresa" >Número exterior</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="num-ext-empresa" name="num-ext-empresa" placeholder="Número exterior" type="text"/>
+                    <input class="form-control text-center input-form mb-3" id="num-ext-empresa" name="num-ext-empresa" placeholder="Número exterior" type="text"/>
                     <div id="num-ext-empresa-errors"></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <label class="label-form text-right" for="colonia-empresa" >Colonia</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="colonia-empresa" >Colonia</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="colonia-empresa" name="colonia-empresa" placeholder="Colonia" type="text" maxlength="100"/>
                     <div id="colonia-empresa-errors"></div>
@@ -90,16 +92,16 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="cp-empresa" >Código Postal</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="cp-empresa" >Código Postal</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="cp-empresa" name="cp-empresa" placeholder="Código Postal" type="number" onblur="getEstadoByCodP();"/>
+                    <input class="form-control text-center input-form mb-3" id="cp-empresa" name="cp-empresa" placeholder="Código Postal" type="number" onblur="getEstadoByCodP();"/>
                     <div id="cp-empresa-errors"></div>
 
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="id-estado">Estado</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="id-estado">Estado</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <select class="form-control text-center input-form" id="id-estado" name="id-estado" onchange='loadOpcionesMunicipio();'>
                         <option value="" id="option-default-estado">- - - -</option>
@@ -113,9 +115,9 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="id-municipio">Municipio</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="id-municipio">Municipio</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <select class="form-control text-center input-form" id="id-municipio" name="id-municipio" >
+                    <select class="form-control text-center input-form mb-3" id="id-municipio" name="id-municipio" >
                         <option value="" id="option-default-municipio">- - - -</option>
                         <optgroup class="contenedor-municipio text-left"> </optgroup>
                     </select>
@@ -125,7 +127,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="pais-empresa" >País</label>
+                <label class="label-form text-right mb-2" for="pais-empresa" >País</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="pais-empresa" name="pais-empresa" placeholder="País" type="text" maxlength="100" value="Mexico"/>
                     <div id="pais-empresa-errors"></div>
@@ -135,23 +137,23 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="regimen-empresa" >Regimen Fiscal</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="regimen-empresa" >Regimen Fiscal</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="regimen-empresa" name="regimen-empresa" placeholder="Regimen Fiscal (Clave-Regimen Fiscal)" type="text" maxlength="100" oninput="aucompletarRegimen()"/>
+                    <input class="form-control text-center input-form mb-3" id="regimen-empresa" name="regimen-empresa" placeholder="Regimen Fiscal (Clave-Regimen Fiscal)" type="text" maxlength="100" oninput="aucompletarRegimen()"/>
                     <div id="regimen-empresa-errors"></div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="correo-electronico">Correo Electronico</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="correo-electronico">Correo Electronico</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="correo-electronico" name="correo-electronico" placeholder="Correo Electronico" type="text" />
+                    <input class="form-control text-center input-form mb-3" id="correo-electronico" name="correo-electronico" placeholder="Correo Electronico" type="text" />
                     <div id="correo-electronico-errors"></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <label class="label-form text-right" for="telefono">Telefono</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="telefono">Telefono</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="telefono" name="telefono" placeholder="Telefono contacto" type="text" />
                     <div id="telefono-errors"></div>
@@ -160,9 +162,9 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="id-banco">Banco</label>
+                <label class="label-form text-right mb-2" for="id-banco">Banco</label>
                 <div class="form-group">
-                    <select class="form-control text-center input-form" id="id-banco" name="id-banco" >
+                    <select class="form-control text-center input-form mb-3" id="id-banco" name="id-banco" >
                         <option value="" id="option-default-banco">- - - -</option>
                         <optgroup id="banco" class="contenedor-banco text-left"> </optgroup>
                     </select>
@@ -171,7 +173,7 @@
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="sucursal"> N° Sucursal </label>
+                <label class="label-form text-right mb-2" for="sucursal"> N° Sucursal </label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="sucursal" name="sucursal" placeholder="Numero de sucursal bancaria" maxlength="20" type="text"/>
                     <div id="sucursal-errors"></div>
@@ -180,15 +182,15 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="cuenta"> Cuenta </label>
+                <label class="label-form text-right mb-2" for="cuenta"> Cuenta </label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="cuenta" name="cuenta" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
+                    <input class="form-control text-center input-form mb-3" id="cuenta" name="cuenta" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
                     <div id="cuenta-errors"></div>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="clabe"> Clabe </label>
+                <label class="label-form text-right mb-2" for="clabe"> Clabe </label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="clabe" name="clabe" placeholder="Clabe Interbancaria" maxlength="18" type="text"/>
                     <div id="clabe-errors"></div>
@@ -197,18 +199,18 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="tarjeta-oxxo"> Numero de Tarjeta </label>
+                <label class="label-form text-right mb-2" for="tarjeta-oxxo"> Numero de Tarjeta </label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="tarjeta-oxxo" name="tarjeta-oxxo" placeholder="Numero de Tarjeta" type="number"/>
+                    <input class="form-control text-center input-form mb-3"  id="tarjeta-oxxo" name="tarjeta-oxxo" placeholder="Numero de Tarjeta" type="number"/>
                     <div id="tarjeta-oxxo-errors"></div>
                 </div>
             </div>
             <div class="col-md-6">
-                <label class="label-form text-right" for="tarjeta-oxxo"> Agregar/Remover Cuenta </label>
+                <label class="label-form text-right mb-2" for="tarjeta-oxxo"> Agregar/Remover Cuenta </label>
                 <div class="form-group">
                     <div class="input-group">
-                        <a class='btn button-list' id="addcuentas" title='Agregar otra cuenta' onclick='nuevoCampo();'><span class='glyphicon glyphicon-plus'></span></a>
-                        <a class='btn button-list' disabled="true" id="rmvcuentas" title='Remover cuenta' onclick='quitarCampo();'><span class='glyphicon glyphicon-minus'></span></a>
+                        <a class='btn button-list' id="addcuentas" title='Agregar otra cuenta' onclick='nuevoCampo();'><span class='fas fa-plus'></span></a>
+                        <a class='btn button-list' disabled="true" id="rmvcuentas" title='Remover cuenta' onclick='quitarCampo();'><span class='fas fa-minus'></span></a>
                     </div>
                 </div>
             </div>
@@ -216,9 +218,9 @@
         <div class="row" id="addcuentas1" hidden>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="id-banco1">Banco 2</label>
+                    <label class="label-form text-right mb-2" for="id-banco1">Banco 2</label>
                     <div class="form-group">
-                        <select class="form-control text-center input-form" id="id-banco1" name="id-banco" >
+                        <select class="form-control text-center input-form mb-3" id="id-banco1" name="id-banco" >
                             <option value="" id="option-default-banco1">- - - -</option>
                             <optgroup id="banco1" class="contenedor-banco1 text-left"> </optgroup>
                         </select>
@@ -226,7 +228,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="sucursal1"> N° Sucursal 2 </label>
+                    <label class="label-form text-right mb-2 " for="sucursal1"> N° Sucursal 2 </label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="sucursal1" name="sucursal1" placeholder="Numero de sucursal bancaria" maxlength="20" type="text" />
                         <div id="sucursal1-errors"></div>
@@ -235,15 +237,15 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="cuenta1">Cuenta 2</label>
+                    <label class="label-form text-right mb-2" for="cuenta1">Cuenta 2</label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="cuenta1" name="cuenta1" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
+                        <input class="form-control text-center input-form mb-3" id="cuenta1" name="cuenta1" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
                         <div id="cuenta1-errors"></div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="clabe1"> Clabe 2</label>
+                    <label class="label-form text-right mb-2" for="clabe1"> Clabe 2</label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="clabe1" name="clabe1" placeholder="Clabe Interbancaria" maxlength="18" type="text"/>
                         <div id="clabe1-errors"></div>
@@ -252,9 +254,9 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="tarjeta-oxxo1"> Numero de Tarjeta 2 </label>
+                    <label class="label-form text-right mb-2" for="tarjeta-oxxo1"> Numero de Tarjeta 2 </label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="tarjeta-oxxo1" name="tarjeta-oxxo1" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
+                        <input class="form-control text-center input-form mb-3" id="tarjeta-oxxo1" name="tarjeta-oxxo1" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
                         <div id="tarjeta-oxxo1-errors"></div>
                     </div>
                 </div>
@@ -263,9 +265,9 @@
         <div class="row" id="addcuentas2" hidden>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="id-banco2">Banco 3</label>
+                    <label class="label-form text-right mb-2" for="id-banco2">Banco 3</label>
                     <div class="form-group">
-                        <select class="form-control text-center input-form" id="id-banco2" name="id-banco2" >
+                        <select class="form-control text-center input-form mb-3" id="id-banco2" name="id-banco2" >
                             <option value="" id="option-default-banco2">- - - -</option>
                             <optgroup id="banco2" class="contenedor-banco2 text-left"> </optgroup>
                         </select>
@@ -274,7 +276,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="sucursal2"> N° Sucursal 3 </label>
+                    <label class="label-form text-right mb-2" for="sucursal2"> N° Sucursal 3 </label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="sucursal2" name="sucursal2" placeholder="Numero de sucursal bancaria" maxlength="20" type="text" />
                         <div id="sucursal2-errors"></div>
@@ -284,15 +286,15 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="cuenta2">Cuenta 3</label>
+                    <label class="label-form text-right mb-2" for="cuenta2">Cuenta 3</label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="cuenta2" name="cuenta2" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
+                        <input class="form-control text-center input-form mb-3" id="cuenta2" name="cuenta2" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
                         <div id="cuenta2-errors"></div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="clabe2"> Clabe 3</label>
+                    <label class="label-form text-right mb-2" for="clabe2"> Clabe 3</label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="clabe2" name="clabe2" placeholder="Clabe Interbancaria" maxlength="18" type="text"/>
                         <div id="clabe2-errors"></div>
@@ -302,9 +304,9 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="tarjeta-oxxo2"> Numero de Tarjeta 3 </label>
+                    <label class="label-form text-right mb-2" for="tarjeta-oxxo2"> Numero de Tarjeta 3 </label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="tarjeta-oxxo2" name="tarjeta-oxxo2" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
+                        <input class="form-control text-center input-form mb-3" id="tarjeta-oxxo2" name="tarjeta-oxxo2" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
                         <div id="tarjeta-oxxo2-errors"></div>
                     </div>
                 </div>
@@ -313,9 +315,9 @@
         <div class="row" id="addcuentas3" hidden>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="id-banco3">Banco 4</label>
+                    <label class="label-form text-right mb-2" for="id-banco3">Banco 4</label>
                     <div class="form-group">
-                        <select class="form-control text-center input-form" id="id-banco3" name="id-banco3" >
+                        <select class="form-control text-center input-form mb-3" id="id-banco3" name="id-banco3" >
                             <option value="" id="option-default-banco3">- - - -</option>
                             <optgroup id="banco3" class="contenedor-banco3 text-left"> </optgroup>
                         </select>
@@ -324,25 +326,25 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="sucursal3"> N° Sucursal 4 </label>
+                    <label class="label-form text-right mb-2" for="sucursal3"> N° Sucursal 4 </label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="sucursal3" name="sucursal3" placeholder="Numero de sucursal bancaria" maxlength="20" type="text" />
                         <div id="sucursal3-errors"></div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="cuenta3">Cuenta 4</label>
+                    <label class="label-form text-right mb-2" for="cuenta3">Cuenta 4</label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="cuenta3" name="cuenta" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
+                        <input class="form-control text-center input-form mb-3" id="cuenta3" name="cuenta" placeholder="Numero de cuenta bancaria" maxlength="20" type="text" />
                         <div id="cuenta3-errors"></div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="clabe3"> Clabe 4</label>
+                    <label class="label-form text-right mb-2" for="clabe3"> Clabe 4</label>
                     <div class="form-group">
                         <input class="form-control text-center input-form" id="clabe3" name="clabe3" placeholder="Clabe Interbancaria" maxlength="18" type="text"/>
                         <div id="clabe3-errors"></div>
@@ -351,31 +353,36 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form text-right" for="tarjeta-oxxo3"> Numero de Tarjeta 4 </label>
+                    <label class="label-form text-right mb-2" for="tarjeta-oxxo3"> Numero de Tarjeta 4 </label>
                     <div class="form-group">
-                        <input class="form-control text-center input-form" id="tarjeta-oxxo3" name="tarjeta-oxxo3" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
+                        <input class="form-control text-center input-form mb-3" id="tarjeta-oxxo3" name="tarjeta-oxxo3" placeholder="Numero de Tarjeta" maxlength="20" type="text"/>
                         <div id="tarjeta-oxxo3-errors"></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <label class="col-md-2 text-right"></label>
-            <label class="col-md-2 button-file" for="certificado-csd" id="label-csd" ><span class="glyphicon glyphicon-upload" ></span> Certificado CSD</label>
-            <div class="col-md-2 form-group">
-                <input class="form-control text-center input-form" id="certificado-csd" name="certificado-csd" type="file" accept=".cer" onchange="cargarCSD();" />
-                <div id="certificado-csd-errors"></div>
+            <div class="col-md-6">
+                
+                <label class="button-file  d-grid col-6 mx-auto mb-3" for="certificado-csd" id="label-csd" ><span class="fas fa-arrow-circle-up" ></span> Certificado CSD </label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form " id="certificado-csd" name="certificado-csd" type="file" accept=".cer" onchange="cargarCSD();" />
+                    <div id="certificado-csd-errors"></div>
+                </div>
             </div>
-            <label class="col-md-2 text-right"></label>
-            <label class="col-md-2 button-file" for="archivo-key" id="label-key" ><span class="glyphicon glyphicon-upload" ></span> Archivo KEY</label>
-            <div class="col-md-2 form-group">
-                <input class="form-control text-center input-form" id="archivo-key" name="archivo-key" type="file" onchange="cargarKEY();" accept=".key"/>
-                <div id="archivo-key-errors"></div>
+
+            <div class="col-md-6">
+               
+                <label class="button-file d-grid col-6 mx-auto mb-3" for="archivo-key" id="label-key" ><span class="fas fa-arrow-circle-up" ></span> Archivo KEY</label>
+                <div class="form-group">
+                    <input class="form-control text-center input-form" id="archivo-key" name="archivo-key" type="file" onchange="cargarKEY();" accept=".key"/>
+                    <div id="archivo-key-errors"></div>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label class="label-form text-right" for="password-key" >Contraseña Key</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="password-key" >Contraseña Key</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input class="form-control text-center input-form" id="password-key" name="password-key" type="password" placeholder="Contraseña del archivo KEY" autocomplete="new-password"/>
                     <div class="password-key-errors"></div>
@@ -386,21 +393,21 @@
             </div>
 
             <div class="col-md-6">
-                <label class="label-form text-right" for="firma-canvas" >Firma</label>
-                <div class="form-group" id="signature-pad" >
-                    <canvas id="firma-canvas" class="sign-canvas"></canvas>
+                <label class="label-form text-right mb-2" for="firma-canvas" >Firma</label>
+                <div class="form-group mb-3" id="signature-pad" >
+                    <canvas id="firma-canvas" class="sign-canvas "></canvas>
                 </div>
                 <div class="row">
-                    <button class="button-image" id="clear" >Limpiar <span class="glyphicon glyphicon-erase"></span></button>
-                    <button class="button-image" id="undo" >Borrar trazo <span class="glyphicon glyphicon-backward"></span></button>
+                    <button class="button-image col-md-3  " id="clear" >Limpiar <span class="fas fa-eraser"></span></button>
+                    <button class="button-image col-md-3" id="undo" >Borrar trazo <span class="fas fa-backward"></span></button>
                 </div>
             </div>
         </div>
-        
+
         <br/>
-        <div class="col-md-12 text-right"> 
-            <button class="button-form btn-danger " onclick="loadView('listaempresa');" >Cancelar <span class="glyphicon glyphicon-remove"></span></button> &nbsp;
-            <button class="button-form btn-primary " onclick="insertarDatos()" id="btn-form-empresa" >Guardar <span class="glyphicon glyphicon-floppy-disk"></span></button>
+        <div class="d-flex justify-content-end mt-3">
+            <button class="btn btn-danger me-2 " onclick="loadView('listaempresa');" >Cancelar <span class="fas fa-times"></span></button> 
+            <button class="btn btn-primary " onclick="insertarDatos()" id="btn-form-empresa" >Guardar <span class="fas fa-save"></span></button>
         </div>
         <br/><br/>
     </div>

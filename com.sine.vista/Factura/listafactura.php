@@ -11,7 +11,7 @@ include("modals.php");
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <select class="form-control input-search" id="num-reg" name="num-reg" onchange="buscarFactura()">
+                <select class="form-select input-search w-100 p-2" id="num-reg" name="num-reg" onchange="buscarFactura()">
                     <option value="10">--</option>
                     <option value="2">2</option>
                     <option value="20">20</option>

@@ -1,0 +1,217 @@
+<form action="com.sine.enlace/enlacefactura.php" onsubmit="return false;" id="form-pago">
+    <div class="col-md-12">
+        <div class="titulo-lista" id="contenedor-titulo-form-pago">Nuevo Pago </div>
+    </div>
+    <div id="div-space">
+    </div>
+    <div class="div-form p-5 border border-secondary-subtle">
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-end mb-2">
+                <label class="fw-bold text-danger small">* Campo obligatorio</label>
+            </div>
+        </div>
+        <div class="row" id="not-timbre">
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <label class="label-sub">Datos del Emisor</label>
+            </div>
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="fecha-creacion">Fecha y hora de creaci&oacute;n</label>
+                <label class="mark-required text-danger fw-bold"></label>
+                <div class="form-group">
+                    <div>
+                        <input class="form-control text-center input-form" disabled id="fecha-creacion"
+                            name="fecha-creacion" placeholder="Fecha de creaci&oacute;n" type="text" />
+                    </div>
+                    <div id="fecha-creacion-errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="folio-pago">Folio de pago</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <select class="select-control col-12 text-center px-2 input-form" id="folio-pago" name="folio-pago">
+                        <option value="" id="option-default-folio">- - - -</option>
+                        <optgroup id="foliopagos" class="contenedor-folios text-start ps-4"> </optgroup>
+                    </select>
+                    <div id="folio-pago-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="datos-facturacion">Datos de facturaci&oacute;n</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <select class="select-control col-12 text-center px-2 input-form" id="datos-facturacion"
+                        name="datos-facturacion" onchange="loadFolioPago();">
+                        <option value="" id="option-default-datos">- - - -</option>
+                        <optgroup id="contenedor-datos" class="contenedor-datos text-start"> </optgroup>
+                    </select>
+                    <div id="datos-facturacion-errors"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="rfc-emisor">RFC</label>
+                <label class="mark-required text-danger fw-bold"></label>
+                <div class="form-group">
+                    <input class="input-form text-center form-control" disabled id="rfc-emisor" name="rfc-emisor"
+                        placeholder="RFC del emisor" type="text" />
+                    <div id="rfc-emisor-errors"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="razon-emisor">Raz&oacute;n social</label>
+                <label class="mark-required text-danger fw-bold"></label>
+                <div class="form-group">
+                    <input class="input-form text-center form-control" disabled id="razon-emisor" name="razon-emisor"
+                        placeholder="Raz&oacute;n social emisor" type="text" />
+                    <div id="razon-emisor-errors"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="regimen-emisor">R&eacute;gimen fiscal</label>
+                <label class="mark-required text-danger fw-bold"></label>
+                <div class="form-group">
+                    <input class="input-form text-center form-control" disabled id="regimen-emisor"
+                        name="regimen-emisor" placeholder="R&eacute;gimen fiscal" type="text" />
+                    <div id="regimen-emisor-errors"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <label class="label-sub">Datos del Receptor</label>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end mb-2">
+                <label class="fw-bold text-danger small">* Campo obligatorio</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 py-2">
+                <div class="new-tooltip icon tip">
+                    <label class="label-form text-right" for="nombre-cliente">Cliente</label> <span
+                        class="fas fa-question-circle small text-primary-emphasis"></span>
+                    <span class="tiptext">Puede realizar la busqueda por: Nombre, Apellidos, Empresa, RFC o Raz&oacute;n
+                        social
+                        de un cliente que haya registrado previamente y el sistema cargara los datos de forma
+                        autom&aacute;tica, si no realiz&oacute; registro puede dejar este campo en blanco e ingresar los
+                        datos
+                        necesarios.</span>
+                    <label class="mark-required text-danger fw-bold"></label>
+
+                </div>
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="id-cliente">
+                    <input type="text" class="form-control input-form" id="nombre-cliente"
+                        placeholder="Buscar cliente (Nombre, Empresa, RFC o Razon social del cliente)"
+                        oninput="autocompletarCliente()">
+                    <div id="nombre-cliente-errors"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="rfc-cliente">RFC cliente</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <input type="text" class="form-control input-form" id="rfc-cliente" placeholder="RFC del cliente" />
+                    <div id="rfc-cliente-errors"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="razon-cliente">Raz&oacute;n social del cliente</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <input type="text" class="form-control input-form" id="razon-cliente"
+                        placeholder="Raz&oacute;n social del cliente" />
+                    <div id="razon-cliente-errors"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="regfiscal-cliente">Registro fiscal del cliente</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <input type="text" class="form-control input-form" id="regfiscal-cliente"
+                        placeholder="Registro fiscal del cliente" />
+                    <div id="regfiscal-cliente-errors"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 py-2">
+                <label class="label-form text-right" for="cp-cliente">C&oacute;digo postal del cliente</label> <label
+                    class="mark-required text-danger fw-bold">*</label>
+                <div class="form-group">
+                    <input type="text" class="form-control input-form" id="cp-cliente"
+                        placeholder="Codigo postal del cliente" />
+                    <div id="cp-cliente-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-3 py-2">
+                <label class="label-form text-right" for="obj-impuesto">Objeto de impuesto</label> <label
+                class="mark-required text-danger fw-bold">*</label>
+                    <select class="form-control text-center input-form" id="obj-impuesto" name="obj-impuesto">
+                        <option value="" id="option-default-datos">- - - -</option>
+                        <optgroup class="text-left">
+                            <option class="text-start ps-2" value="01-No objeto de impuesto">01 - No objeto de impuesto</option>
+                            <option class="text-start ps-2" value="02-si objeto de impuesto">02 - Si objeto de impuesto</option>
+                        </optgroup>
+                    </select>
+                    <div id="obj-impuesto-errors"></div>
+                </div>
+            <div class='col-md-1 py-2'>
+                <label class='label-form text-right' for='chfirma'>Firmar</label><label
+                class="mark-required text-danger fw-bold">&nbsp;</label>
+                <div class='form-group ps-1'>
+                    <input class='input-check' id='chfirma' name='chfirma' type='checkbox'/>
+                </div>
+                <div id='chfirma-errors'></div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <label class="label-sub">Datos de Pago</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button id="btn-nuevo-producto" type="button" class="button-modal" onclick="agregarComplemento()">
+                    <span class="fas fa-plus"></span> Agregar nuevo complemento
+                </button>
+            </div>
+        </div>
+        <div style="max-width: 100%;">
+            <div class="col-md-12 mt-3">
+                <div id="tabs" class='tabs-div'>
+
+                </div>
+            </div>
+            <div id="complementos" class="mt-2">
+
+            </div>
+        </div>
+        <div class="row col-12">
+            <div class="col-md-12 d-flex justify-content-end" id="btns">
+                <button class="button-form btn btn-danger me-2" onclick="cancelarPago();">Cancelar <span
+                        class="fas fa-times"></span></button> &nbsp;
+                <button class="button-form btn btn-primary" onclick="insertarPago();" id="btn-form-pago">Guardar <span
+                        class="fas fa-save"></span></button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="js/scriptpago.js"></script>

@@ -60,9 +60,9 @@ if (isset($_POST['transaccion'])) {
 
             $insertado = $cp->validarCodigo($p);
             if ($insertado) {
-                echo "producto registrado";
+                echo $insertado;
             } else {
-                echo "No registro  producto";
+                echo "No registrooo  producto";
             }
             break;
         case 'listaproductosaltas':

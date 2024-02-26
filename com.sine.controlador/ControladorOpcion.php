@@ -369,7 +369,7 @@ class ControladorOpcion {
         $basedatos = "sineacceso";
         $puerto = "3306";
         $mysql_user = "root";
-        $mysql_password = "S1ne15QvikXJWc";
+        $mysql_password = ""; //S1ne15QvikXJWc
         
         try {
             $db = new PDO("mysql:host=$servidor;port=$puerto;dbname=$basedatos", $mysql_user, $mysql_password);
@@ -385,7 +385,7 @@ class ControladorOpcion {
                 return "0";
             }
         } catch (PDOException $ex) {
-            echo '<e>No se puede conectar a la bd ' . $ex->getMessage();
+            echo '<e>No se puedeeeee conectar a la bd ' . $ex->getMessage();
         }
     }
     
