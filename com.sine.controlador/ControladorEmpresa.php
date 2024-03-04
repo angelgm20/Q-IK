@@ -349,7 +349,7 @@ class ControladorEmpresa {
         $insertado = $con->execute($consulta, $valores);
         return $insertado;
     }
-
+   
     public function getZonaHoraria($codpostal) {
         $dif = "0No";
         $servidor = "localhost";
@@ -668,4 +668,53 @@ class ControladorEmpresa {
         }
     }
 
+    /*public function validaPaquete() {
+        //hacer una consulta a la bd de sineacceso
+         //DESCRIPCION DEL PAQUETE PALABRA BASICO
+        //retornar cadena de texto 
+        //sera una cadena concatenada con tr
+       
+    }*/
+   
+    public function validaPaquete() {
+        $servidor = "localhost";
+        $usuario = "root";
+        $password = "";
+        $dbname = "sineacceso";
+        $conn = new mysqli($servidor, $usuario, $password, $dbname);
+        
+        if ($conn->connect_error) {
+            die("Conexión fallida: " . $conn->connect_error);
+        }
+    
+        $sql = "SELECT * FROM paquete WHERE descripcion = 'Paquete Basico de Facturacion Electronica'";
+        $result = $conn->query($sql);
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $descripcion = $row["descripcion"];
+    
+            $conn->close();
+    
+            return "Basico</tr>" . $descripcion;
+        } else {
+            $conn->close();
+            return "";
+        }
+    }
+
+   
+    
+    
+
+    
+    
+    
+   
+    
+    
+    
+
 }
+
+

@@ -93,7 +93,7 @@ class ControladorButton {
                 break;
             case "datos":
                 if ($creardatos == '1') {
-                    $btn = "<button class='button-create' onclick=\"loadView('datosempresa');\">Alta Datos <span class='lnr lnr-plus-circle icon-size'></span></button>";
+                    $btn = "<button class='button-create' onclick=\"validaPaquete();\">Alta Datos <span class='lnr lnr-plus-circle icon-size'></span></button>";
                 }
                 break;
             case 'contrato':

@@ -1,14 +1,22 @@
 <?php
-
 require_once '../com.sine.modelo/Empresa.php';
 require_once '../com.sine.controlador/ControladorEmpresa.php';
 if (isset($_POST['transaccion'])) {
     $transaccion = $_POST['transaccion'];
     switch ($transaccion) {
         case 'insertardatos':
-            $c = new Empresa();
             $cu = new ControladorEmpresa();
-            $nombre = $_POST['nombre'];
+            $datosEmpresa = obtenerdatosEmpresa();
+            $actualizado = $cu->saveDatos($datosEmpresa);
+            if ($actualizado != "") {
+                echo "Empresa insertada";
+            } else {
+                echo "0Error: no se insertó el registro";
+            }
+            break;
+            //$c = new Empresa();
+            $cu = new ControladorEmpresa();
+           /* $nombre = $_POST['nombre'];
             $rfc = strtoupper($_POST['rfc']);
             $razon = $_POST['razon'];
             $color = $_POST['color'];
@@ -48,7 +56,7 @@ if (isset($_POST['transaccion'])) {
             $clabe3 = $_POST['clabe3'];
             $oxxo3 = $_POST['oxxo3'];
             $firma = $_POST['firma'];
-            $firmaanterior = $_POST['firmaanterior'];
+            $firmaanterior = $_POST['firmaanterior']; */
 
             $carpeta = '../temporal/' . $rfc . '/';
             $csd = $carpeta . 'csd.cer';
@@ -69,7 +77,8 @@ if (isset($_POST['transaccion'])) {
             $numcert = $divide2[1] . $divide2[3] . $divide2[5] . $divide2[7] . $divide2[9] . $divide2[11] . $divide2[13] . $divide2[15] . $divide2[17] . $divide2[19] . $divide2[21] . $divide2[23] . $divide2[25] . $divide2[27] . $divide2[29] . $divide2[31] . $divide2[33] . $divide2[35] . $divide2[37] . $divide2[39];
        
 
-            $c->setNombreEmpresa($nombre);
+          
+            /*$c->setNombreEmpresa($nombre);
             $c->setRfc($rfc);
             $c->setRazonSocial($razon);
             $c->setColor($color);
@@ -113,13 +122,14 @@ if (isset($_POST['transaccion'])) {
             $c->setFirma($firma);
             $c->setFirmaanterior($firmaanterior);
 
-            $actualizado = $cu->saveDatos($c);
+            $actualizado = $cu->saveDatos(obtenerdatosEmpresa());
             if ($actualizado != "") {
                 echo print_r($actualizado);
             } else {
                 echo "0Error: no guardo el registro ";
             }
-            break;
+            break;*/
+            
         case 'listaempresa':
             $cu = new ControladorEmpresa();
             $nom = $_POST['nom'];
@@ -276,7 +286,22 @@ if (isset($_POST['transaccion'])) {
                 echo "0Error: no guardo el registro ";
             }
             break;
-        case 'execkey':
+        /*case 'actualizarempresa':
+                $cu = new ControladorEmpresa();
+                $idempresa = $_POST['idempresa'];
+                $c = obtenerdatosEmpresa();
+                $c->setIdempresa($idempresa);
+                //$firmaactual = $_POST['firmaactual'];
+                $c->setFirmaanterior($firmaactual);
+                $actualizado = $cu->actualizarDatos($c);
+                if ($actualizado != "") {
+                    echo $actualizado;
+                } else {
+                    echo "0Error: no se pudo actualizar el registro";
+                }
+                break;*/
+
+            case 'execkey':
             $cu = new ControladorEmpresa();
             $passkey = $_POST['passkey'];
             $datos = $cu->getError($passkey);
@@ -296,7 +321,84 @@ if (isset($_POST['transaccion'])) {
                 echo "no se elimino";
             }
             break;
+        case 'validaPaquete':
+            $cu = new controladorEmpresa();
+            $datos= $cu->validaPaquete();
+            echo $datos;
+        break;
+
         default:
             break;
+            
     }
+}
+
+function obtenerdatosEmpresa(){
+    $c = new Empresa();
+    $c->setNombreEmpresa($_POST['nombre']);
+    $c->setRfc($_POST['rfc']);
+    $c->setRazonSocial($_POST['razon']);
+    $c->setColor($_POST['color']);
+    $c->setCalle($_POST['calle']);
+    $c->setNumint($_POST['interior']);
+    $c->setNumext($_POST['exterior']);
+    $c->setColonia($_POST['colonia']);
+    $c->setCorreo($_POST['correo']);
+    $c->setTelefono($_POST['telefono']);
+    $c->setMunicipio($_POST['idmunicipio']);
+    $c->setEstado($_POST['idestado']);
+    $c->setPais($_POST['pais']);
+    $c->setCp($_POST['cp']);
+
+    // Establecer folio fiscal y régimen fiscal
+    $regimenFiscal = explode("-", $_POST['regimen']);
+    $folioFiscal = $regimenFiscal[0];
+    $regimen = $regimenFiscal[1];
+    $c->setFolioFiscal($folioFiscal);
+    $c->setRegimenFiscal($regimen);
+
+    $c->setIdbanco($_POST['idbanco']);
+    $c->setSucursal($_POST['sucursal']);
+    $c->setCuenta($_POST['cuenta']);
+    $c->setClabe($_POST['clabe']);
+    $c->setOxxo($_POST['oxxo']);
+    $c->setIdbanco1($_POST['idbanco1']);
+    $c->setSucursal1($_POST['sucursal1']);
+    $c->setCuenta1($_POST['cuenta1']);
+    $c->setClabe1($_POST['clabe1']);
+    $c->setOxxo1($_POST['oxxo1']);
+    $c->setIdbanco2($_POST['idbanco2']);
+    $c->setSucursal2($_POST['sucursal2']);
+    $c->setCuenta2($_POST['cuenta2']);
+    $c->setClabe2($_POST['clabe2']);
+    $c->setOxxo2($_POST['oxxo2']);
+    $c->setIdbanco3($_POST['idbanco3']);
+    $c->setSucursal3($_POST['sucursal3']);
+    $c->setCuenta3($_POST['cuenta3']);
+    $c->setClabe3($_POST['clabe3']);
+    $c->setOxxo3($_POST['oxxo3']);
+    $c->setPasscsd($_POST['passkey']);
+    $c->setFirma($_POST['firma']);
+   
+    //  lógica para obtener keyb64, csd y numcsd
+    $rfc = $_POST['rfc'];
+    $carpeta = '../temporal/' . $rfc . '/';
+    $csd = $carpeta . 'csd.cer';
+    $key = $carpeta . 'key.key';
+    $cerb64 = base64_encode(file_get_contents($csd));
+    $keyB64 = base64_encode(file_get_contents($key));
+    $numcert = file_get_contents($carpeta . 'Serial.txt');
+    $divide = explode("=", $numcert);
+    $numcert2 = $divide[1];
+    $par = str_split($numcert2);
+    $result = implode(':', $par);
+    $divide2 = explode(":", $result);
+    $numcert = $divide2[1] . $divide2[3] . $divide2[5] . $divide2[7] . $divide2[9] . $divide2[11] . $divide2[13] . $divide2[15] . $divide2[17] . $divide2[19] . $divide2[21] . $divide2[23] . $divide2[25] . $divide2[27] . $divide2[29] . $divide2[31] . $divide2[33] . $divide2[35] . $divide2[37] . $divide2[39];
+
+   // Setear valores
+    $c->setCsd($cerb64);
+    $c->setKeyB64($keyB64);
+    $c->setNumcert($numcert);
+   
+    return $c;
 }

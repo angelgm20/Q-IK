@@ -549,10 +549,12 @@ function loadOpcionesImpuestos(t) {
     });
 }
 
-function loadOpcionesEstado(idestado = "") {
+/*function loadOpcionesEstado(idestado = "") {
     //cargandoShow();
     $.ajax({
-        url: 'com.sine.enlace/enlaceopcion.php',
+        //url: 'com.sine.enlace/enlaceopcion.php',
+        url: 'CATSAT/CATSAT/com.sine.enlace/enlaceCodigopostal.php',
+
         type: 'POST',
         data: {transaccion: 'opcionesestado', idestado:idestado},
         success: function (datos) {
@@ -567,17 +569,17 @@ function loadOpcionesEstado(idestado = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
-function loadOpcionesMunicipio(idmun = "", idestado = "") {
+//ANGEL+++++++++++++++++++++
+/*function loadOpcionesMunicipio(idmun = "", idestado = "") {
     cargandoHide();
     cargandoShow();
     if(idestado == ''){
         idestado = $("#id-estado").val();
     }
-    
     $.ajax({
-        url: 'com.sine.enlace/enlaceopcion.php',
+        url: 'CATSAT/CATSAT/com.sine.enlace/enlaceCodigopostal.php',
         type: 'POST',
         data: {transaccion: 'opcionesmunicipio', idestado: idestado, idmunicipio:idmun},
         success: function (datos) {
@@ -593,7 +595,7 @@ function loadOpcionesMunicipio(idmun = "", idestado = "") {
             cargandoHide();
         }
     });
-}
+}*/
 
 function loadOpcionesProveedor(idprov = "") {
     //cargandoShow();
@@ -897,7 +899,7 @@ function loadOpcionesContrato(idcontrato = "") {
     });
 }
 
-function loadOpcionesBanco(idbanco = "") {
+/*function loadOpcionesBanco(idbanco = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -915,7 +917,8 @@ function loadOpcionesBanco(idbanco = "") {
             //cargandoHide();
         }
     });
-}
+}*/
+
 
 function loadOpcionesTipoRelacion() {
     //cargandoShow();
@@ -937,7 +940,7 @@ function loadOpcionesTipoRelacion() {
     });
 }
 
-function addloadOpcionesBanco(a, idbanco = "") {
+/*function addloadOpcionesBanco(a, idbanco = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -955,7 +958,7 @@ function addloadOpcionesBanco(a, idbanco = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
 function loadOpcionesRiesgo(idriesgo = "") {
     //cargandoShow();
@@ -1914,11 +1917,11 @@ function getView(view) {
     });
 }
 
-$(function () {
+/*$(function () {
     $("#id-estado").on("change", function () {
         loadOpcionesMunicipio();
     });
-});
+});*/
 
 function loadImgPerfil(id) {
     cargandoHide();

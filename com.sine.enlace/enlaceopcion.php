@@ -96,11 +96,11 @@ if (isset($_POST['transaccion'])) {
             $datos = $co->opcionesMunicipioByEstado($id, $idmunicipio);
             echo $datos;
             break;
-        case 'opcionesbanco':
+        /*case 'opcionesbanco':
             $idbanco = $_POST['idbanco'];
             $datos = $co->opcionesBanco($idbanco);
             echo $datos;
-            break;
+            break;*/
         case 'addopcionesbanco':
             $a = $_POST['a'];
             $idbanco = $_POST['idbanco'];

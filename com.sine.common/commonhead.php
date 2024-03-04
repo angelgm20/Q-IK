@@ -15,6 +15,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/validator.min.js" charset="UTF-8"></script>
 <script src="js/script.js"></script>
+<script src="js/scriptSAT.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
 <script src="Chart/Chart.min.js"></script>
 <script src="Chart/Chart.bundle.min.js"></script>

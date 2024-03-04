@@ -1,5 +1,4 @@
 <?php
-
 require_once '../com.sine.dao/Consultas.php';
 
 class ControladorOpcion {
@@ -388,7 +387,7 @@ class ControladorOpcion {
             echo '<e>No se puedeeeee conectar a la bd ' . $ex->getMessage();
         }
     }
-    
+    //4444
     private function getEstadobyCPAUX($cp) {
         $consultado = false;
         $consultas = new Consultas();
@@ -398,7 +397,7 @@ class ControladorOpcion {
         $consultado = $consultas->getResults($consulta, $val);
         return $consultado;
     }
-    
+    //2222222
     private function getEstadobyCP($cp) {
         $eid = "";
         $datos = $this->getEstadobyCPAUX($cp);
@@ -407,7 +406,7 @@ class ControladorOpcion {
         }
         return $eid;
     }
-
+//1111111
     public function opcionesEstadoCP($cp) {
         $eid = $this->getEstadobyCP($cp);
         $opciones = $this->getEstadoClv();
@@ -421,7 +420,7 @@ class ControladorOpcion {
         }
         return $op;
     }
-
+//33333
     private function getEstadoClv() {
         $consultado = false;
         $consulta = "SELECT * FROM estado ORDER BY c_estado;";
@@ -445,7 +444,7 @@ class ControladorOpcion {
 
     private function getMunicipiosByEstado($id) {
         $consultado = false;
-        $consulta = "select * from municipio where id_estado=:idestado order by municipio asc";
+        $consulta = "select * from catalogo_municipios where c_municipio=:idestado order by municipio asc";
         $valores = array("idestado" => $id);
         $consultas = new Consultas();
         $consultado = $consultas->getResults($consulta, $valores);
@@ -465,13 +464,13 @@ class ControladorOpcion {
         return $r;
     }
 
-    private function getBancoAux() {
+    /*private function getBancoAux() {
         $consultado = false;
         $consulta = "select * from catalogo_banco order by c_banco;";
         $consultas = new Consultas();
         $consultado = $consultas->getResults($consulta, null);
         return $consultado;
-    }
+    }*/
 
     public function opcionesBanco($idbanco = "") {
         $opciones = $this->getBancoAux();
@@ -486,7 +485,7 @@ class ControladorOpcion {
         return $op;
     }
 
-    public function addopcionesBanco($a, $idbanco = "") {
+    /*public function addopcionesBanco($a, $idbanco = "") {
         $banco = $this->getBancoAux();
         $r = "";
         foreach ($banco as $bancoactual) {
@@ -497,7 +496,7 @@ class ControladorOpcion {
             $r .= "<option $selected id='" . $a . "banco" . $bancoactual['idcatalogo_banco'] . "' value='" . $bancoactual['idcatalogo_banco'] . "'>" . $bancoactual['c_banco'] . ' - ' . $bancoactual['nombre_banco'] . "</option>";
         }
         return $r;
-    }
+    }*/
 
     private function getRiesgoAux() {
         $consultado = false;
