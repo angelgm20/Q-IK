@@ -1,11 +1,18 @@
 <?php
 
 require_once '../com.sine.dao/Consultas.php';
+require_once '../com.sine.dao/ConsultasSine.php';
+
 date_default_timezone_set("America/Mexico_City");
 
 class ControladorEmpresa {
+    private $consultas;
+    private $consultasSine;
 
     function __construct() {
+        
+        $this->consultasSine = new ConsultasSine();
+        $this->consultas = new Consultas();
         
     }
 
@@ -64,7 +71,7 @@ class ControladorEmpresa {
     public function getEmpresa($condicion) {
         $consultado = false;
         $c = new Consultas();
-        $consulta = "SELECT * FROM datos_facturacion s INNER JOIN municipio m ON (s.idmunicipio=m.id_municipio) INNER JOIN estado e ON (s.idestado=e.id_estado) $condicion;";
+        $consulta = "SELECT * FROM datos_facturacion s  $condicion;";
         $consultado = $c->getResults($consulta, null);
         return $consultado;
     }
@@ -301,7 +308,7 @@ class ControladorEmpresa {
         $div = explode("</tr>", $diferencias);
         $insertado = false;
         $con = new Consultas();
-        $consulta = "INSERT INTO `datos_facturacion` VALUES (:id, :nombre, :rfc, :razon, :color, :calle, :numint, :numext, :colonia, :idmunicipio, :idestado, :pais, :cp, :clave, :regimen, :correo, :telefono, :keyb64, :csd, :numcsd, :passcsd, :idbanco, :sucursal, :cuenta, :clabe, :oxxo, :idbanco1, :sucursal1, :cuenta1, :clabe1, :oxxo1, :idbanco2, :sucursal2, :cuenta2, :clabe2, :oxxo2, :idbanco3, :sucursal3, :cuenta3, :clabe3, :oxxo3, :firma, :difhorarioverano, :difhorarioinvierno) ;";
+        $consulta = "INSERT INTO `datos_facturacion` VALUES (:id, :nombre, :rfc, :razon, :color, :calle, :numint, :numext, :colonia, :idmunicipio, :idestado, :estado, :municipio, :pais, :cp, :clave, :regimen, :correo, :telefono, :keyb64, :csd, :numcsd, :passcsd, :idbanco, :sucursal, :cuenta, :clabe, :oxxo, :idbanco1, :sucursal1, :cuenta1, :clabe1, :oxxo1, :idbanco2, :sucursal2, :cuenta2, :clabe2, :oxxo2, :idbanco3, :sucursal3, :cuenta3, :clabe3, :oxxo3, :firma, :difhorarioverano, :difhorarioinvierno) ;";
         $valores = array("id" => null,
             "nombre" => $c->getNombreEmpresa(),
             "rfc" => $c->getRfc(),
@@ -313,6 +320,8 @@ class ControladorEmpresa {
             "colonia" => $c->getColonia(),
             "idmunicipio" => $c->getMunicipio(),
             "idestado" => $c->getEstado(),
+            "estado"=> $c->getNombreEstado(),
+            "municipio"=> $c->getNombreMunicipio(),
             "pais" => $c->getPais(),
             "cp" => $c->getCp(),
             "clave" => $c->getFolioFiscal(),
@@ -418,18 +427,13 @@ class ControladorEmpresa {
             $numcsd = $this->getNumCSDPrevio($c->getIdempresa());
         }
 
-        /* $rfcprev = $this->getRFCPrevio($c->getIdempresa());
-          if ($c->getRfc() != $rfcprev) {
-          $mover = $this->moverArchivos($rfcprev, $c->getRfc());
-          } */
-
         $passcsd = "";
         if ($c->getPasscsd() != "") {
             $passcsd = " passcsd=:passcsd,";
         }
 
         $insertado = false;
-        $consulta = "UPDATE `datos_facturacion` SET nombre_contribuyente=:nombre, rfc=:rfc, razon_social=:razon, color=:color, calle=:calle, numero_interior=:numint, numero_exterior=:numext, colonia=:colonia, idmunicipio=:idmunicipio, idestado=:idestado, pais=:pais, codigo_postal=:cp, c_regimenfiscal=:folio, regimen_fiscal=:regimen, correodatos=:correo, telefono=:telefono, keyb64=:keyb64, csd=:csd, numcsd=:numcsd,$passcsd idbanco=:idbanco, sucursal=:sucursal, cuenta=:cuenta, clabe=:clabe, tarjetaoxxo=:oxxo, idbanco1=:idbanco1, sucursal1=:sucursal1, cuenta1=:cuenta1, clabe1=:clabe1, tarjetaoxxo1=:oxxo1, idbanco2=:idbanco2, sucursal2=:sucursal2, cuenta2=:cuenta2, clabe2=:clabe2, tarjetaoxxo2=:oxxo2, idbanco3=:idbanco3, sucursal3=:sucursal3, cuenta3=:cuenta3, clabe3=:clabe3, tarjetaoxxo3=:oxxo3, firma=:firma, difhorarioverano=:difverano, difhorarioinvierno=:difinvierno WHERE id_datos=:id;);";
+        $consulta = "UPDATE `datos_facturacion` SET nombre_contribuyente=:nombre, rfc=:rfc, razon_social=:razon, color=:color, calle=:calle, numero_interior=:numint, numero_exterior=:numext, colonia=:colonia, idmunicipio=:idmunicipio, idestado=:idestado, estado=:estado, municipio=:municipio, pais=:pais, codigo_postal=:cp, c_regimenfiscal=:folio, regimen_fiscal=:regimen, correodatos=:correo, telefono=:telefono, keyb64=:keyb64, csd=:csd, numcsd=:numcsd,$passcsd idbanco=:idbanco, sucursal=:sucursal, cuenta=:cuenta, clabe=:clabe, tarjetaoxxo=:oxxo, idbanco1=:idbanco1, sucursal1=:sucursal1, cuenta1=:cuenta1, clabe1=:clabe1, tarjetaoxxo1=:oxxo1, idbanco2=:idbanco2, sucursal2=:sucursal2, cuenta2=:cuenta2, clabe2=:clabe2, tarjetaoxxo2=:oxxo2, idbanco3=:idbanco3, sucursal3=:sucursal3, cuenta3=:cuenta3, clabe3=:clabe3, tarjetaoxxo3=:oxxo3, firma=:firma, difhorarioverano=:difverano, difhorarioinvierno=:difinvierno WHERE id_datos=:id;);";
         $valores = array("nombre" => $c->getNombreEmpresa(),
             "rfc" => $c->getRfc(),
             "razon" => $c->getRazonSocial(),
@@ -440,6 +444,8 @@ class ControladorEmpresa {
             "colonia" => $c->getColonia(),
             "idmunicipio" => $c->getMunicipio(),
             "idestado" => $c->getEstado(),
+            "estado"=> $c->getNombreEstado(),
+            "municipio"=> $c->getNombreMunicipio(),
             "pais" => $c->getPais(),
             "cp" => $c->getCp(),
             "folio" => $c->getFolioFiscal(),
@@ -668,52 +674,44 @@ class ControladorEmpresa {
         }
     }
 
-    /*public function validaPaquete() {
-        //hacer una consulta a la bd de sineacceso
-         //DESCRIPCION DEL PAQUETE PALABRA BASICO
-        //retornar cadena de texto 
-        //sera una cadena concatenada con tr
-       
-    }*/
-   
+  
     public function validaPaquete() {
-        $servidor = "localhost";
-        $usuario = "root";
-        $password = "";
-        $dbname = "sineacceso";
-        $conn = new mysqli($servidor, $usuario, $password, $dbname);
-        
-        if ($conn->connect_error) {
-            die("Conexión fallida: " . $conn->connect_error);
+        session_start();
+        $idlogin = $_SESSION[sha1("idusuario")];
+        $paquete = 0;
+        $nombrePaquete= '';
+        $nRazones = 0;
+        $paqueteFinal = "Premium";
+        $consulta = "SELECT paquete FROM usuario WHERE idusuario =:id";
+        $valores = array("id"=>$idlogin);
+        $stmt = $this->consultas->getResults($consulta, $valores);
+        foreach($stmt as $rs){
+            $paquete = $rs['paquete'];
         }
-    
-        $sql = "SELECT * FROM paquete WHERE descripcion = 'Paquete Basico de Facturacion Electronica'";
-        $result = $conn->query($sql);
-    
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $descripcion = $row["descripcion"];
-    
-            $conn->close();
-    
-            return "Basico</tr>" . $descripcion;
-        } else {
-            $conn->close();
-            return "";
+
+       
+    $this->consultas= new Consultas;
+        $consultaD = "SELECT COUNT(*) ndatos FROM datos_facturacion";
+        $stmtD = $this->consultas->getResults($consultaD, NULL);
+        foreach($stmtD as $rsD){
+            $nRazones = $rsD['ndatos'];
         }
+
+
+        $consultaP = "SELECT nombre FROM paquete WHERE idpaquete =:id;";
+        $valoresP = array("id"=>$paquete);
+        $stmtP = $this->consultasSine->getResults($consultaP, $valoresP);
+        foreach($stmtP as $rsP){
+            $nombrePaquete = $rsP['nombre'];
+        }
+
+        if( str_contains($nombrePaquete, 'Basico' )){
+            $paqueteFinal = "Basico";
+        }
+
+    return "$paqueteFinal</tr>$nRazones";
     }
 
-   
-    
-    
-
-    
-    
-    
-   
-    
-    
-    
 
 }
 

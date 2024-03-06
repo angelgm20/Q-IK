@@ -306,7 +306,7 @@ require_once 'Enrutador.php';
                             </div>-->
                             <?php
                             ?>
-                            <li data-toggle='modal' data-target='#modal-contacto' class='list-element list-menu' onclick='getNombreUsuario();'><div class='marker'></div> <div class='pad'></div><label> Soporte Tecnico</label></li>
+                            <li data-bs-toggle='modal' data-bs-target='#modal-contacto' class='list-element list-menu' onclick='getNombreUsuario();'><div class='marker'></div> <div class='pad'></div><label> Soporte Tecnico</label></li>
                             <br/>
                         </div>
                     </div>

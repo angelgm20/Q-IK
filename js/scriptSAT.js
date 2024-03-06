@@ -34,11 +34,9 @@ function getEstadoByCodP(){
                 dataType: 'html',
                 data: {transaccion: 'buscarcp', cp: cp},
                 success: function (datos) {
-                    console.log(datos);
                     var array = datos.split("<tr>");
                     var estados = array[0];
                     var municipios = array[1];
-                    console.log(datos);
                     var texto = datos.toString();
                     var bandera = texto.substring(0, 1);
                     var res = texto.substring(1, 5000);
@@ -48,8 +46,14 @@ function getEstadoByCodP(){
                         cargandoHide();
                         $(".contenedor-estado").html(estados);
                         $(".contenedor-municipio").html(municipios);
+                       
+                        
+
+                        
+                        
                     }
                     cargandoHide();
+                    
                 }
             });
         }
@@ -58,7 +62,7 @@ function getEstadoByCodP(){
 
 
 function loadOpcionesEstado(idestado = "") {
-    //cargandoShow();
+    cargandoShow();
     $.ajax({
         url: '../CATSAT/CATSAT/com.sine.enlace/enlaceCodigopostal.php',
         type: 'POST',
@@ -69,7 +73,7 @@ function loadOpcionesEstado(idestado = "") {
             $(".contenedor-estado").html(datos.datos);
           
             
-            //cargandoHide();
+            cargandoHide();
         }
     });
 }

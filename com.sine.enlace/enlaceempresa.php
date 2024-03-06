@@ -1,6 +1,7 @@
 <?php
 require_once '../com.sine.modelo/Empresa.php';
 require_once '../com.sine.controlador/ControladorEmpresa.php';
+
 if (isset($_POST['transaccion'])) {
     $transaccion = $_POST['transaccion'];
     switch ($transaccion) {
@@ -166,6 +167,8 @@ if (isset($_POST['transaccion'])) {
             $colonia = $_POST['colonia'];
             $municipio = $_POST['idmunicipio'];
             $estado = $_POST['idestado'];
+            $nombrestado = $_POST['estado'];
+            $nombremunicipio = $_POST['municipio'];
             $pais = $_POST['pais'];
             $cp = $_POST['cp'];
             $regfiscal = $_POST['regimen'];
@@ -247,6 +250,8 @@ if (isset($_POST['transaccion'])) {
             $c->setMunicipio($municipio);
             $c->setEstado($estado);
             $c->setMunicipio($municipio);
+            $c->setNombreEstado($nombrestado);
+            $c->setNombreMunicipio($nombremunicipio);
             $c->setPais($pais);
             $c->setCp($cp);
             $c->setFolioFiscal($folio);
@@ -286,20 +291,7 @@ if (isset($_POST['transaccion'])) {
                 echo "0Error: no guardo el registro ";
             }
             break;
-        /*case 'actualizarempresa':
-                $cu = new ControladorEmpresa();
-                $idempresa = $_POST['idempresa'];
-                $c = obtenerdatosEmpresa();
-                $c->setIdempresa($idempresa);
-                //$firmaactual = $_POST['firmaactual'];
-                $c->setFirmaanterior($firmaactual);
-                $actualizado = $cu->actualizarDatos($c);
-                if ($actualizado != "") {
-                    echo $actualizado;
-                } else {
-                    echo "0Error: no se pudo actualizar el registro";
-                }
-                break;*/
+      
 
             case 'execkey':
             $cu = new ControladorEmpresa();
@@ -326,7 +318,6 @@ if (isset($_POST['transaccion'])) {
             $datos= $cu->validaPaquete();
             echo $datos;
         break;
-
         default:
             break;
             
@@ -347,6 +338,9 @@ function obtenerdatosEmpresa(){
     $c->setTelefono($_POST['telefono']);
     $c->setMunicipio($_POST['idmunicipio']);
     $c->setEstado($_POST['idestado']);
+    //sss
+    $c->setNombreEstado($_POST['estado']);
+    $c->setNombreMunicipio($_POST['municipio']);    
     $c->setPais($_POST['pais']);
     $c->setCp($_POST['cp']);
 

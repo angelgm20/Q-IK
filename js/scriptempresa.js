@@ -88,99 +88,6 @@ function aucompletarRegimen() {
     });
 }
 
-/*function guardarEmpresa(idempresa = null){
-    var nombre = $("#nombre-empresa").val();
-    var rfc = $("#rfc-empresa").val();
-    var razon = $("#razon-social").val();
-    var color = $("#color-datos").val();
-    var calle = $("#calle-empresa").val();
-    var interior = $("#num-int-empresa").val();
-    var exterior = $("#num-ext-empresa").val();
-    var colonia = $("#colonia-empresa").val();
-    var idestado = $("#id-estado").val();
-    var idmunicipio = $("#id-municipio").val();
-    var pais = $("#pais-empresa").val();
-    var cp = $("#cp-empresa").val();
-    var regimen = $("#regimen-empresa").val();
-    var correo = $("#correo-electronico").val();
-    var telefono = $("#telefono").val();
-    var idbanco = $("#id-banco").val();
-    var sucursal = $("#sucursal").val();
-    var cuenta = $("#cuenta").val();
-    var clabe = $("#clabe").val();
-    var oxxo = $("#tarjeta-oxxo").val();
-    var idbanco1 = $("#id-banco1").val();
-    var sucursal1 = $("#sucursal1").val();
-    var cuenta1 = $("#cuenta1").val();
-    var clabe1 = $("#clabe1").val();
-    var oxxo1 = $("#tarjeta-oxxo1").val();
-    var idbanco2 = $("#id-banco2").val();
-    var sucursal2 = $("#sucursal2").val();
-    var cuenta2 = $("#cuenta2").val();
-    var clabe2 = $("#clabe2").val();
-    var oxxo2 = $("#tarjeta-oxxo2").val();
-    var idbanco3 = $("#id-banco3").val();
-    var sucursal3 = $("#sucursal3").val();
-    var cuenta3 = $("#cuenta3").val();
-    var clabe3 = $("#clabe3").val();
-    var oxxo3 = $("#tarjeta-oxxo3").val();
-    var certificado = $("#certificado-csd").val();
-    var key = $("#archivo-key").val();
-    var passkey = $("#password-key").val();
-    var firmaactual = $("#firma-actual").val();
-    var canvas = document.getElementById('firma-canvas');
-    const blank = isCanvasBlank(canvas);
-    var firma = "";
-    if (blank) {
-        firma = "empty";
-    } else {
-        firma = canvas.toDataURL();
-    }
-
-    if (idbanco == "") {
-        idbanco = '0';
-    }
-
-    if (idbanco1 == "") {
-        idbanco1 = '0';
-    }
-
-    if (idbanco2 == "") {
-        idbanco2 = '0';
-    }
-
-    if (idbanco3 == "") {
-        idbanco3 = '0';
-    }
-
-    if (isnEmpty(nombre, "nombre-empresa") && isnEmpty(rfc, "rfc-empresa") && isnEmpty(razon, "razon-empresa") && isnEmpty(calle, "calle-empresa") && isnEmpty(exterior, "num-ext-empresa") && isnEmpty(colonia, "colonia-empresa") && isnEmpty(cp, "cp-empresa") && isnEmpty(idestado, "id-estado") && isnEmpty(idmunicipio, "id-municipio") && isnEmpty(pais, "pais-empresa") && isList(regimen, "regimen-empresa") && isEmail(correo, "correo-electronico") && isnEmpty(telefono, "telefono") && isnEmpty(csd, "certificado-csd") && isnEmpty(key, "archivo-key") && isnEmpty(passkey, "password-key")) {
-        var url = "com.sine.enlace/enlaceempresa.php";
-        var transaccion = (idempresa != null) ? "actualizarEmpresa" : "insertarDatos";
-
-        var data = {
-            nombre: nombre, rfc: rfc, razon: razon, color: color, calle: calle, interior: interior, exterior: exterior, colonia: colonia, correo: correo, telefono: telefono, cp: cp, idestado: idestado, idmunicipio: idmunicipio, pais: pais, regimen: regimen, passkey: passkey, idbanco: idbanco, sucursal: sucursal, cuenta: cuenta, clabe: clabe, oxxo: oxxo, idbanco1: idbanco1, sucursal1: sucursal1, cuenta1: cuenta1, clabe1: clabe1, oxxo1: oxxo1, idbanco2: idbanco2, sucursal2: sucursal2, cuenta2: cuenta2, clabe2: clabe2, oxxo2: oxxo2, idbanco3: idbanco3, sucursal3: sucursal3, cuenta3: cuenta3, clabe3: clabe3, oxxo3: oxxo3, firma: firma, firmaanterior: firmaanterior};
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: data,
-                success: function (datos) {
-                    var texto = datos.toString();
-                    var bandera = texto.substring(0, 1);
-                    var res = texto.substring(1, 1000);
-    
-                    if (bandera == '0') {
-                        cargandoHide();
-                        alertify.error(res);
-                    } else {
-                        cargandoHide();
-                        var mensaje = (idempresa != null) ? 'empresa actualizado.' : 'empresa registrado.';
-                        alertify.success(mensaje);
-                 }   loadView('listaempresa');    
-            } 
-        });
-    }
-}*/
-
 function insertarDatos() {
     var nombre = $("#nombre-empresa").val();
     var rfc = $("#rfc-empresa").val();
@@ -193,6 +100,8 @@ function insertarDatos() {
     var cp = $("#cp-empresa").val();
     var idestado = $("#id-estado").val();
     var idmunicipio = $("#id-municipio").val() || '0';
+    var estado = $("#id-estado option:selected").text();
+    var municipio = $("#id-municipio option:selected").text();
     var pais = $("#pais-empresa").val();
     var regimen = $("#regimen-empresa").val();
     var correo = $("#correo-electronico").val();
@@ -224,13 +133,13 @@ function insertarDatos() {
     var firma = canvas.toDataURL();
     var firmaanterior = $("#firma-actual").val();
 
-    if (isnEmpty(nombre, "nombre-empresa") && isnEmpty(rfc, "rfc-empresa") && isnEmpty(razon, "razon-empresa") && isnEmpty(calle, "calle-empresa") && isnEmpty(exterior, "num-ext-empresa") && isnEmpty(colonia, "colonia-empresa") && isnEmpty(cp, "cp-empresa") && isnEmpty(idestado, "id-estado") && isnEmpty(idmunicipio, "id-municipio") && isnEmpty(pais, "pais-empresa") && isList(regimen, "regimen-empresa") && isEmail(correo, "correo-electronico") && isnEmpty(telefono, "telefono") && isnEmpty(csd, "certificado-csd") && isnEmpty(key, "archivo-key") && isnEmpty(passkey, "password-key")) {
+    if (isnEmpty(nombre, "nombre-empresa") && isnEmpty(rfc, "rfc-empresa") && isnEmpty(razon, "razon-empresa") && isnEmpty(calle, "calle-empresa") && isnEmpty(exterior, "num-ext-empresa") && isnEmpty(colonia, "colonia-empresa") && isnEmpty(cp, "cp-empresa") && isnEmpty(estado, "id-estado") && isnEmpty(municipio, "id-municipio") && isnEmpty(pais, "pais-empresa") && isList(regimen, "regimen-empresa") && isEmail(correo, "correo-electronico") && isnEmpty(telefono, "telefono") && isnEmpty(csd, "certificado-csd") && isnEmpty(key, "archivo-key") && isnEmpty(passkey, "password-key")) {
         cargandoHide();
         cargandoShow();
         $.ajax({
             url: "com.sine.enlace/enlaceempresa.php",
             type: "POST",
-            data: {transaccion: "insertardatos", nombre: nombre, rfc: rfc, razon: razon, color: color, calle: calle, interior: interior, exterior: exterior, colonia: colonia, correo: correo, telefono: telefono, cp: cp, idestado: idestado, idmunicipio: idmunicipio, pais: pais, regimen: regimen, passkey: passkey, idbanco: idbanco, sucursal: sucursal, cuenta: cuenta, clabe: clabe, oxxo: oxxo, idbanco1: idbanco1, sucursal1: sucursal1, cuenta1: cuenta1, clabe1: clabe1, oxxo1: oxxo1, idbanco2: idbanco2, sucursal2: sucursal2, cuenta2: cuenta2, clabe2: clabe2, oxxo2: oxxo2, idbanco3: idbanco3, sucursal3: sucursal3, cuenta3: cuenta3, clabe3: clabe3, oxxo3: oxxo3, firma: firma, firmaanterior: firmaanterior},
+            data: {transaccion: "insertardatos", nombre: nombre, rfc: rfc, razon: razon, color: color, calle: calle, interior: interior, exterior: exterior, colonia: colonia, correo: correo, telefono: telefono, cp: cp, idestado: idestado, idmunicipio: idmunicipio, estado: estado, municipio: municipio, pais: pais, regimen: regimen, passkey: passkey, idbanco: idbanco, sucursal: sucursal, cuenta: cuenta, clabe: clabe, oxxo: oxxo, idbanco1: idbanco1, sucursal1: sucursal1, cuenta1: cuenta1, clabe1: clabe1, oxxo1: oxxo1, idbanco2: idbanco2, sucursal2: sucursal2, cuenta2: cuenta2, clabe2: clabe2, oxxo2: oxxo2, idbanco3: idbanco3, sucursal3: sucursal3, cuenta3: cuenta3, clabe3: clabe3, oxxo3: oxxo3, firma: firma, firmaanterior: firmaanterior},
             success: function (datos) {
                 //alert(datos);
                 var texto = datos.toString();
@@ -317,7 +226,6 @@ function editarEmpresa(idempresa) {
 }
 
 function setValoresEditarEmpresa(datos) {
-    // alert (datos);
     changeText("#contenedor-titulo-form-empresa", "Editar datos");
     changeText("#btn-form-empresa", "Guardar cambios <span class='fas fa-save'></span></a>");
     var array = datos.split("</tr>");
@@ -521,6 +429,8 @@ function actualizarEmpresa(idempresa) {
     var colonia = $("#colonia-empresa").val();
     var idestado = $("#id-estado").val();
     var idmunicipio = $("#id-municipio").val();
+    var estado = $("#id-estado option:selected").text();
+    var municipio = $("#id-municipio option:selected").text();
     var pais = $("#pais-empresa").val();
     var cp = $("#cp-empresa").val();
     var regimen = $("#regimen-empresa").val();
@@ -579,7 +489,7 @@ function actualizarEmpresa(idempresa) {
         $.ajax({
             url: "com.sine.enlace/enlaceempresa.php",
             type: "POST",
-            data: {transaccion: "actualizarempresa", idempresa: idempresa, nombre: nombre, rfc: rfc, razon: razon, color: color, calle: calle, interior: interior, exterior: exterior, colonia: colonia, cp: cp, idestado: idestado, idmunicipio: idmunicipio, pais: pais, regimen: regimen, correo: correo, telefono: telefono, certificado: certificado, key: key, passkey: passkey, idbanco: idbanco, sucursal: sucursal, cuenta: cuenta, clabe: clabe, oxxo: oxxo, idbanco1: idbanco1, sucursal1: sucursal1, cuenta1: cuenta1, clabe1: clabe1, oxxo1: oxxo1, idbanco2: idbanco2, sucursal2: sucursal2, cuenta2: cuenta2, clabe2: clabe2, oxxo2: oxxo2, idbanco3: idbanco3, sucursal3: sucursal3, cuenta3: cuenta3, clabe3: clabe3, oxxo3: oxxo3, firma: firma, firmaactual: firmaactual},
+            data: {transaccion: "actualizarempresa", idempresa: idempresa, nombre: nombre, rfc: rfc, razon: razon, color: color, calle: calle, interior: interior, exterior: exterior, colonia: colonia, cp: cp, idestado: idestado, idmunicipio: idmunicipio, estado: estado, municipio: municipio, pais: pais, regimen: regimen, correo: correo, telefono: telefono, certificado: certificado, key: key, passkey: passkey, idbanco: idbanco, sucursal: sucursal, cuenta: cuenta, clabe: clabe, oxxo: oxxo, idbanco1: idbanco1, sucursal1: sucursal1, cuenta1: cuenta1, clabe1: clabe1, oxxo1: oxxo1, idbanco2: idbanco2, sucursal2: sucursal2, cuenta2: cuenta2, clabe2: clabe2, oxxo2: oxxo2, idbanco3: idbanco3, sucursal3: sucursal3, cuenta3: cuenta3, clabe3: clabe3, oxxo3: oxxo3, firma: firma, firmaactual: firmaactual},
             success: function (datos) {
                 //alert(datos);
                 var texto = datos.toString();
@@ -635,32 +545,6 @@ function descargarArchivos(id) {
     });
 }
 
-/*function getEstadoByCodP() {
-    var cp = $("#cp-empresa").val();
-    if (cp !== "") {
-        if (isNumber(cp, "cp-empresa")) {
-            cargandoHide();
-            cargandoShow();
-            $.ajax({
-                url: "CATSAT/CATSAT/com.sine.enlace/enlaceCodigopostal.php",
-                type: 'POST',
-                data: {transaccion: 'buscarcp', cp: cp},
-                success: function (datos) {
-                    var texto = datos.toString();
-                    var bandera = texto.substring(0, 1);
-                    var res = texto.substring(1, 5000);
-                    if (bandera == 0) {
-                        alertify.error(res);
-                    } else {
-                        $(".contenedor-estado").html(datos);
-                        loadOpcionesMunicipio();
-                    }
-                    cargandoHide();
-                }
-            });
-        }
-    }
-}*/ 
 
 function eliminarEmpresa(did) {
     alertify.confirm("Al realizar esta accion se borraran tambien los archivos CSD y KEY registrados, esta seguro que desea continuar?", function () {
@@ -696,7 +580,7 @@ $.ajax({
         var paquete= div[0];
         var nrazon= div[1];
        
-            if((paquete='Basico' && nrazon<2) || paquete!='Basico' ){
+            if((paquete=='Basico' && nrazon<2) || paquete!='Basico' ){
                 loadView('datosempresa');
             }else{
                 alertify.error('el limite del paquete basico son 2 razones sociales')

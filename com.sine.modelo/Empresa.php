@@ -12,6 +12,8 @@ class Empresa {
     private $telefono;
     private $municipio;
     private $estado;
+    private $nombreEstado;
+    private $nombreMunicpio;
     private $pais;
     private $cp;
     private $folioFiscal;
@@ -94,6 +96,14 @@ class Empresa {
 
     function getEstado() {
         return $this->estado;
+    }
+
+    function getNombreEstado() {
+        return $this->nombreEstado;
+    }
+
+    function getNombreMunicipio() {
+        return $this->nombreMunicipio;
     }
 
     function getPais() {
@@ -267,6 +277,16 @@ class Empresa {
     function setEstado($estado) {
         $this->estado = $estado;
     }
+
+    function setNombreMunicipio($municipio) {
+        $this->nombreMunicipio = $municipio;
+    }
+
+    function setNombreEstado($estado) {
+        $this->nombreEstado = $estado;
+    }
+
+
 
     function setPais($pais) {
         $this->pais = $pais;
