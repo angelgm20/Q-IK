@@ -205,16 +205,21 @@ function displayIMG(id) {
                 var t = array[0];
                 var data = array[1];
                 if (t == 'd') {
+                    
                     var newTab = window.open('com.sine.imprimir/img.php?doc=' + id);
-                    newTab.document.body.innerHTML = data;
+                    newTab.document.body.innerHTML = data;    
                 } else {
-                    var newTab = window.open();
-                    newTab.document.body.innerHTML = data;
+                    
+                    $('#tabla').modal('show');
+                    $('#fotito').html(data);
                 }
             }
         }
     });
 }
+
+
+
 
 function cargarImgProducto() {
     var formData = new FormData(document.getElementById("form-producto"));
@@ -431,7 +436,7 @@ $(function () {
 
 function truncateTmpIMG() {
     $.ajax({
-        url: "com.sine.enlace/enlaceimgs.php",
+        url: "com.sine.enlace/enlacecomunicado.php",
         type: "POST",
         data: {transaccion: "cancelar"},
         success: function (datos) {
@@ -2669,8 +2674,10 @@ function enviarSoporte() {
                     alertify.error(res);
                 } else {
                     alertify.success(res);
+                    
                 }
                 cargandoHide();
+                $('#modal-contacto').modal('hide');
             }
         })
     }

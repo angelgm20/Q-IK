@@ -78,7 +78,7 @@ class ControladorImgs {
         }
         return $img;
     }
-
+//eliminar desde la tabla
     public function eliminarImgTmp($id) {
         $img = $this->getNameImg($id);
         $consultado = false;

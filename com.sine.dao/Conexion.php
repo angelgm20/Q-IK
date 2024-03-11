@@ -5,6 +5,7 @@ abstract class Conexion {
     protected $datahost;
     
     function __construct() {
+       
     }
 
     protected function conectar($archivo='configuracion.ini'){

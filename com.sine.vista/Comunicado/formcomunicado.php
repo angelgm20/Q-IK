@@ -1,3 +1,7 @@
+<?php
+include("modals.php");
+?>
+
 <form action="#" onsubmit="return false;" id="form-comunicado" style="height: 100%;">
     <div class="col-md-12"><div class="titulo-lista" id="contenedor-titulo-form-comunicado">Nuevo Comunicado </div> </div>
    
@@ -25,22 +29,24 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="label-form mb-2" for="contactos-div">Contactos</label> <label class="mark-required text-right">*</label>
+                    <label class="form-label mb-2" for="contactos-div">Contactos</label>
                     <fieldset>
                         <div class="form-group">
                             <label>
-                                <input type="radio" id="typecom1" name="typecom" value="1" checked=""> <strong>Enviar a todos los clientes</strong>
+                                <input type="radio" id="typecom1" name="typecom" class="form-check-input" value="1" checked> <strong>Enviar a todos los clientes</strong>
                             </label>
                             <label>
-                                <input type="radio" id="typecom2" name="typecom" value="2"> <strong>Seleccionar destinatarios</strong>
+                                <input type="radio" id="typecom2" name="typecom" class="form-check-input" value="2"> <strong>Seleccionar destinatarios</strong>
                             </label>
                         </div>
                     </fieldset>
-                    <div class="scrollsmall boxcontactos form-group  mb-3" id="contactos-div" hidden>
+                    <div class="scrollsmall boxcontactos form-group mb-3" id="contactos-div" style="display: none;">
+                        <!-- Aquí se mostrarán los destinatarios seleccionados -->
                     </div>
                 </div>
                 <div id="contactos-div-errors"></div>
             </div>
+            
             
 
         <div class="row">
@@ -56,7 +62,7 @@
             <div class="col-md-6">
                 <label class="label-form text-right mb-2" for="emision">Emitido en</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
-                    <input class="form-control text-center input-form" id="emision" name="emision" placeholder="Municipio y Estado de emision " type="text"/>
+                    <input class="form-control text-center input-form mt-2" id="emision" name="emision" placeholder="Municipio y Estado de emision " type="text"/>
                     <div id="emision-errors">
                     </div>
                 </div>
@@ -77,7 +83,7 @@
             <div class="col-md-2">
                 <label class="label-form text-right mb-2" for="size-txt">Tamaño</label>
                 <div class="form-group">
-                    <select class="form-select form-select-sm  w-100 p-2 mb-2 " aria-label=".form-select-sm example"  id="size-txt" name="size-txt">
+                    <select class="form-select   w-100 p-2 mb-2 " aria-label=".form-select-sm example"  id="size-txt" name="size-txt">
                         <option value="" id="option-default-size">- - - -</option>
                         <option class="text-left" value="10-4" >10</option>
                         <option class="text-left" value="11-4" >11</option>
@@ -96,17 +102,25 @@
             </div>
             <div class="col-md-4"></div>
         </div>
-        <div class="form-floating">
-            <textarea rows="15" cols="60" class="form-control"  id="texto-comunicado" style="height: 100px"></textarea>
-            <label for="floatingTextarea2">Texto a implementar</label>
-            <div id="texto-comunicado-errors"></div>
-          </div>
 
         <div class="row">
-            <div class="col-md-4 form-group">
-                <label class="label-space"></label>
+            <div class="cool-md-6">
+                <label class="label-form text-right mb-2 mt-2" for="color-txt">Redacte Mensaje</label>
+            </div>
+        </div>
+        
+        <div >
+            <textarea class="form-control input-form"  id="texto-comunicado" style="height: 300"></textarea>
+            <label for="floatingTextarea"></label>
+            <div id="texto-comunicado-errors"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-4 form-group ">
+                <label class="label-space mb-3"></label>
                 <div class="form-group">
-                    <label class="button-file text-right" for="imagen"><span class="far fa-image" ></span> Agregar Imagenes o archivos</label>
+                    <label class="button-file text-right " for="imagen"><span class="far fa-image" ></span> Agregar Imágenes o archivos</label>
                     <input class="form-control text-center upload"  id="imagen" name="imagen[]"  type="file" onchange="cargarImgCom();" multiple/>
                     <input id="filename" name="filename" type="hidden"/>
                     <div id="imagen-errors"></div>
@@ -123,14 +137,14 @@
             <div class="col-md-3"></div>
 
             <div class="col-md-1">
-                <label class="label-form text-right mb-2" for="chfirmar">Firmar</label>
+                <label class="label-form text-right mb-2 mt-3" for="chfirmar">Firmar</label>
                 <div class="form-group">
                     <input class="input-check" id="chfirmar" name="chfirmar" type="checkbox" onclick="disableDatos()"/>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="datos-facturacion">Firmado por:</label>
+                <label class="label-form text-right mb-2 mt-3" for="datos-facturacion">Firmado por:</label>
                 <div class="form-group">
                     <select class="form-select  w-100 p-2" id="datos-facturacion" name="datos-facturacion" disabled>
                         <option value="" id="option-default-datos">- - - -</option>
@@ -144,7 +158,7 @@
         <div class="row">
             <div class="d-flex justify-content-end mt-3">
                 <button class="btn btn-danger me-2 " onclick="loadView('listacomunicado');" >Cancelar <span class="fas fa-times"></span></button> 
-                <button class="btn btn-primary " onclick="insertarComunicado()" id="btn-form-comunicado" >Guardar <span class="fas fa-save"></span></button>
+                <button class="btn btn-primary " onclick="gestionarComunicado()" id="btn-form-comunicado" >Guardar <span class="fas fa-save"></span></button>
             </div>
         </div>
     </div>

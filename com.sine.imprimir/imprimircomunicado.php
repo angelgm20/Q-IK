@@ -759,6 +759,7 @@ if ($chsellar == '1') {
     }
     $pdf->TextWithRotation(25.5, 223, $divf[2] . ' ' . $msello . ' ' . $divf[0], 25.5, 0);
     $pdf->Image('../img/SelloSine2.png', $pdf->GetX(), 180, 70);
+  //FIRMA PENDIENTE
 }
 
 

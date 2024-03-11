@@ -1,3 +1,4 @@
+
 $("[name=typecom]").click(function () {
     if ($(this).val() == '1') {
         $('#contactos-div').hide('slow');
@@ -45,6 +46,7 @@ function disableDatos() {
         $("#datos-facturacion").attr('disabled', true);
     }
 }
+
 function loadContactos() {
     cargandoHide();
     cargandoShow();
@@ -87,7 +89,6 @@ function loadCategoria() {
     });
 }
 
-
 function cargarImgCom() {
     var img = $("#imagen").val();
     var formData = new FormData(document.getElementById("form-comunicado"));
@@ -106,7 +107,7 @@ function cargarImgCom() {
         });
     }
 }
-//
+
 function tablaIMG(d="") {
     $.ajax({
         url: "com.sine.enlace/enlacecomunicado.php",
@@ -154,6 +155,7 @@ function eliminarIMG(idtmp) {
 }
 
 function cargarLogoMail() {
+  
     var formData = new FormData();
     var imgInput = $("#imagen")[0].files[0]; 
     var rutaLogoMail = "temporal/tmp/";
@@ -180,8 +182,6 @@ function cargarLogoMail() {
     }
 }
 
-
-
 function aucompletarCliente() {
     $('#nombre-cliente').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=nombrecliente",
@@ -203,24 +203,21 @@ function aucompletarCorreo() {
     });
 }
 
-function insertarComunicado() {
+
+function gestionarComunicado(idcomunicado = null) {
+    var tag = $("#tag").val();
     var chcom = $("input[name=typecom]:checked").val();
     var asunto = $("#asunto").val();
     var emision = $("#emision").val();
     var color = $("#color-txt").val();
     var size = $("#size-txt").val();
     var texto = $("#texto-comunicado").val();
-    var sellar = 0;
-    if ($("#chsello").prop('checked')) {
-        sellar = 1;
-    }
-    var firma = 0;
-    if ($("#chfirmar").prop('checked')) {
-        firma = 1;
-    }
+    var sellar = $("#chsello").prop('checked') ? 1 : 0;
+    var firma = $("#chfirmar").prop('checked') ? 1 : 0;
     var iddatos = $("#datos-facturacion").val() || '0';
     var txtbd = texto.replace(new RegExp("\n", 'g'), '<corte>');
     var idcontactos = "0";
+
     if (chcom == '2') {
         var contacto = [];
         $.each($("input[name='contacto']:checked"), function () {
@@ -228,30 +225,50 @@ function insertarComunicado() {
         });
         idcontactos = contacto.join("-");
     }
-    
-    if (isnEmpty(idcontactos, "contactos-div") && isnEmpty(asunto, "asunto") && isnEmpty(emision, "emision") && isnEmpty(texto, "texto-comunicado")) {
+
+    if (isnEmpty(asunto, "asunto") &&
+        isnEmpty(emision, "emision") &&
+        isnEmpty(texto, "texto-comunicado")) {
+
         cargandoHide();
         cargandoShow();
+
+        var url = "com.sine.enlace/enlacecomunicado.php";
+        var transaccion = idcomunicado ? "actualizarcomunicado" : "insertarcomunicado";
+        var data = {
+            transaccion: transaccion,
+            idcomunicado: idcomunicado,
+            tag: tag,
+            chcom: chcom,
+            asunto: asunto,
+            emision: emision,
+            color: color,
+            size: size,
+            txtbd: txtbd,
+            idcontactos: idcontactos,
+            sellar: sellar,
+            firma: firma,
+            iddatos: iddatos
+        };
+
         $.ajax({
-            url: "com.sine.enlace/enlacecomunicado.php",
+            url: url,
             type: "POST",
-            data: {transaccion: "insertarcomunicado", asunto: asunto, emision: emision, color: color, size: size, txtbd: txtbd, chcom:chcom, idcontactos: idcontactos, sellar: sellar, firma: firma, iddatos: iddatos},
+            data: data,
             success: function (datos) {
                 var texto = datos.toString();
                 var bandera = texto.substring(0, 1);
                 var res = texto.substring(1, 1000);
                 if (bandera == '0') {
-                    cargandoHide();
                     alertify.error(res);
                 } else {
-                    cargandoHide();
-                    alertify.success('comunicado guardado');
+                    alertify.success("Comunicado " + (transaccion === 'insertarcomunicado' ? 'guardado' : 'actualizado') + " correctamente");
                     loadView('listacomunicado');
-
+                    tablaIMG();
                 }
+                cargandoHide();
             }
         });
-
     }
 }
 
@@ -333,7 +350,7 @@ function setValoresContactos(datos) {
 
 function setValoresEditarComunicado(datos) {
     changeText("#contenedor-titulo-form-comunicado", "Editar Comunicado");
-    changeText("#btn-form-comunicado", "Guardar cambios <span class='glyphicon glyphicon-floppy-disk'></span>");
+    changeText("#btn-form-comunicado", "Guardar cambios <span class='fas fa-save'></span>");
 
     var array = datos.split("</tr>");
     var idcomunicado = array[0];
@@ -390,62 +407,13 @@ function setValoresEditarComunicado(datos) {
         $("#option-default-datos").text(nombre);
     }
 
-    $("#btn-form-comunicado").attr("onclick", "actualizarComunicado(" + idcomunicado + ");");
+    $("#btn-form-comunicado").attr("onclick", "gestionarComunicado(" + idcomunicado + ");");
     if(chcom == '2'){
         $('#contactos-div').show('slow');
         window.setTimeout("setValoresContactos('" + contactos + "')", 300);
     }
 }
 
-function actualizarComunicado(idcomunicado) {
-    var tag = $("#tag").val();
-    var chcom = $("input[name=typecom]:checked").val();
-    var asunto = $("#asunto").val();
-    var emision = $("#emision").val();
-    var color = $("#color-txt").val();
-    var size = $("#size-txt").val();
-    var texto = $("#texto-comunicado").val();
-    var sellar = 0;
-    if ($("#chsello").prop('checked')) {
-        sellar = 1;
-    }
-    var firma = 0;
-    if ($("#chfirmar").prop('checked')) {
-        firma = 1;
-    }
-    var iddatos = $("#datos-facturacion").val() || '0';
-    var txtbd = texto.replace(new RegExp("\n", 'g'), '<corte>');
-    var idcontactos = "0";
-    if (chcom == '2') {
-        var contacto = [];
-        $.each($("input[name='contacto']:checked"), function () {
-            contacto.push($(this).val());
-        });
-        idcontactos = contacto.join("-");
-    }
-
-    if (isnEmpty(asunto, "asunto") && isnEmpty(emision, "emision") && isnEmpty(texto, "texto-comunicado")) {
-        $.ajax({
-            url: "com.sine.enlace/enlacecomunicado.php",
-            type: "POST",
-            data: {transaccion: "actualizarcomunicado", idcomunicado: idcomunicado, tag:tag, asunto: asunto, emision: emision, color: color, size: size, txtbd: txtbd, chcom:chcom, idcontactos: idcontactos, sellar: sellar, firma: firma, iddatos: iddatos},
-            success: function (datos) {
-                var texto = datos.toString();
-                var bandera = texto.substring(0, 1);
-                var res = texto.substring(1, 1000);
-                if (bandera == '0') {
-                    cargandoHide();
-                    alertify.error(res);
-                } else {
-                    cargandoHide();
-                    alertify.success("Comunicado Actualizado");
-                    loadView('listacomunicado');
-                }
-            }
-        });
-
-    }
-}
 
 function eliminarComunicado(idcomunicado) {
     alertify.confirm("Esta seguro que desea eliminar este comunicado?", function () {
@@ -523,3 +491,54 @@ function crearComunicado(idcomunicado) {
         }
     });
 }
+
+function canelarComunicado() {
+    $.ajax({
+        url: "com.sine.enlace/comunicado.php",
+        type: "POST",
+        data: {transaccion: "cancelar"},
+        success: function (datos) {
+            var texto = datos.toString();
+            var bandera = texto.substring(0, 1);
+            var res = texto.substring(1, 1000);
+            if (bandera == '0') {
+                alertify.error(res);
+            } else {
+                loadView('listacomunicado');
+                
+            }
+        }
+    });
+    
+}
+
+//funcio
+function tablamodal(tag) {
+    console.log(tag);
+    $('#archivo').modal('show');
+    $.ajax({
+        url: "com.sine.enlace/enlacecomunicado.php", 
+        type: "POST",
+        data: { transaccion: "modaltabla", tag:tag }, 
+        success: function (datos) {
+            console.log(datos);
+            var texto = datos.toString();
+            var bandera = texto.substring(0, 1);
+            var res = texto.substring(1, 1000);
+            if (bandera == '0') {
+                alertify.error(res);
+            } else {
+                $("#listaarchivo").html(datos);
+            }
+        }
+       
+    
+        
+    });
+}
+
+function visutab(archivo) {
+    var ruta = "./comunicado/" + archivo;
+    $('#foto embed').attr('src', ruta);
+}
+

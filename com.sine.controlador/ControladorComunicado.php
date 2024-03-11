@@ -5,11 +5,16 @@ require_once '../vendor/autoload.php';
 require_once '../com.sine.modelo/Session.php';
 
 date_default_timezone_set("America/Mexico_City");
-
+Session::start();
 class ControladorComunicado {
-
+    private $consultas;
+    //private $conexion;
+   
+    
     function __construct() {
-        
+        $this->consultas = new Consultas();
+        //$this->conexion = new Consultas();
+
     }
 
     private function getClientesbyCategoria() {
@@ -271,9 +276,11 @@ class ControladorComunicado {
                 "doc" => $imgtmp,
                 "ext" => $ext,
                 "tag" => $tag);
-            $insertado = $con->execute($consulta, $valores);
+                $consul = new Consultas();
+            $insertado = $consul->execute($consulta, $valores);
             rename('../temporal/tmp/' . $imgtmp, '../comunicado/' . $imgtmp);
         }
+
         $borrar = "DELETE FROM `tmpimg` WHERE sessionid=:id;";
         $valores3 = array("id" => $sid);
         $eliminado = $con->execute($borrar, $valores3);
@@ -281,36 +288,84 @@ class ControladorComunicado {
     }
 //angel
 
-    public function tablaIMG() {
-        $query = "SELECT * FROM tmpimg";
-        $result = $this->conexion->query($query);
+private function getTmpImg($sid) {
+    $consultado = false;
+    $consulta = "SELECT * FROM tmpimg where sessionid=:sid;";
+    $consultas = new Consultas();
+    $val = array("sid" => $sid);
+    $consultado = $consultas->getResults($consulta, $val);
+    return $consultado;
+}
 
-        $tabla = "<table>";
-        while ($row = $result->fetch_assoc()) {
-            $tabla .= "<tr>";
-            $tabla .= "<td>" . $row['idtmpimg'] . "</td>";
-            $tabla .= "<td>" . $row['tmpname'] . "</td>";
-            // Añadir más columnas según la estructura de la tabla tmpimg
-            $tabla .= "<td><button onclick='eliminarIMG(" . $row['idtmpimg'] . ")'>Eliminar</button></td>";
-            $tabla .= "</tr>";
+    public function deleteImgTmp($sid) {
+        $getimg = $this->getTmpImg($sid);
+        foreach ($getimg as $actual){
+            $fn = $actual['imgtmp'];
+            unlink("../temporal/tmp/$fn");
         }
-        $tabla .= "</table>";
-
-        return $tabla;
+        $consultado = false;
+        $consulta = "DELETE FROM tmpimg where sessionid=:sid;";
+        $consultas = new Consultas();
+        $val = array("sid" => $sid);
+        $consultado = $consultas->execute($consulta, $val);
+        return $consultado;
     }
-    
+
+    public function tablaIMG($idtmp, $d ='') {
+        $datos = "<corte>";
+        $img = $this->getTmpImg($idtmp);
+        foreach ($img as $actual) {
+            $idtmp = $actual['idtmpimg'];
+            $name = $actual['tmpname'];
+            $coldesc = "";
+            if ($d == "1") {
+                $descripcion = $actual["tmpdescripcion"];
+                $coldesc = "<td style='word-break: break-all;'><input class='form-control text-center input-sm' id='descripcion$idtmp' type='text' value='$descripcion' onblur=\"addDescripcion('$idtmp')\" placeholder='Añade un nombre o descripcion al archivo (opcional)' title='Añade un nombre o descripcion al archivo (opcional)'/> </td>";
+            }
+            $datos .= "
+                <tr>
+                    <td class='click-row' style='word-break: break-all;' data-bs-toggle='modal' data-bs-target='#tabla' onclick=\"displayIMG('$idtmp') \">$name </td>
+                    $coldesc
+                    <td><button class='btn btn-xs btn-danger' onclick='eliminarIMG($idtmp)' title='Eliminar imagen'><span class=' fas fa-times fa-sm'></span></button></td>
+                </tr>";
+        }
+
+         
+
+        return $datos;
+    }
+   
+
     public function eliminarIMG($idtmp) {
-        $query = "DELETE FROM tmpimg WHERE idtmpimg = ?";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bind_param("i", $idtmp);
-        $resultado = $stmt->execute();
+        $img = $this->getNameImg($idtmp);
+        $consultado = false;
+        $consulta = "DELETE FROM tmpimg where idtmpimg=:id;";
+        $consultas = new Consultas();
+        $val = array("id" => $idtmp);
+        $consultado = $consultas->execute($consulta, $val);
+        unlink("../temporal/tmp/$img");
+        return $consultado;
+    }
 
-        return $resultado;
+    private function getNameImg($idsession) {
+        $img = "";
+        $imgs = $this->getIMGDataAux($idsession);
+        foreach ($imgs as $actual) {
+            $img = $actual['imgtmp'];
+        }
+        return $img;
+    }
+
+    private function getIMGDataAux($idsession) {
+        $consultado = false;
+        $consulta = "SELECT * FROM tmpimg WHERE idtmpimg=:id;";
+        $consultas = new Consultas();
+        $valores = array("id" => $idsession);
+        $consultado = $consultas->getResults($consulta, $valores);
+        return $consultado;
     }
 
 
-    
-    
 
     public function getFecha() {
         $datos = "";
@@ -369,6 +424,7 @@ class ControladorComunicado {
     public function getDatosComunicado($idcomunicado) {
         $comunicado = $this->getComunicadoById($idcomunicado);
         $datos = "";
+        $sid = session_id();
         foreach ($comunicado as $comactual) {
             $idcomunicado = $comactual['idcomunicado'];
             $fechacom = $comactual['fechacom'];
@@ -390,26 +446,28 @@ class ControladorComunicado {
             }
 
             $datos = "$idcomunicado</tr>$fechacom</tr>$horacom</tr>$chcom</tr>$asunto</tr>$mensaje</tr>$tag</tr>$color</tr>$size</tr>$idcontactos</tr>$chsellar</tr>$chfirmar</tr>$iddatos</tr>$nombre</tr>$emision";
-            break;
+            
         }
+        $this->getImgsComunicado($sid, $tag);
         return $datos;
     }
 
     public function getImgsComunicado($sid, $tag) {
         $datos = "";
-        $con = new Consultas();
         $imgs = $this->getImgComAux($tag);
         foreach ($imgs as $actual) {
             $docnm = $actual['docname'];
             $file = $actual['docfile'];
             $ext = $actual['ext'];
             $insertado = false;
-            $consulta = "INSERT INTO `tmpimg` VALUES (:id, :tmpname, :imgtmp, :ext, :sid);";
+            $consulta = "INSERT INTO `tmpimg` VALUES (:id, :tmpname, :imgtmp, :ext, :tmpdescripcion, :sid);";
             $valores = array("id" => null,
                 "tmpname" => $docnm,
                 "imgtmp" => $file,
                 "ext" => $ext,
+                "tmpdescripcion" => null,
                 "sid" => $sid);
+                $con = new Consultas();
             $insertado = $con->execute($consulta, $valores);
             copy("../comunicado/$file", "../temporal/tmp/$file");
         }
@@ -557,7 +615,6 @@ class ControladorComunicado {
         if ($REF == "") {
             $condicion = " ORDER BY c.fechacom DESC";
         } else {
-            //$condicionfolio="AND  nombre LIKE '%$Nombr%' AND (d.RazonSocial LIKE '%$Razon%' OR d.Rfc LIKE '%$Razon%')  ORDER BY nombre DESC";
             $condicion = "WHERE (c.asunto LIKE '%$REF%') ORDER BY c.fechacom DESC";
         }
 
@@ -584,18 +641,18 @@ class ControladorComunicado {
                 $mes = $this->translateMonth($divideF[1]);
                 $fecha = $divideF[2] . ' - ' . $mes;
 
-                $imglist = $this->getIMGList($tag);
-
                 $datos .= "<tr>
-                        <td>$fecha - $horacom</td>
-                        <td>$asunto</td>
-                        <td align='center'><div class='dropdown'>
-                        <button class='button-list dropdown-toggle' title='Opciones'  type='button' data-bs-toggle='dropdown'><span class='fas fa-ellipsis-v'></span>
-                        <span class='caret'></span></button>
-                        <ul class='dropdown-menu dropdown-menu-right'>
-                        $imglist
+                <td>$fecha - $horacom</td>
+                <td>$asunto</td>
+                <td align='center'>
+                    <div>
+                     <button type='button' class='btn btn-outline-secondary btn-sm' onclick='tablamodal(\"" . $tag . "\")'>;
+                    <span class='fas fa-eye' ></span>
+                        </button>
+                        <ul class='btn btn-outline-secondary btn-sm'>
                         </ul>
-                        </div></td>
+                    </div>
+                </td>
                         <td align='center'><div class='dropdown'>
                         <button class='button-list dropdown-toggle' title='Opciones'  type='button' data-bs-toggle='dropdown'><span class='fas fa-ellipsis-v'></span>
                         <span class='caret'></span></button>
@@ -636,15 +693,34 @@ class ControladorComunicado {
         return $consultado;
     }
 
-    private function getIMGList($tag) {
-        $datos = "";
+    public function getIMGList($tag) {
+         $datos ="<thead>
+                    <tr>
+                        <th>Nombre Archivo</th>
+                        
+                    </tr>
+                  </thead>
+                <tbody>";
+
+        $archivos = "";
         $imgs = $this->getImgComAux($tag);
         $n = 1;
-        foreach ($imgs as $actual) {
-            $did = $actual['iddoccomunicado'];
-            $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' data-bs-toggle='modal' data-bs-target='#archivo' onclick='displayFileCom($did);'>Ver arch.: $n <span class=' text-muted small far fa-eye'></span></a></li>";
+        foreach 
+        ($imgs as $actual) {
+            $nombrefoto = $actual['docname'];
+            $nombreotra = $actual['docfile'];
+           
+            $datos .= "<tr>
+            <td> 
+            <button type='button' class='btn btn-outline-secondary btn-sm' onclick='visutab(\"" . $nombreotra . "\")'>;
+            $nombrefoto
+            </button>
 
-            $n++;
+             </td>
+
+            
+            ";
+            
         }
        
         return $datos;

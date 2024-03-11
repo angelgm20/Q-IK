@@ -31,7 +31,7 @@ include("modals.php");
 
 <div class="scrollX div-bordered">
     <table class="table table-hover table-condensed table-responsive table-row table-head" id="body-lista-comunicado">
-        <thead >
+        <thead class="sin-paddding" >
             <tr>
             <th></th>
                 <th >Fecha y Hora de Creacion</th>

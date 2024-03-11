@@ -734,13 +734,13 @@ class ControladorInicio {
             $mail->Subject = utf8_decode('Soporte Tecnico Q-ik');
             $mail->isHTML(true);
             $mail->Body = $this->bodyMail($nombre, $telefono, $chwhats, $correo, $msg);
-            $mail->addAddress('dsedge23@gmail.com');
+            $mail->addAddress('angelgm.ti20@utsjr.edu.mx');
 
             if (!$mail->send()) {
                 echo '0No se envio el mensaje';
                 echo '0Mailer Error: ' . $mail->ErrorInfo;
             } else {
-                return '1Se ha enviado la factura';
+                return '1Envío de soporte técnico exitoso';
             }
         } else {
             return "0No se ha configurado un correo de envio para esta area";
@@ -761,41 +761,41 @@ class ControladorInicio {
             $whats = "(cuenta con Whatsapp)";
         }
         $message = "<html>
-    <body>
-        <table width='100%' bgcolor='#e0e0e0' cellpadding='0' cellspacing='0' border='0' style='border-radius: 25px;'>
-            <tr>
-                <td>
-                    <table align='center' width='100%' border='0' cellpadding='0' cellspacing='0' style='max-width:650px; border-radius: 20px; background-color:#fff; font-family:sans-serif;'>
-                        <thead>
-                            <tr height='80'>
-                                <th align='left' colspan='4' style='padding: 6px; background-color:#f5f5f5; border-radius: 20px; border-bottom:solid 1px #bdbdbd;' ><img src='https://q-ik.mx/Registro/img/LogoQik.png' height='100px'/></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr align='center' height='10' style='font-family:sans-serif; '>
-                                <td style='background-color:#09096B; text-align:center; border-radius: 5px;'></td>
-                            </tr>
-                            <tr>
-                                <td colspan='4' style='padding:15px;'>
-                                    <h1>Solicitud de soporte tecnico</h1>
-                                    <hr/>
-                                    <p style='font-size:15px; text-align: justify;'><b>RFC registrado:</b> $rfcuser</p>
-                                    <p style='font-size:15px; text-align: justify;'><b>Nombre del solicitante:</b> " . utf8_decode($nombre) . "</p>
-                                    <p style='font-size:15px; text-align: justify;'><b>Correo de contacto:</b> " . utf8_decode($correo) . "</p>
-                                    <p style='font-size:15px; text-align: justify;'><b>Telefono de contacto:</b> $telefono $whats</p>
-                                    <p style='font-size:15px; text-align: justify;'><b>Solicitud:</b> </p>
-                                    <p style='font-size:15px; text-align: justify;'>
-                                        " . utf8_decode($msg) . "
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </body>
-</html>";
+            <body>
+                <table width='100%' bgcolor='#e0e0e0' cellpadding='0' cellspacing='0' border='0' style='border-radius: 25px;'>
+                    <tr>
+                        <td>
+                            <table align='center' width='100%' border='0' cellpadding='0' cellspacing='0' style='max-width:650px; border-radius: 20px; background-color:#fff; font-family:sans-serif;'>
+                                <thead>
+                                    <tr height='80'>
+                                        <th align='left' colspan='4' style='padding: 6px; background-color:#f5f5f5; border-radius: 20px; border-bottom:solid 1px #bdbdbd;' ><img src='https://q-ik.mx/Registro/img/LogoQik.png' height='100px'/></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr align='center' height='10' style='font-family:sans-serif; '>
+                                        <td style='background-color:#09096B; text-align:center; border-radius: 5px;'></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='4' style='padding:15px;'>
+                                            <h1>Solicitud de soporte tecnico</h1>
+                                            <hr/>
+                                            <p style='font-size:15px; text-align: justify;'><b>RFC registrado:</b> $rfcuser</p>
+                                            <p style='font-size:15px; text-align: justify;'><b>Nombre del solicitante:</b> " . utf8_decode($nombre) . "</p>
+                                            <p style='font-size:15px; text-align: justify;'><b>Correo de contacto:</b> " . utf8_decode($correo) . "</p>
+                                            <p style='font-size:15px; text-align: justify;'><b>Telefono de contacto:</b> $telefono $whats</p>
+                                            <p style='font-size:15px; text-align: justify;'><b>Solicitud:</b> </p>
+                                            <p style='font-size:15px; text-align: justify;'>
+                                                " . utf8_decode($msg) . "
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+        </html>";
         return $message;
     }
 
