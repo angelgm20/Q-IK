@@ -2237,3 +2237,9 @@ body {
     color: #4183d7;
 }
 
+#foto .imagen-modal {
+    max-width: 100%;
+    max-height: 200px;
+}
+
+

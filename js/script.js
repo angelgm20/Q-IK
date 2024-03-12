@@ -703,7 +703,7 @@ function loadOpcionesFacturacion(id = "") {
     });
 }
 
-function loadOpcionesMetodoPago(selected = "") {
+/*function loadOpcionesMetodoPago(selected = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -721,7 +721,7 @@ function loadOpcionesMetodoPago(selected = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
 
 function loadOpcionesFormaPago(selected = "") {

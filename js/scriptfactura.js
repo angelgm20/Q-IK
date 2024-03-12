@@ -35,7 +35,7 @@ function tablaProductos(uuid = "") {
     });
 }
 
-function getTipoCambio(idmoneda = "") {
+/*function getTipoCambio(idmoneda = "") {
     cargandoHide();
     cargandoShow();
     if (idmoneda == "") {
@@ -62,7 +62,8 @@ function getTipoCambio(idmoneda = "") {
             cargandoHide();
         }
     });
-}
+}*/
+
 
 /*function addCFDI() {
     var rel = $("#tipo-relacion").val();
@@ -1534,6 +1535,7 @@ function checkFolios() {
         });
     }
 }
+
 
 function loadDatosFactura(iddatos = "") {
     cargandoShow();

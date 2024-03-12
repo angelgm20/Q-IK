@@ -514,14 +514,12 @@ function canelarComunicado() {
 
 //funcio
 function tablamodal(tag) {
-    console.log(tag);
     $('#archivo').modal('show');
     $.ajax({
         url: "com.sine.enlace/enlacecomunicado.php", 
         type: "POST",
         data: { transaccion: "modaltabla", tag:tag }, 
         success: function (datos) {
-            console.log(datos);
             var texto = datos.toString();
             var bandera = texto.substring(0, 1);
             var res = texto.substring(1, 1000);
@@ -537,8 +535,13 @@ function tablamodal(tag) {
     });
 }
 
-function visutab(archivo) {
-    var ruta = "./comunicado/" + archivo;
-    $('#foto embed').attr('src', ruta);
+function visutab(archivo, ext) {
+    var ruta = "./comunicado/" + archivo ;
+    if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="gif"){
+     $("#foto").html('<img src="'+ruta+'" width="100%"/>')
+    }else{  
+        $('#foto').html('<embed type="application/pdf" src="'+ruta+'"  width="100%" style="height: 32rem"/>');
+    }
+
 }
 

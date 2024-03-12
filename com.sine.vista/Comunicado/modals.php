@@ -7,14 +7,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="scrollX div-bordered">
-                            <table class="table table-hover table-condensed table-responsive table-row table-head" id="listaarchivo">
+                    <div class="col-md-6"  class="scrollX div-bordered">
+                        
+                            <table class="table table-hover table-condensed table-bordered table-striped tex-center" styyle=" max-width: 100%" id="listaarchivo">
                             </table> 
-                        </div>
+                        
                     </div>
                     <div class="col-md-6" id="foto">
-                        <embed src="" type="application/pdf" width="100%" height="600" />
+                       
                     </div>
                 </div>
             </div>

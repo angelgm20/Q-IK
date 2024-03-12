@@ -646,11 +646,9 @@ private function getTmpImg($sid) {
                 <td>$asunto</td>
                 <td align='center'>
                     <div>
-                     <button type='button' class='btn btn-outline-secondary btn-sm' onclick='tablamodal(\"" . $tag . "\")'>;
+                     <button type='button' class='btn btn-outline-secondary btn-sm' onclick='tablamodal(\"" . $tag . "\")'>
                     <span class='fas fa-eye' ></span>
                         </button>
-                        <ul class='btn btn-outline-secondary btn-sm'>
-                        </ul>
                     </div>
                 </td>
                         <td align='center'><div class='dropdown'>
@@ -693,7 +691,7 @@ private function getTmpImg($sid) {
         return $consultado;
     }
 
-    public function getIMGList($tag) {
+    /*public function getIMGList($tag) {
          $datos ="<thead>
                     <tr>
                         <th>Nombre Archivo</th>
@@ -708,23 +706,42 @@ private function getTmpImg($sid) {
         foreach 
         ($imgs as $actual) {
             $nombrefoto = $actual['docname'];
-            $nombreotra = $actual['docfile'];
+            $nombredoc = $actual['docfile'];
            
             $datos .= "<tr>
             <td> 
-            <button type='button' class='btn btn-outline-secondary btn-sm' onclick='visutab(\"" . $nombreotra . "\")'>;
-            $nombrefoto
-            </button>
-
-             </td>
-
-            
-            ";
-            
+                <button type='button' class='btn btn-outline-secondary btn-sm' onclick='visutab(\"" . $nombredoc . "\")'>
+                    $nombrefoto
+                </button>
+            </td>
+        </tr>";
         }
-       
+        return $datos;
+    }*/
+
+    public function getIMGList($tag) {
+        $datos ="<thead>
+                   
+                </thead>
+                <tbody>";
+    
+        $archivos = "";
+        $imgs = $this->getImgComAux($tag);
+        foreach ($imgs as $actual) {
+            $nombrefoto = $actual['docname'];
+            $nombredoc = $actual['docfile'];
+            $ext = $actual['ext'];
+            
+            $datos .= "<tr>
+                        <td  onclick='visutab(\"$nombredoc\",\"$ext\")'>$nombrefoto</td>
+                      </tr>";
+        }
+        $datos .= "</tbody>";
+           
         return $datos;
     }
+    
+    
 
     public function getCategoria() {
         $consultado = false;
