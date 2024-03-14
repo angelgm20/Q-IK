@@ -318,6 +318,7 @@ function insertarProductoFactura() {
         });
     }
 }
+
 //autocompletar-----------------
 function aucompletarRegimen() {
     $('#regfiscal-cliente').autocomplete({
@@ -328,7 +329,7 @@ function aucompletarRegimen() {
     });
 }
 
-function aucompletarCatalogo() {
+/*function aucompletarCatalogo() {
     $('#clave-fiscal').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catfiscal",
         appendTo: "#nuevo-producto",
@@ -337,9 +338,9 @@ function aucompletarCatalogo() {
             var id = ui.item.id;
         }
     });
-}
+}*/
 
-function aucompletarUnidad() {
+/*function aucompletarUnidad() {
     $('#clave-unidad').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catunidad",
         appendTo: "#nuevo-producto",
@@ -349,7 +350,7 @@ function aucompletarUnidad() {
             var id = ui.item.id;
         }
     });
-}
+}*/
 
 function autocompletarCliente() {
     
@@ -377,7 +378,7 @@ function autocompletarCliente() {
     });
 }
 
-function autocompletarCFiscal() {
+/*function autocompletarCFiscal() {
     $('#editar-cfiscal').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catfiscal",
         appendTo: "#editar-producto",
@@ -386,9 +387,9 @@ function autocompletarCFiscal() {
             var id = ui.item.id;
         }
     });
-}
+}*/
 
-function autocompletarCUnidad() {
+/*function autocompletarCUnidad() {
     $('#editar-cunidad').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=catunidad",
         appendTo: "#editar-producto",
@@ -398,7 +399,7 @@ function autocompletarCUnidad() {
             var id = ui.item.id;
         }
     });
-}
+}*/
 //----------------------------------
 //calcular
 function calcularImporteEditar() {
@@ -710,10 +711,12 @@ function agregarObservaciones() {
 function checkMetodopago() {
     var idmetodopago = $("#id-metodo-pago").val();
     if (idmetodopago == '2') {
-        $('#formapago6').prop('selected', true);
+        loadOpcionesFormaPago(99);
+        //$('#formapago6').prop('selected', true);
         $("#id-forma-pago").prop('disabled', true);
     } else {
-        $('#formapago6').removeAttr('selected');
+        $("#id-forma-pago").val("");
+        //$('#formapago6').removeAttr('selected');
         $("#id-forma-pago").removeAttr('disabled');
     }
 }
@@ -1352,7 +1355,6 @@ function setValoresEditarFactura(datos) {
 }
 
 
-
 function eliminarFactura(idFactura) {
     alertify.confirm("Esta seguro que desea eliminar esta factura?", function () {
         cargandoHide();
@@ -1946,7 +1948,7 @@ function enviarfactura() {
                     alertify.error(res);
                 } else {
                     $("#enviarmail").modal('hide');
-                    alertify.success('res');
+                    alertify.success('correo enviado correctamente');
                 }
                 cargandoHide();
             }

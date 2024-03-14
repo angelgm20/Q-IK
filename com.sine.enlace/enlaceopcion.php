@@ -29,7 +29,7 @@ if (isset($_POST['transaccion'])) {
             $datos = $co->opcionesMetodoPago($selected);
             echo $datos;
             break;
-        case 'opcionesformapago':
+        /*case 'opcionesformapago':
             $selected = $_POST['selected'];
             $datos = $co->opcionesFormaPago('', $selected);
             echo $datos;
@@ -39,13 +39,13 @@ if (isset($_POST['transaccion'])) {
             $condicion = "where c_pago !='99'";
             $datos = $co->opcionesFormaPago($condicion, $selected);
             echo $datos;
-            break;
+            break;*/
         case 'opcionesmoneda':
             $idmoneda = $_POST['idmoneda'];
             $datos = $co->opcionesMoneda($idmoneda);
             echo $datos;
             break;
-        case 'opcionesusocfdi':
+        /*case 'opcionesusocfdi':
             $iduso = $_POST['iduso'];
             $datos = $co->opcionesUsoCFDI($iduso);
             echo $datos;
@@ -54,7 +54,7 @@ if (isset($_POST['transaccion'])) {
             $id = $_POST['id'];
             $datos = $co->opcionesComprobante($id);
             echo $datos;
-            break;
+            break;*/
         case 'opcionesproveedor':
             $idproveedor = $_POST['idprov'];
             $datos = $co->opcionesProveedor($idproveedor);
@@ -124,13 +124,13 @@ if (isset($_POST['transaccion'])) {
             $datos = $co->opcionesUsuario();
             echo $datos;
             break;
-        /*case 'opcionesfolio':
+        case 'opcionesfolio':
             $id = $_POST['id'];
     		$serie = $_POST['serie'];
             $folio = $_POST['folio'];
             $datos = $co->opcionesFolios($id, $folio,  $serie );
             echo $datos;
-            break;*/
+            break;
         case 'correolist':
             $datos = $co->opcionesCorreoList();
             echo $datos;
@@ -144,10 +144,10 @@ if (isset($_POST['transaccion'])) {
             $datos = $co->opcionesImpuestos($t);
             echo $datos;
             break;
-        case 'opcionesrelacion':
+        /*case 'opcionesrelacion':
             $datos = $co->opcionesTipoRelacion();
             echo $datos;
-            break;
+            break;*/
         case 'periodoglobal':
             $id = $_POST['id'];
             $datos = $co->opcionesPeriodoGlobal($id);

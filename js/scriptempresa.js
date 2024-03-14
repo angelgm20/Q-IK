@@ -78,7 +78,7 @@ function quitarCampo() {
         $("#rmvcuentas").attr('disabled', true);
     }
 }
-
+/*
 function aucompletarRegimen() {
     $('#regimen-empresa').autocomplete({
         source: "com.sine.enlace/enlaceautocompletar.php?transaccion=regimenfiscal",
@@ -87,6 +87,7 @@ function aucompletarRegimen() {
         }
     });
 }
+*/
 
 function insertarDatos() {
     var nombre = $("#nombre-empresa").val();

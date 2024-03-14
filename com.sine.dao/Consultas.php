@@ -3,9 +3,10 @@ require 'Conexion.php';
 class Consultas extends Conexion {
 
     private $conexion;
-
+    
     function __construct() {
         $this->conexion = parent::conectar();
+        return $this->conexion;
     }
 
     public function execute($consulta, $valores) {
@@ -19,18 +20,21 @@ class Consultas extends Conexion {
                 }
             }
             try {
+
                 if (!$statement->execute()) {
-                    throw new Exception('No puede ejecutar la consulta. ' . implode(', ', $statement->errorInfo()));
+                    echo '0' . var_dump($statement->errorInfo());
+                } else {
+                    $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $statement->closeCursor();
+                    $resultado = true;
                 }
-                $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (PDOException $evento) {
-                throw new Exception('Error en la ejecución de la consulta. ' . $evento->getMessage());
-            } finally {
-                $statement->closeCursor();
-                $this->conexion = null; // Cerrar la conexión
+                echo "0No puede ejecutar la consulta";
+                echo $evento->getMessage();
             }
         }
         return $resultado;
+        $this->conexion = null;
     }
 
     public function getResults($consulta, $valores) {
@@ -45,17 +49,16 @@ class Consultas extends Conexion {
             }
             try {
                 if (!$statement->execute()) {
-                    throw new Exception('No puede ejecutar la consulta. ' . implode(', ', $statement->errorInfo()));
+                    $resultado = "0" . $statement->errorInfo();
+                } else {
+                    $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $statement->closeCursor();
                 }
-                $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
             } catch (PDOException $evento) {
-                throw new Exception('Error en la ejecución de la consulta. ' . $evento->getMessage());
-            } finally {
-                $statement->closeCursor();
-                $this->conexion = null; // Cerrar la conexión
+                $resultado .= "0No puede ejecutar la consulta" . $evento->getMessage();
             }
         }
         return $resultado;
+        $this->conexion = null;
     }
 }
-?>

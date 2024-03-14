@@ -724,7 +724,7 @@ function loadOpcionesFacturacion(id = "") {
 }*/
 
 
-function loadOpcionesFormaPago(selected = "") {
+/*function loadOpcionesFormaPago(selected = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -762,9 +762,9 @@ function loadOpcionesFormaPago2(selected = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
-function loadOpcionesMoneda(idmoneda = "") {
+/*function loadOpcionesMoneda(idmoneda = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -802,9 +802,9 @@ function loadOpcionesUsoCFDI(iduso = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
-function loadOpcionesComprobante(id = "") {
+/*function loadOpcionesComprobante(id = "") {
     //cargandoShow();
     $.ajax({
         url: 'com.sine.enlace/enlaceopcion.php',
@@ -822,7 +822,7 @@ function loadOpcionesComprobante(id = "") {
             //cargandoHide();
         }
     });
-}
+}*/
 
 function loadOpcionesRegimen(idregimen = "") {
     //cargandoShow();
@@ -922,7 +922,7 @@ function loadOpcionesContrato(idcontrato = "") {
             //cargandoHide();
         }
     });
-}*/
+}
 
 
 function loadOpcionesTipoRelacion() {
@@ -943,7 +943,7 @@ function loadOpcionesTipoRelacion() {
             //cargandoHide();
         }
     });
-}
+}*/
 
 /*function addloadOpcionesBanco(a, idbanco = "") {
     //cargandoShow();

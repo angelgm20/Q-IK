@@ -14,8 +14,9 @@ use SWServices\SatQuery\SatQueryService as consultaCfdiSAT;
 date_default_timezone_set("America/Mexico_City");
 
 class ControladorFactura {
+    private  $consultas;
     function __construct() {
-        
+        $this->consultas = new Consultas();
     }
 
     private function getSWAccessAux() {
@@ -534,6 +535,7 @@ class ControladorFactura {
             if ($restante < 0) {
                 $datos = "0El inventario no es suficiente para agregar este producto";
             } else {
+                echo print_r($t);
                 $datos = $this->agregar($t, $chinv);
                 $inventario = $this->removerInventario($idproducto, $cantidad);
             }
@@ -1071,17 +1073,7 @@ class ControladorFactura {
 
     private function insertarFactura($f) {
         $insertado = false;
-        $fecha = getdate();
-        $d = $fecha['mday'];
-        $m = $fecha['mon'];
-        $y = $fecha['year'];
-        if ($d < 10) {
-            $d = "0$d";
-        }
-        if ($m < 10) {
-            $m = "0$m";
-        }
-        $hoy = "$y-$m-$d";
+        $hoy = date("Y-m-d");
         $tag = $this->genTag($f->getSessionid());
 
         $folios = $this->getFolio($f->getFolio());
@@ -1156,7 +1148,7 @@ class ControladorFactura {
 
     private function detalleFactura($idsession, $tag) {
         $sumador_total = 0;
-        $sumador_iva = 0;
+        $sumador_iva = 0;   
         $sumador_ret = 0;
         $sumador_descuento = 0;
         $con = new Consultas();
@@ -1700,10 +1692,10 @@ class ControladorFactura {
             "mesp" => $f->getMesperiodo(),
             "anhop" => $f->getAnoperiodo());
 
-        $insertado = $con->execute($consulta, $valores);
+        $actualizado = $con->execute($consulta, $valores);
         $datos = $this->actualizarDetalle($f->getSessionid(), $f->getTag());
         $cfdi = $this->actualizarCFDIS($f->getSessionid(), $f->getTag());
-        return $datos;
+        return $actualizado;
     }
 
     public function actualizarDetalle($idsession, $tag) {
@@ -1712,7 +1704,7 @@ class ControladorFactura {
         $sumador_iva = 0;
         $sumador_ret = 0;
         $sumador_descuento = 0;
-    	$con = new Consultas();
+    	
         $borrar = $this->eliminarFacturaAux($tag);
         $productos = $this->getTMP($idsession);
         foreach ($productos as $productoactual) {
@@ -1769,15 +1761,18 @@ class ControladorFactura {
                 "clvfiscal" => $clvfiscal,
                 "clvunidad" => $clvunidad,
                 "iddatosfactura" => $tag);
+                $con = new Consultas();
             $insertado = $con->execute($consulta2, $valores2);
         }
 
+        $con = new Consultas();
         $totaltraslados = $this->checkArray($idsession, '1');
         $totalretencion = $this->checkArray($idsession, '2');
         $borrar = "DELETE FROM `tmp` WHERE session_id=:id;";
         $valores3 = array("id" => $idsession);
         $eliminado = $con->execute($borrar, $valores3);
 
+        $con = new Consultas();
         $total_factura = ((bcdiv($sumador_total, '1', 2) + bcdiv($sumador_iva, '1', 2)) - bcdiv($sumador_ret, '1', 2)) - bcdiv($sumador_descuento, '1', 2);
         $update = "UPDATE `datos_factura` SET subtotal=:subtotal, subtotaliva=:iva, subtotalret=:ret, totaldescuentos=:totdesc, totalfactura=:total WHERE tagfactura=:tag;";
         $valores4 = array("tag" => $tag,
@@ -1792,7 +1787,7 @@ class ControladorFactura {
 
     private function actualizarCFDIS($idsession, $tag) {
         $insertado = false;
-        $con = new Consultas();
+        
         $this->eliminarCFDIAux($tag);
 
         $cfdi = $this->getTMPCFDIS($idsession);
@@ -1806,6 +1801,7 @@ class ControladorFactura {
                 "tiporel" => $tiporel,
                 "uuid" => $uuid,
                 "tag" => $tag);
+                $con = new Consultas();
             $insertado = $con->execute($consulta2, $valores2);
         }
         $cfdi = $this->deleteTMPCFDI($idsession);
