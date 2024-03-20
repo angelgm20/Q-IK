@@ -810,28 +810,6 @@ function imprimirpago(idpago) {
 }
 
 function gestionarFactura(idfactura = null) {
-    /*var folio = $("#folio").val();
-    var fecha_creacion = $("#fecha-creacion").val();
-    var idcliente = $("#id-cliente").val() || '0';
-    var cliente = $("#nombre-cliente").val();
-    var rfccliente = $("#rfc-cliente").val();
-    var razoncliente = $("#razon-cliente").val();
-    var regfiscal = $("#regfiscal-cliente").val();
-    var dircliente = $("#direccion-cliente").val();
-    var codpostal = $("#cp-cliente").val();
-    var tipoComprobante = $("#tipo-comprobante").val();
-    var idformapago = $("#id-forma-pago").val();
-    var idmetodopago = $("#id-metodo-pago").val();
-    var idmoneda = $("#id-moneda").val();
-    var tcambio = $("#tipo-cambio").val();
-    var iduso = $("#id-uso").val();
-    var iddatosF = $("#datos-facturacion").val();
-    var periodicidad = $("#periodicidad-factura").val();
-    var mesperiodo = $("#mes-periodo").val();
-    var anhoperiodo = $("#anho-periodo").val();
-    var idcotizacion = $("#idcotizacion").val() || '0';
-    var cfdis = 0;
-    var chfirma = 0;*/
     var folio = $("#folio").val();
     var fecha_creacion = $("#fecha-creacion").val();
     var iddatosF = $("#datos-facturacion").val();
