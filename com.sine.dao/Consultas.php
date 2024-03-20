@@ -10,6 +10,7 @@ class Consultas extends Conexion {
     }
 
     public function execute($consulta, $valores) {
+        
         $resultado = false;
         $statement = $this->conexion->prepare($consulta);
         if ($statement) {
@@ -24,6 +25,7 @@ class Consultas extends Conexion {
                 if (!$statement->execute()) {
                     echo '0' . var_dump($statement->errorInfo());
                 } else {
+                   
                     $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
                     $statement->closeCursor();
                     $resultado = true;
@@ -49,8 +51,10 @@ class Consultas extends Conexion {
             }
             try {
                 if (!$statement->execute()) {
+
                     $resultado = "0" . $statement->errorInfo();
                 } else {
+                    
                     $resultado = $statement->fetchAll(PDO::FETCH_ASSOC);
                     $statement->closeCursor();
                 }

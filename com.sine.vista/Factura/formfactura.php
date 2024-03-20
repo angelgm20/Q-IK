@@ -280,21 +280,28 @@ include("buscarProductos.php");
                 <table class="table table-hover table-condensed table-responsive table-row table-head">
                 <thead>
                     <tr>
-                        <th>Tipo de Relacion <span class="fas fa-sort-alpha-down"></span></th>
+                        <th>Folio <span class="fas fa-sort-alpha-down"></span></th>
                         <th>CFDI <span class="fas fa-sort-alpha-down"></span></th>
+                        <th>Tipo de Relacion <span class="fas fa-sort-alpha-down"></span></th>
                         <th>Agregar <span class="fas fa-plus"></span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="col-md-5">
-                            <select class="form-select w-100 p-2" id="tipo-relacion" name="tipo-relacion">
-                                <option value="" id="option-default-tipo-relacion">- - - -</option>
-                                <optgroup id="relacion" class="contenedor-relacion text-left"> </optgroup>
-                            </select>
+                        <td class="col-md-2">
+                                    <input type="text" class="form-control cfdi input-form" id="folio-relacion" oninput="aucompletarFactura()" placeholder="Folio">
+                                    <input type="hidden" id="type-rel" value="">
+                                    <input type="hidden" id="idfactura-rel" value="">
                         </td>
                         <td><input type="text" class="form-control cfdi input-form" id="cfdi-rel" placeholder="00000000-0000-0000-0000-000000000000"></td>
-                        <td class="text-center"><button id="btn-agregar-cfdi" class="btn button-list" onclick="addCFDI();"><span class="fas fa-plus"></span></button></td>
+                         <td class="col-md-4">
+                                    <select class="form-select w-100 p-2" id="tipo-relacion" name="tipo-relacion" >
+                                        <option value="" id="option-default-tipo-relacion">- - - -</option>
+                                        <optgroup id="relacion" class="contenedor-relacion text-left"> </optgroup>
+                                    </select>
+                        </td>
+                        <td class="text-center"><button id="btn-agregar-cfdi" class='btn button-list' onclick='addCFDI();'><span class='fas fa-plus'></span> </button></td>
+                    
                     </tr>
                 </tbody>
             </table>
@@ -330,7 +337,7 @@ include("buscarProductos.php");
         <div class="row">
         <div class="d-flex justify-content-end mt-3">  
                 <button class="btn btn-danger me-2 " onclick="cancelarFactura()" >Cancelar <span class="fas fa-times"></span></button> &nbsp;
-                <button class="btn btn-primary " onclick="insertarFactura()" id="btn-form-factura">Guardar <span class="fas fa-save"></span></button>
+                <button class="btn btn-primary " onclick="gestionarFactura()" id="btn-form-factura">Guardar <span class="fas fa-save"></span></button>
             </div>	
         </div>
     </div>

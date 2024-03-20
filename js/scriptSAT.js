@@ -139,22 +139,10 @@ function loadOpcionesFormaPago(selected = "") {
         data: {transaccion: 'opcionesformapago', selected:selected},
         success: function (datos) {
                 $(".contenedor-forma-pago").html(datos.datos);
+
         }
     });
 }
-
-/*
-function loadOpcionesFormaPago2(selected = "") {
-    $.ajax({
-        url: '../CATSAT/CATSAT/com.sine.enlace/enlaceFormaPago.php',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {transaccion: 'opcionesformapago2', selected:selected},
-        success: function (datos) {
-                $(".contenedor-forma-pago").html(datos.datos);
-        }
-    });
-}*/
 
 function getTipoCambio(idmoneda = "") {
     cargandoHide();

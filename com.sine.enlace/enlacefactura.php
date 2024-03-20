@@ -9,83 +9,42 @@ require_once '../com.sine.modelo/Session.php';
 Session::start();
 if (isset($_POST['transaccion'])) {
     $transaccion = $_POST['transaccion'];
+    $f = new Factura();
+    $cf = new ControladorFactura();
+
     switch ($transaccion) {
         case 'insertarfactura':
-            $f = new Factura();
-            $cf = new ControladorFactura();
-            $folio = $_POST['folio'];
-            $idcliente = $_POST['idcliente'];
-            $cliente = $_POST['cliente'];
-            $rfccliente = $_POST['rfccliente'];
-            $razoncliente = $_POST['razoncliente'];
-            $regfiscal = $_POST['regfiscal'];
-            $dircliente = $_POST['dircliente'];
-            $codpostal = $_POST['codpostal'];
-            $idformapago = $_POST['idformapago'];
-            $idmetodopago = $_POST['idmetodopago'];
-            $idmoneda = $_POST['idmoneda'];
-            $tcambio = $_POST['tcambio'];
-            $idusocfdi = $_POST['iduso'];
-            $tipocomprobante = $_POST['tipocomprobante'];
-            $iddatosfacturacion = $_POST['iddatosF'];
-            $chfirma = $_POST['chfirma'];
-            $cfdis = $_POST['cfdis'];
-            $periodicidad = $_POST['periodicidad'];
-            $mesperiodo = $_POST['mesperiodo'];
-            $anhoperiodo = $_POST['anhoperiodo'];
-            $idcotizacion = $_POST['idcotizacion'];
-            $sessionid = session_id();
-            
-            $search = array('-', ' ', '.', '/', ',', '_');
-            $codpostal = str_replace($search, "", $codpostal);
-
-            $f->setFolio($folio);
-            $f->setIdcliente($idcliente);
-            $f->setCliente($cliente);
-            $f->setRfccliente($rfccliente);
-            $f->setRzcliente($razoncliente);
-            $f->setRegfiscalcliente($regfiscal);
-            $f->setDircliente($dircliente);
-            $f->setCodpostal($codpostal);
-            $f->setIdformapago($idformapago);
-            $f->setIdmetodopago($idmetodopago);
-            $f->setIdmoneda($idmoneda);
-            $f->setTcambio($tcambio);
-            $f->setIdusocfdi($idusocfdi);
-            $f->setSessionid($sessionid);
-            $f->setTipocomprobante($tipocomprobante);
-            $f->setIddatosfacturacion($iddatosfacturacion);
-            $f->setPeriodicidad($periodicidad);
-            $f->setMesperiodo($mesperiodo);
-            $f->setAnoperiodo($anhoperiodo);
-            $f->setChfirmar($chfirma);
-            $f->setCfdisrel($cfdis);
-            $f->setIdcotizacion($idcotizacion);
-
-            $insertado = $cf->nuevoFactura($f);
-            if ($insertado) {
-                echo $insertado;
-            } else {
-                echo "0Error: no inserto el registro ";
-            }
+            $datosFactura = obtenerdatosFactura();
+            $insertado = $cf->nuevoFactura($datosFactura);
+            echo $insertado;    
             break;
         case 'addcfdi':
-            $t = new TMPCFDI();
-            $cf = new ControladorFactura();
-            $rel = $_POST['rel'];
-            $cfdi = $_POST['cfdi'];
-            $sessionid = session_id();
-
-            $t->setTiporel($rel);
-            $t->setUuid($cfdi);
-            $t->setSessionid($sessionid);
-            $insertado = $cf->agregarCFDI($t);
-            if ($insertado) {
-                echo $insertado;
-            } else {
-                echo "0Error: no inserto el registro ";
-            }
-            break;
+                $t = new TMPCFDI();
+                $cf = new ControladorFactura();
+                $rel = $_POST['rel'];
+                $cfdi = $_POST['cfdi'];
+                $id = $_POST['id'];
+                $folio = $_POST['folio'];
+                $type = $_POST['type'];
+                $descripcion = $_POST['descripcion'];
+                $tcomp = $_POST['tcomp'];
+                $sessionid = session_id();
+    
+                $t->setTiporel($rel);
+                $t->setUuid($cfdi);
+                $t->setIdDoc($id);
+                $t->setFolioDoc($folio);
+                $t->setType($type);
+                $t->setDescripcion($descripcion);
+                $t->setSessionid($sessionid);
+                $t->setTipoComprobante($tcomp);
+                $insertado = $cf->agregarCFDI($t);
+                if ($insertado) {
+                    echo $insertado;
+                } else {
+                    echo "0Error: no inserto el registro ";
+                }
+                break;
         case 'eliminarcfdi':
             $t = new TMPCFDI();
             $cf = new ControladorFactura();
@@ -368,66 +327,11 @@ if (isset($_POST['transaccion'])) {
             }
             break;
         case 'actualizarFactura':
-            $f = new Factura();
-            $cf = new ControladorFactura();
-            $idfactura = $_POST['idfactura'];
-            $folio = $_POST['folio'];
-            $idcliente = $_POST['idcliente'];
-            $cliente = $_POST['cliente'];
-            $rfccliente = $_POST['rfccliente'];
-            $razoncliente = $_POST['razoncliente'];
-            $regfiscal = $_POST['regfiscal'];
-            $dircliente = $_POST['dircliente'];
-            $codpostal = $_POST['codpostal'];
-            $idformapago = $_POST['idformapago'];
-            $idmetodopago = $_POST['idmetodopago'];
-            $idmoneda = $_POST['idmoneda'];
-            $tcambio = $_POST['tcambio'];
-            $idusocfdi = $_POST['iduso'];
-            $tipocomprobante = $_POST['tipocomprobante'];
-            $iddatosfacturacion = $_POST['iddatosF'];
-            $chfirmar = $_POST['chfirmar'];
-            $cfdis = $_POST['cfdis'];
-            $periodicidad = $_POST['periodicidad'];
-            $mesperiodo = $_POST['mesperiodo'];
-            $anhoperiodo = $_POST['anhoperiodo'];
-            $tag = $_POST['tag'];
-            $sessionid = session_id();
-            
-            $search = array('-', ' ', '.', '/', ',', '_');
-            $codpostal = str_replace($search, "", $codpostal);
-
-            $f->setIddatos_factura($idfactura);
-            $f->setFolio($folio);
-            $f->setIdcliente($idcliente);
-            $f->setCliente($cliente);
-            $f->setRfccliente($rfccliente);
-            $f->setRzcliente($razoncliente);
-            $f->setRegfiscalcliente($regfiscal);
-            $f->setDircliente($dircliente);
-            $f->setCodpostal($codpostal);
-            $f->setIdformapago($idformapago);
-            $f->setIdmetodopago($idmetodopago);
-            $f->setIdmoneda($idmoneda);
-            $f->setTcambio($tcambio);
-            $f->setIdusocfdi($idusocfdi);
-            $f->setSessionid($sessionid);
-            $f->setTipocomprobante($tipocomprobante);
-            $f->setIddatosfacturacion($iddatosfacturacion);
-            $f->setChfirmar($chfirmar);
-            $f->setCfdisrel($cfdis);
-            $f->setPeriodicidad($periodicidad);
-            $f->setMesperiodo($mesperiodo);
-            $f->setAnoperiodo($anhoperiodo);
-            $f->setTag($tag);
-
-            $insertado = $cf->modificarFactura($f);
-            if ($insertado) {
-                echo $insertado;
-            } else {
-                echo "0Error: no inserto el registro ";
-            }
-            break;
+                $f = obtenerDatosFactura();
+                $f->setIddatos_factura($_POST['idfactura']); 
+                $actualizado = $cf->modificarFactura($f);
+                echo $actualizado ? $actualizado : "0Error: no se actualizó la factura";
+                break;
         case 'eliminarfactura':
             $ca = new ControladorFactura();
             $idfactura = $_POST['idfactura'];
@@ -538,7 +442,8 @@ if (isset($_POST['transaccion'])) {
 
             $datos = $cf->checkInventario($t);
             if ($datos != "") {
-                echo json_encode($datos); //541
+                //echo json_encode($datos); //541
+                echo $datos;
             } else {
                 echo "0Ah ocurrido un error";
             }
@@ -842,7 +747,82 @@ if (isset($_POST['transaccion'])) {
                 echo "0Boton Activo";
             }
             break;
+        //nuevos cAMBIOS
+        case 'cargarUUID':
+            $cf = new ControladorFactura();
+            $id = $_POST['id'];
+            $type = $_POST['type'];
+            $folio = $_POST['a'];
+
+            $data = $cf->getUUIDRel($id, $type, $folio);
+            echo $data;
+            break;
+        case 'asignarmonto':
+                $cf = new ControladorFactura();
+    
+                $total = $_POST['total'];
+                $id_egreso = $_POST['id_egreso'];
+                $id_prod = $_POST['id_prod'];
+                
+                $asignado = $cf->asignarMontoCfdiRel($id_egreso, $total, $id_prod);
+                if($asignado){
+                    echo "1Monto asignado correctamente al CFDI";
+                } else {
+                    echo "0Error al relacionar monto";
+                }
+                break;
+        case 'cfdiEgreso':
+                    $cf = new ControladorFactura();
+                    $tag = $_POST['tag'];
+                    $sid = session_id();
+                    echo $egresos = $cf->cfdiEgreso($tag, $sid);
+                    break;
         default:
             break;
     }
 }
+
+function obtenerdatosFactura(){
+    $f = new Factura();
+    $sessionid = session_id(); 
+    $f->setSessionid($sessionid);
+
+    $search = array('-', ' ', '.', '/', ',', '_');
+    $codpostal = str_replace($search, "", $_POST['codpostal']);
+    
+    $f->setFolio($_POST['folio']);
+    $f->setIdcliente($_POST['idcliente']);
+    $f->setCliente($_POST['cliente']);
+    $f->setRfccliente($_POST['rfccliente']);
+    $f->setRzcliente($_POST['razoncliente']); 
+    $f->setRegfiscalcliente($_POST['regfiscal']);
+    $f->setDircliente($_POST['dircliente']);
+    $f->setCodpostal($codpostal);
+    $f->setIdformapago($_POST['idformapago']);
+    $f->setIdmetodopago($_POST['idmetodopago']);
+    $f->setIdmoneda($_POST['idmoneda']);
+    $f->setTcambio($_POST['tcambio']);
+    $f->setIdusocfdi($_POST['iduso']);
+    $f->setTipocomprobante($_POST['tipocomprobante']);
+    $f->setIddatosfacturacion($_POST['iddatosF']);
+    $f->setPeriodicidad($_POST['periodicidad']);
+    $f->setMesperiodo($_POST['mesperiodo']);
+    $f->setAnoperiodo($_POST['anhoperiodo']);
+    $f->setTag($_POST['tag']); //nuevo
+    $f->setChfirmar($_POST['chfirma']);
+    $f->setCfdisrel($_POST['cfdis']);
+    $f->setIdcotizacion($_POST['idcotizacion']);
+    //NUEVOS
+    $f->setNombremoneda($_POST['nombremoneda']);
+    $f->setNombremetodo($_POST['nombremetodo']);
+    $f->setNombrecomprobante($_POST['nombrecomprobante']);
+    $f->setNombrepago($_POST['nombrepago']);
+    return $f; 
+}
+
+
+
+
+
+
+

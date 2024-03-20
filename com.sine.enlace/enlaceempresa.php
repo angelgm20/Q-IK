@@ -4,13 +4,36 @@ require_once '../com.sine.controlador/ControladorEmpresa.php';
 
 if (isset($_POST['transaccion'])) {
     $transaccion = $_POST['transaccion'];
+    $cu = new ControladorEmpresa();
+
     switch ($transaccion) {
         case 'insertardatos':
-            $cu = new ControladorEmpresa();
-            $datosEmpresa = obtenerdatosEmpresa();
-            $actualizado = $cu->saveDatos($datosEmpresa);
+            $rfc = $_POST['rfc'];
+            $carpeta = '../temporal/' . $rfc. '/';
+            $csd = $carpeta . 'csd.cer';
+            $cerpem = $carpeta . 'csdPEM.pem';
+            $key = $carpeta . 'key.key';
+            $cerb64 = base64_encode(file_get_contents($csd));
+            $keyB64 = base64_encode(file_get_contents($key));
+
+            $shellConvertCSD = "openssl x509 -inform der -in $csd -out $cerpem";
+            shell_exec($shellConvertCSD);
+            
+            $numcert = file_get_contents($carpeta . 'Serial.txt');
+            $divide = explode("=", $numcert);
+            $numcert2 = $divide[1];
+            $par = str_split($numcert2);
+            $result = implode(':', $par);
+            $divide2 = explode(":", $result);
+            $numcert = $divide2[1] . $divide2[3] . $divide2[5] . $divide2[7] . $divide2[9] . $divide2[11] . $divide2[13] . $divide2[15] . $divide2[17] . $divide2[19] . $divide2[21] . $divide2[23] . $divide2[25] . $divide2[27] . $divide2[29] . $divide2[31] . $divide2[33] . $divide2[35] . $divide2[37] . $divide2[39];
+
+            $c = obtenerdatosEmpresa();
+            $c->setCsd($cerb64);
+            $c->setKeyB64($keyB64);
+            $c->setNumcert($numcert);
+            $actualizado = $cu->saveDatos($c);
             if ($actualizado != "") {
-                echo "Empresa insertada";
+                echo "Empresa insertada correctamente.";
             } else {
                 echo "0Error: no se insertó el registro";
             }
@@ -381,6 +404,7 @@ function obtenerdatosEmpresa(){
     $key = $carpeta . 'key.key';
     $cerb64 = base64_encode(file_get_contents($csd));
     $keyB64 = base64_encode(file_get_contents($key));
+
     $numcert = file_get_contents($carpeta . 'Serial.txt');
     $divide = explode("=", $numcert);
     $numcert2 = $divide[1];

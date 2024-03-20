@@ -15,6 +15,7 @@ date_default_timezone_set("America/Mexico_City");
 
 class ControladorFactura {
     private  $consultas;
+
     function __construct() {
         $this->consultas = new Consultas();
     }
@@ -47,7 +48,7 @@ class ControladorFactura {
         $consultado = $consultas->getResults($consulta, $valores);
         return $consultado;
     }
-
+    /*
     public function agregarCFDI($t) {
         $insertado = false;
         $consulta = "INSERT INTO `tmpcfdi` VALUES (:id, :tiporel, :uuid, :session);";
@@ -57,6 +58,39 @@ class ControladorFactura {
             "session" => $t->getSessionid());
         $con = new Consultas();
         $con->execute($consulta, $valores);
+        $datos = $this->tablaCFDI($t->getSessionid());
+        return $datos;
+    }
+    */
+    public function agregarCFDI($t) {
+        $insertado = false;
+        $consulta = "INSERT INTO tmpcfdi VALUES (:id, :tiporel, :descripcion, :uuid, :sessionid);";
+        $valores = array("id" => null,
+                         "tiporel" => $t->getTiporel(),
+                         "descripcion" => $t->getDescripcion(),
+                         "uuid" => $t->getUuid(),
+                         "sessionid" => $t->getSessionid());
+        $con = new Consultas();
+        $con->execute($consulta, $valores);
+
+        //Si se detecta que hay relacion en un egreso se pasa a la tabla de los egresos para que posterior se le agregue el monto que se le dará al egreso
+        if($t->getTipoComprobante() == 2){
+            $div = explode('-', $t->getFolioDoc());
+            $folio = $div[1];
+            $consulta = "INSERT INTO tmpegreso VALUES (:id, :id_doc, :folio_doc, :type, :uuid, :tiporel, :descripcion, :monto, :idprod, :sessionid);";
+            $valores = array("id" => null,
+                "id_doc" => $t->getIdDoc(),
+                "folio_doc" => $folio,
+                "type" => $t->getType(),
+                "uuid" => $t->getUuid(),
+                "tiporel" => $t->getTiporel(),
+                "descripcion" => $t->getDescripcion(),
+                "monto" => 0,
+                "idprod" => 0,
+                "sessionid" => $t->getSessionid());
+            $con = new Consultas();
+            $con->execute($consulta, $valores);
+        }
         $datos = $this->tablaCFDI($t->getSessionid());
         return $datos;
     }
@@ -1082,7 +1116,7 @@ class ControladorFactura {
         $letra = $Fdiv[1];
         $nfolio = $Fdiv[2];
 
-        $consulta = "INSERT INTO `datos_factura` VALUES (:id, :fecha, :rfcemisor, :rzsocial, :clvregimen, :regimen, :codp, :serie, :letra, :folio, :idcliente, :cliente, :rfcreceptor, :rzreceptor, :dirreceptor, :cpreceptor, :regfiscalreceptor, :chfirmar, :cadena, :certSAT, :certCFDI, :uuid, :selloSAT, :sellocfdi, :fechatimbrado, :qrcode, :cfdistring, :cfdicancel, :status, :idmetodopago, :idformapago, :idmoneda, :tcambio, :iduso, :tipocomprobante, :tipofactura, :iddatosfacturacion, :cfdis, :subtotal, :subiva, :subret, :totdescuentos, :total, :chperiodo, :periodocobro, :tag, :periodo, :mes, :anho);";
+        $consulta = "INSERT INTO `datos_factura` VALUES (:id, :fecha, :rfcemisor, :rzsocial, :clvregimen, :regimen, :codp, :serie, :letra, :folio, :idcliente, :cliente, :rfcreceptor, :rzreceptor, :dirreceptor, :cpreceptor, :regfiscalreceptor, :chfirmar, :cadena, :certSAT, :certCFDI, :uuid, :selloSAT, :sellocfdi, :fechatimbrado, :qrcode, :cfdistring, :cfdicancel, :status, :idmetodopago, :nombremetodo, :idformapago, :nombrepago, :idmoneda, :nombremoneda, :tcambio, :iduso, :nombrecfdi, :tipocomprobante, :nombrecomprobante, :tipofactura, :iddatosfacturacion, :cfdis, :subtotal, :subiva, :subret, :totdescuentos, :total, :chperiodo, :periodocobro, :tag, :periodo, :mes, :anho);";
         $valores = array("id" => null,
             "fecha" => $hoy,
             "rfcemisor" => '',
@@ -1131,7 +1165,15 @@ class ControladorFactura {
             "tag" => $tag,
             "periodo" => $f->getPeriodicidad(),
             "mes" => $f->getMesperiodo(),
-            "anho" => $f->getAnoperiodo());
+            "anho" => $f->getAnoperiodo(),
+            //nuevo
+            "nombremoneda"=> $f->getNombremoneda(),
+            "nombremetodo"=> $f->getNombremetodo(),
+            "nombrecomprobante"=> $f->getNombrecomprobante(), 
+            "nombrepago"=> $f->getNombrepago(),
+            "nombrecfdi"=> '0',
+        );
+
         $con = new Consultas();
         $insertado = $con->execute($consulta, $valores);
 
@@ -1648,7 +1690,6 @@ class ControladorFactura {
     public function actualizarFactura($f) {
         $actualizado = false;
         $con = new Consultas();
-
         $updfolio = "";
         $serie = "";
         $letra = "";
@@ -1662,7 +1703,7 @@ class ControladorFactura {
             $nfolio = $Fdiv[2];
         }
 
-        $consulta = "UPDATE `datos_factura` SET $updfolio idcliente=:idcliente, nombrecliente=:cliente, rfcreceptor=:rfcreceptor, rzreceptor=:rzreceptor, dircliente=:dircliente, cpreceptor=:cpreceptor, regfiscalreceptor=:regfiscalreceptor, chfirmar=:chfirmar, id_metodo_pago=:idmetodopago,id_forma_pago=:idformapago,id_moneda=:idmoneda, tcambio=:tcambio, id_uso_cfdi=:iduso,id_tipo_comprobante=:tipocomprobante, iddatosfacturacion=:iddatos, cfdisrel=:cfdisrel, periodoglobal=:periodo, mesperiodo=:mesp, anhoperiodo=:anhop WHERE iddatos_factura=:idfactura;";
+        $consulta = "UPDATE `datos_factura` SET $updfolio idcliente=:idcliente, nombrecliente=:cliente, rfcreceptor=:rfcreceptor, rzreceptor=:rzreceptor, dircliente=:dircliente, cpreceptor=:cpreceptor, regfiscalreceptor=:regfiscalreceptor, chfirmar=:chfirmar, id_metodo_pago=:idmetodopago,id_forma_pago=:idformapago,id_moneda=:idmoneda, tcambio=:tcambio, id_uso_cfdi=:iduso,id_tipo_comprobante=:tipocomprobante, iddatosfacturacion=:iddatos, cfdisrel=:cfdisrel, periodoglobal=:periodo, mesperiodo=:mesp, anhoperiodo=:anhop, moneda=:nombremoneda, metodo_pago=:nombremetodo, tipo_comprobante=:nombrecomprobante, forma_pago=:nombrepago, uso_cfdi=:nombrecfdi WHERE iddatos_factura=:idfactura;";
         $valores = array("idfactura" => $f->getIddatos_factura(),
             /*"rfc" => $rfc,
             "rzsocial" => $rzsocial,
@@ -1690,8 +1731,16 @@ class ControladorFactura {
             "cfdisrel" => $f->getCfdisrel(),
             "periodo" => $f->getPeriodicidad(),
             "mesp" => $f->getMesperiodo(),
-            "anhop" => $f->getAnoperiodo());
+            "anhop" => $f->getAnoperiodo(),
+            //nuevo
+            "nombremoneda"=> $f->getNombremoneda(),
+            "nombremetodo"=> $f->getNombremetodo(),
+            "nombrecomprobante"=> $f->getNombrecomprobante(), 
+            "nombrepago"=> $f->getNombrepago(),
+            "nombrecfdi"=> '0',
 
+        );
+        $con = new Consultas();
         $actualizado = $con->execute($consulta, $valores);
         $datos = $this->actualizarDetalle($f->getSessionid(), $f->getTag());
         $cfdi = $this->actualizarCFDIS($f->getSessionid(), $f->getTag());
@@ -3567,4 +3616,73 @@ class ControladorFactura {
                 return $datos;
             }
 
+        //nuevos CAMBIOS-----------------
+        public function getUUIDRel($id, $type, $folio){
+            $con = new Consultas();
+            $uuid = "Factuna sin timbrar";
+            if($type == 'f'){
+                $query = "SELECT uuid FROM datos_factura WHERE iddatos_factura = :id AND uuid IS NOT NULL";
+            } else if($type == 'c'){
+                $query = "SELECT uuid FROM factura_carta WHERE idfactura_carta = :id AND uuid IS NOT NULL";
+            }
+            $val = array("id" => $id);
+            $stmt = $con->getResults($query, $val);
+            foreach($stmt as $rs){
+                $uuid = $rs['uuid'];
+            }
+            return $uuid;
         }
+
+        public function asignarMontoCfdiRel($id_egreso, $total, $id_prod){
+            $con = new Consultas();
+            $query = "UPDATE tmpegreso SET monto_egreso = :monto, producto = :idprod WHERE idegreso = :id";
+            $val = array("monto" => $total, "idprod" => $id_prod, "id" => $id_egreso);
+            $insertado = $con->execute($query, $val);
+            return $insertado;
+        }
+    
+        private function getCfdiEgresos($tag) {
+            $consultado = false;
+            $consultas = new Consultas();
+            $consulta = "SELECT * FROM cfdiegreso WHERE tagfactura = :tag";
+            $val = array("tag" => $tag);
+            $consultado = $consultas->getResults($consulta, $val);
+            return $consultado;
+        }
+        
+        public function cfdiEgreso($tag, $sessionid) {
+            $n=0;
+            $productos = $this->getCfdiEgresos($tag);
+            foreach ($productos as $productoactual) {
+                $n++;
+                $iddoc = $productoactual['iddoc'];
+                $foliodoc = $productoactual['foliodoc'];
+                $type = $productoactual['type'];
+                $uuid = $productoactual['uuid'];
+                $tiporel = $productoactual['tiporel'];
+                $descrel = $productoactual['descrel'];
+                $montoegreso = $productoactual['montoegreso'];
+    
+                $consulta = "INSERT INTO tmpegreso VALUES (:id, :id_doc, :folio_doc, :type, :uuid, :tiporel, :descripcion, :monto, :idprod, :sessionid)";
+                $valores = array("id" => null,
+                    "id_doc" => $iddoc,
+                    "folio_doc" => $foliodoc,
+                    "type" => $type,
+                    "uuid" => $uuid,
+                    "tiporel" => $tiporel,
+                    "descripcion" => $descrel,
+                    "monto" => $montoegreso,
+                    "idprod" => 0,
+                    "sessionid" => $sessionid
+                );
+                $con = new Consultas();
+                $con->execute($consulta, $valores);
+            }        
+            return $n;
+        }
+    
+
+
+
+
+}
