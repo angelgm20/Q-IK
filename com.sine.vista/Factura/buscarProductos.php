@@ -135,11 +135,11 @@
                     
                     <div class="row" >
                         <div class="col-md-6 form-group">
-                            <label class="label-form text-right mb-2" for="tipo">Tipo</label> <label class="mark-required text-right">*</label>
+                            <label class="label-form  mb-2" for="tipo">Tipo</label> <label class="mark-required text-right">*</label>
                             <select class="form-select w-100 p-2 mb-3" id="tipo" name="tipo" onchange="addinventario()">
                                 <option value="" id="option-default-tipo">- - - -</option>
-                                <option class="option-list" value="1"   >Producto</option>
-                                <option class="option-list" value="2"   >Servicio</option>
+                                <option class="option-list"  value="1" id="tipo1">Producto</option>
+                                <option class="option-list" value="2" id="tipo2">Servicio</option>
                             </select>
                             <div id="tipo-errors">
                             </div>
@@ -153,9 +153,11 @@
                         </div>
                         </div>
                     
-                    <div class="row " id="inventario" >
+                    <div class="row " id="inventario" style="display: none;" >
                         <div class="col-md-4 form-group">
-                            <label class="label-form text-right mb-2" for="chinventario">Activar inventario?</label>
+                            <label class="label-form text-right mb-2" for="chinventario" id="labelinventario">Activar inventario?</label>
+                            <div id="chinventario-errors">
+                            </div>
                             <div class="input-group">
                                 <input class="input-check" id="chinventario" name="chinventario" type="checkbox" onchange="addinventario()" />
                             </div>
@@ -163,7 +165,7 @@
                         
                         <div class="col-md-4 form-group">
                             <label class="label-form text-right mb-2" for="cantidad">Cantidad</label>
-                            <input class="form-control text-center input-form" id="cantidad" disabled name="producto" placeholder="Producto" type="number" value="0" />
+                            <input class="form-control text-center input-form" id="cantidad" disabled name="producto" placeholder="Producto" type="text" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                             <div id="cantidad-errors">
                             </div>
                         </div>

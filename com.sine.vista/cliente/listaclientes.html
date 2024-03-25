@@ -1,53 +1,41 @@
-
-<div class="label-sub" id="contenedor-titulo-form-comision"><p class="fs-1" class="fw-bold" class="lh-1">Clientes</p> </div>
-<form class="form-horizontal" onsubmit="return false;">
-    <div class="form-group">
-        <div class="col-md-6 text-left">
-            <input type="text" class="form-control input-search" id="buscar-cliente" placeholder="Buscar Clientes (Nombre,RFC)" oninput="buscarCliente()">
+<div class="form-horizontal ps-3 fijo z-2">
+    <div>
+        <div class="titulo-lista">Clientes </div>
+    </div>
+    <div class="row col-12 p-0">
+        <div class="col-sm-6 py-1">
+            <input type="text" class="form-control input-search text-secondary-emphasis" id="buscar-cliente"
+                placeholder="Buscar cliente (Nombre o RFC)" oninput="buscarCliente()">
         </div>
-        <div class="col-md-2 text-center">
-            <select class="form-control input-search" id="num-reg" name="num-reg" onchange="buscarCliente()">
-                <option value="1000" >-</option>
-                <option value="3" >3</option>
-                <option value="15" >15</option>
-                <option value="20" >20</option>
-                <option value="30" >30</option>
-                <option value="50" >50</option>
-                <option value="100" >100</option>
+        <div class="col-sm-2 py-1">
+            <select class="form-select input-search text-center" id="num-reg" name="num-reg" onchange="buscarCliente()">
+                <option value="10"> 10</option>
+                <option value="15"> 15</option>
+                <option value="20"> 20</option>
+                <option value="30"> 30</option>
+                <option value="50"> 50</option>
+                <option value="100">100</option>
             </select>
         </div>
-        <div class="col-md-4 text-right" id="btn-crear">
-            
+        <div class="col-sm-4 text-end py-1 px-1" id="btn-crear">
         </div>
     </div>
-</form>
-<!--<button class="btn btn-sm btn-primary " onclick="tests()" id="btn-form-factura">Guardar <span class="glyphicon glyphicon-save"></span></button>-->
-<div class="scrollX div-bordered">
-    <table class="table table-hover table-condensed table-responsive table-cliente table-head" id="body-lista-clientes">
-        <thead class="sin-paddding">
+</div>
+
+<div class="scrollX div-form mw-100 bg-light mx-3 border border-secondary-subtle">
+    <table class="table tab-hover table-condensed table-responsive table-row table-head" id="body-lista-clientes">
+        <thead>
             <tr>
-                <th></th>
                 <th>Nombre </th>
                 <th>Empresa </th>
-                <th class="col-md-3">Correo Informacion</th>
-                <th>Correo Facturacion </th>
+                <th>Correo Informaci&oacute;n </th>
+                <th>Correo Facturaci&oacute;n </th>
                 <th>Correo Gerencia </th>
-                <th>Telefono </th>
-                <th>RFC </th>
-                <th>Razon Social </th>
-                <th><span class="glyphicon glyphicon-option-vertical"></span></th>
+                <th class="col-md-1">Tel&eacute;fono</th>
+                <th>RFC</th>
+                <th>Raz&oacute;n Social</th>
+                <th>Opcio&oacute;n</th>
             </tr>
         </thead>
-    </table>
 </div>
-<br/>
 <script type="text/javascript" src="js/scriptcliente.js"></script>
-<script >
-                    $(document).ready(function () {
-                        var cleave = new Cleave('.cfdi', {
-                            delimiter: '-',
-                            blocks: [8, 4, 4, 4, 12]
-                        });
-
-                    });
-</script>

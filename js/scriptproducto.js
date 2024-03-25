@@ -6,7 +6,7 @@ function calcularGanancia() {
     var precioventa = parseFloat(preciocompra) + parseFloat(importeganancia);
     $("#pventa").val(precioventa);
 }
-
+/*
 function addinventario() {
     var tipo = $("#tipo").val();
     if (tipo == '1') {
@@ -26,7 +26,7 @@ function addinventario() {
         $("#clave-unidad").val('E48-Unidad de servicio');
     }
 }
-
+*/
 function insertarProducto() {
     var codproducto = $("#codigo-producto").val();
     var producto = $("#producto").val();

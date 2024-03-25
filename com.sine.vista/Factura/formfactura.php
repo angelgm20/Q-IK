@@ -275,8 +275,8 @@ include("buscarProductos.php");
 
         <div class="row">
              <div class="col-md-12">
-             <a href="#cfdirel" class="label-sub" data-bs-toggle="collapse">Agregar CFDIS Relacionados <span class="far fa-caret-square-down"></span></a>
-             <div class="collapse" id="cfdirel">
+             <a href="#cfdirel" data-bs-toggle="collapse" class="label-sub">Agregar CFDIS Relacionados <span class="far fa-caret-square-down"></span></a>
+             <div id="cfdirel" class=" panel-collapse collapse" >
                 <table class="table table-hover table-condensed table-responsive table-row table-head">
                 <thead>
                     <tr>
@@ -301,7 +301,6 @@ include("buscarProductos.php");
                                     </select>
                         </td>
                         <td class="text-center"><button id="btn-agregar-cfdi" class='btn button-list' onclick='addCFDI();'><span class='fas fa-plus'></span> </button></td>
-                    
                     </tr>
                 </tbody>
             </table>

@@ -357,8 +357,8 @@ class Factura {
         $this->nombrepago = $idformapago;
     }
     
-    function setNombrecfdi($cfdisrel) {   
-         $this->nombrecfdi = $cfdisrel;    
+    function setNombrecfdi($idusocfdi) {   
+         $this->nombrecfdi = $idusocfdi;    
     }
 //--------------
     //nuevoGET++++++++++++++++

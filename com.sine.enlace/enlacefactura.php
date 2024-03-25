@@ -720,7 +720,8 @@ if (isset($_POST['transaccion'])) {
             $cf = new ControladorFactura();
             $sid = session_id();
             $uuid = $_POST['uuid'];
-            $tabla = $cf->tablaProd($sid, $uuid);
+            $tcomprobante = $_POST['tcomprobante'];
+            $tabla = $cf->tablaProd($sid, $uuid, $tcomprobante );
             echo $tabla;
             break;
         case 'diashorario':
@@ -759,7 +760,6 @@ if (isset($_POST['transaccion'])) {
             break;
         case 'asignarmonto':
                 $cf = new ControladorFactura();
-    
                 $total = $_POST['total'];
                 $id_egreso = $_POST['id_egreso'];
                 $id_prod = $_POST['id_prod'];
@@ -817,6 +817,7 @@ function obtenerdatosFactura(){
     $f->setNombremetodo($_POST['nombremetodo']);
     $f->setNombrecomprobante($_POST['nombrecomprobante']);
     $f->setNombrepago($_POST['nombrepago']);
+    $f->setNombrecfdi($_POST['uso']);
     return $f; 
 }
 

@@ -238,5 +238,3 @@ if (isset($_POST['transaccion'])) {
             break;
     }
 }
-
-

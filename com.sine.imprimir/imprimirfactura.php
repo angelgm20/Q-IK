@@ -627,15 +627,18 @@ foreach ($facturas as $facturaactual) {
     $rfccliente = $facturaactual['rfcreceptor'];
     $cpcliente = $facturaactual['cpreceptor'];
     $regcliente = $facturaactual['regfiscalreceptor'];
-    $cuso = $facturaactual['c_usocfdi'];
-    $descripcionuso = $facturaactual['descripcion_cfdi'];
+    //cfdi
+    $cuso = $facturaactual['id_uso_cfdi'];
+    //cfdi
+    $descripcionuso = $facturaactual['uso_cfdi'];
     $rfc = $facturaactual['factura_rfcemisor'];
     $razonsocial = $facturaactual['factura_rzsocial'];
     $regimen = $facturaactual['factura_clvregimen'] . ' ' . $facturaactual['factura_regimen'];
     $dircliente = $facturaactual['dircliente']." ";
     $cp = $facturaactual['factura_cpemisor'];
     $folio = $facturaactual['letra'] . $facturaactual['folio_interno_fac'];
-    $tipocomprobante = $facturaactual['c_tipocomprobante'] . ' ' . $facturaactual['descripcion_comprobante'];
+    //comrpobante
+    $tipocomprobante = $facturaactual['id_tipo_comprobante'] . ' ' . $facturaactual['tipo_comprobante'];
     $fecha_creacion = $facturaactual['fecha_creacion'];
     $cadenaoriginal = $facturaactual['cadenaoriginal'];
     $certSAT = $facturaactual['nocertificadosat'];
@@ -645,12 +648,14 @@ foreach ($facturas as $facturaactual) {
     $sellocfdi = $facturaactual['sellocfdi'];
     $fechatimbrado = $facturaactual['fechatimbrado'];
     $qrcode = $facturaactual['qrcode'];
-    $c_metodo = $facturaactual['c_metodopago'];
-    $des_metodo = $facturaactual['descripcion_metodopago'];
-    $c_pago = $facturaactual['c_pago'];
-    $des_pago = $facturaactual['descripcion_pago'];
+    $c_metodo = $facturaactual['id_metodo_pago'];
+    $des_metodo = $facturaactual['metodo_pago'];
+    //ajuste1 se susituyo c_pago por:
+    //$c_pago = $facturaactual['id_forma_pago'];
+    //ajuste2 se  sustituyo descripcion_pago por:
+    $des_pago = $facturaactual['forma_pago'];
     $idmoneda = $facturaactual['id_moneda'];
-    $c_moneda = $facturaactual['c_moneda'];
+    $c_moneda = $facturaactual['moneda'];
     $subtotal = $facturaactual['subtotal'];
     $totdescuentos = $facturaactual['totaldescuentos'];
     $totalfactura = $facturaactual['totalfactura'];
@@ -667,6 +672,7 @@ foreach ($facturas as $facturaactual) {
     $anhoperiodo = $facturaactual['anhoperiodo'];
     $tag = $facturaactual['tagfactura'];
 }
+
 
 $divideF = explode("-", $fecha_creacion);
 $mes = $cf->translateMonth($divideF[1]);
@@ -961,7 +967,7 @@ $pdf->Ln(8);
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(30, 8, 'Forma de Pago ', 0, 0, 'C', 0);
 $pdf->SetFont('Arial', '', 9);
-$pdf->Cell(60, 8, utf8_decode($c_pago . ' ' . $des_pago), 0, 0, 'L', 0);
+$pdf->Cell(60, 8, utf8_decode($des_pago), 0, 0, 'L', 0);
 $pdf->Ln(8);
 
 $pdf->SetFont('Arial', 'B', 9);

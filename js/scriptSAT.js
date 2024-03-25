@@ -271,7 +271,7 @@ function aucompletarRegimen() {
         }
     });
 }
-/*
+
 function autoCompleteRegimenFiscal(){
     $('#regimenFiscal').autocomplete({
         source: "../CATSTAT/com.sine.enlace/enlaceRegimenFiscal.php?transaccion=autocompleta",
@@ -283,7 +283,7 @@ function autoCompleteRegimenFiscal(){
         }
     });
 }
-*/
+
 
 //GET SELECT
 function getOptions(){
