@@ -15,7 +15,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="fecha-creacion">Fecha de creacion</label>
+                <label class="label-form text-right mb-2" for="fecha-creacion">Fecha de creación</label>
                 <div class=" form-group">
                     <input class="input-form text-center form-control mb-3" disabled id="fecha-creacion" name="fecha-creacion" placeholder="Fecha Actual" type="text"/>
                     <div id="fecha-creacion-errors">
@@ -36,7 +36,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="datos-facturacion">Datos de Facturacion</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="datos-facturacion">Datos de Facturación </label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <select class="form-select w-100 p-2" id="datos-facturacion" name="datos-facturacion" onchange="loadDatosFactura();">
                         <option value="" id="option-default-datos">- - - -</option>
@@ -57,7 +57,7 @@ include("buscarProductos.php");
 
         <div class="row">
             <div class="col-md-4">
-                <label class="label-form text-right mt-3 mb-2" for="razon-emisor">Razon Social</label>
+                <label class="label-form text-right mt-3 mb-2" for="razon-emisor">Razón Social</label>
                 <div class="form-group">
                     <input class="input-form text-center form-control mb-3 " disabled id="razon-emisor" name="razon-emisor" placeholder="Razon Social Emisor" type="text"/>
                     <div id="razon-emisor-errors"></div>
@@ -65,7 +65,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right  mt-3 mb-2" for="regimen-emisor">Regimen Fiscal</label>
+                <label class="label-form text-right  mt-3 mb-2" for="regimen-emisor">Régimen Fiscal</label>
                 <div class="form-group">
                     <input class="input-form text-center form-control" disabled id="regimen-emisor" name="regimen-emisor" placeholder="Regimen fiscal" type="text"/>
                     <div id="regimen-emisor-errors"></div>
@@ -73,7 +73,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mt-3 mb-2" for="cp-emisor">Codigo Postal</label>
+                <label class="label-form text-right mt-3 mb-2" for="cp-emisor">Código Postal</label>
                 <div class="form-group">
                     <input class="input-form text-center form-control" disabled id="cp-emisor" name="cp-emisor" placeholder="Codigo Postal" type="text"/>
                     <div id="cp-emisor-errors"></div>
@@ -113,7 +113,7 @@ include("buscarProductos.php");
             </div>
 
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="razon-cliente">Razon Social del Cliente</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="razon-cliente">Razón Social del Cliente</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input type="text" class="form-control input-form" id="razon-cliente" placeholder="Razon social del cliente"/>
                     <div id="razon-cliente-errors"></div>
@@ -123,7 +123,7 @@ include("buscarProductos.php");
 
         <div class="row">
             <div class="col-md-4">
-                <label class="label-form text-right mb-2 " for="regfiscal-cliente">Regimen Fiscal del cliente</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2 " for="regfiscal-cliente">Régimen  Fiscal del cliente</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input type="text" class="form-control input-form mb-3" id="regfiscal-cliente" placeholder="Regimen fiscal del cliente" oninput="aucompletarRegimen();"/>
                     <div id="regfiscal-cliente-errors"></div>
@@ -131,7 +131,7 @@ include("buscarProductos.php");
             </div>
 
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="direccion-cliente">Direccion del Cliente</label>
+                <label class="label-form text-right mb-2" for="direccion-cliente">Dirección del Cliente</label>
                 <div class="form-group">
                     <input type="text" class="form-control input-form" id="direccion-cliente" placeholder="Direccion del cliente"/>
                     <div id="direccion-cliente-errors"></div>
@@ -139,7 +139,7 @@ include("buscarProductos.php");
             </div>
             
             <div class="col-md-4">
-                <label class="label-form text-right mb-2 " for="cp-cliente">Codigo Postal del Cliente</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2 " for="cp-cliente">Código Postal del Cliente</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <input type="text" class="form-control input-form" id="cp-cliente" placeholder="Codigo Postal del cliente"/>
                     <div id="cp-cliente-errors"></div>
@@ -166,7 +166,7 @@ include("buscarProductos.php");
             </div>
 
             <div class="col-md-4">
-                <label class="label-form text-right mb-2" for="id-metodo-pago">Metodo de Pago</label> <label class="mark-required text-right">*</label>
+                <label class="label-form text-right mb-2" for="id-metodo-pago">Método de Pago</label> <label class="mark-required text-right">*</label>
                 <div class="form-group">
                     <select class="form-select w-100 p-2" id="id-metodo-pago" name="id-metodo-pago" onchange="checkMetodopago();" >
                         <option value="" id="option-default-metodo-pago">- - - -</option>

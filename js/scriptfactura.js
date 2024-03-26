@@ -1112,8 +1112,6 @@ function setValoresEditarFactura(datos) {
             }); 
         }
     
-    
-    
     }
 
     $.ajax({
@@ -1237,7 +1235,7 @@ function setValoresCopiarFactura(datos) {
     var idforma_pago = array[14];
     var idtipo_comprobante = array[15];
     var status = array[16];
-    var uuid = "";
+    var uuid = array[17];
     var iddatos = array[18];
     var chfirmar = array[19];
     var cfdisrel = array[20];
@@ -1246,12 +1244,12 @@ function setValoresCopiarFactura(datos) {
     var rzsocial = array[23];
     var clvreg = array[24];
     var regimen = array[25];
-    var cpemisor = array[26];
-    var tag = array[27];
-    var dirreceptor = array[28];
-    var periodoG = array[29];
-    var mesperiodo = array[30];
-    var anhoperiodo = array[31];
+    var tag = array[26];
+    var dirreceptor = array[27];
+    var periodoG = array[28];
+    var mesperiodo = array[29];
+    var anhoperiodo = array[30];
+	var cpemisor = array[31];
 
     if (cfdisrel == '1') {
         $.ajax({
@@ -1325,113 +1323,7 @@ function setValoresCopiarFactura(datos) {
     getTipoCambio(idmoneda);
 }
 
-/*
-function setValoresCopiarFactura(datos) {
-    var array = datos.split("</tr>");
-    var idfactura = array[0];
-    var serie = array[1];
-    var letra = array[2];
-    var folio = array[3];
-    var fechacreacion = array[4];
-    var idcliente = array[5];
-    var cliente = array[6];
-    var rfccliente = array[7];
-    var rzreceptor = array[8];
-    var cpreceptor = array[9];
-    var regfiscalrec = array[10];
-    var idmetodo_pago = array[11];
-    var idmoneda = array[12];
-    var iduso_cfdi = array[13];
-    var idforma_pago = array[14];
-    var idtipo_comprobante = array[15];
-    var status = array[16];
-    var uuid = "";
-    var iddatos = array[18];
-    var chfirmar = array[19];
-    var cfdisrel = array[20];
-    var tcambio = array[21];
-    var rfcemisor = array[22];
-    var rzsocial = array[23];
-    var clvreg = array[24];
-    var regimen = array[25];
-    var tag = array[26];
-    var dirreceptor = array[27];
-    var periodoG = array[28];
-    var mesperiodo = array[29];
-    var anhoperiodo = array[30];
 
-    if (cfdisrel == '1') {
-        $.ajax({
-            url: "com.sine.enlace/enlacefactura.php",
-            type: "POST",
-            data: {transaccion: "cfdisrelacionados", tag: tag, uuid: uuid},
-            success: function (datos) {
-                var texto = datos.toString();
-                var bandera = texto.substring(0, 1);
-                var res = texto.substring(1, 1000);
-                if (bandera == '0') {
-                    alertify.error(res);
-                } else {
-                    var array = datos.split("<corte>");
-                    var p1 = array[0];
-                    var p2 = array[1];
-                    $("#body-lista-cfdi").html(p2);
-                    $("#cfdirel").addClass('show');
-                }
-            }
-        });
-    }
-
-    $.ajax({
-        url: "com.sine.enlace/enlacefactura.php",
-        type: "POST",
-        data: {transaccion: "prodfactura", tag: tag},
-        success: function (datos) {
-            var texto = datos.toString();
-            var bandera = texto.substring(0, 1);
-            var res = texto.substring(1, 1000);
-            if (bandera == '0') {
-                alertify.error(res);
-            } else {
-                //alert(datos);
-                tablaProductos();
-            }
-        }
-    });
-    //loadOpcionesFolios('0', serie, letra+folio);
-    loadOpcionesFacturacion(iddatos);
-    $("#rfc-emisor").val(rfcemisor);
-    $("#razon-emisor").val(rzsocial);
-    $("#regimen-emisor").val(clvreg + "-" + regimen);
-    $("#fecha-creacion").val(fechacreacion);
-    $("#id-cliente").val(idcliente);
-    $("#nombre-cliente").val(cliente);
-    $("#rfc-cliente").val(rfccliente);
-    $("#razon-cliente").val(rzreceptor);
-    $("#regfiscal-cliente").val(regfiscalrec);
-    $("#direccion-cliente").val(dirreceptor);
-    $("#cp-cliente").val(cpreceptor);
-    loadOpcionesFormaPago(idforma_pago);
-    loadOpcionesMetodoPago(idmetodo_pago);
-    loadOpcionesMoneda(idmoneda);
-    $("#tipo-cambio").val(tcambio);
-    loadOpcionesUsoCFDI(iduso_cfdi);
-    loadOpcionesComprobante(idtipo_comprobante);
-    opcionesPeriodoGlobal(periodoG);
-    opcionesMeses(mesperiodo);
-    if (anhoperiodo != "") {
-        $("#option-default-anho-periodo").val(anhoperiodo);
-        $("#option-default-anho-periodo").text(anhoperiodo);
-    }
-
-    if (chfirmar == '1') {
-        $("#chfirma").attr('checked', true);
-    }
-
-    loadDatosFactura();
-    getTipoCambio();
-}
-*/
 function checkFolios() {
     var comprobante = $("#tipo-comprobante").val();
     var serie = ''; 
@@ -1473,7 +1365,7 @@ function loadDatosFactura(iddatos = "") {
             if (bandera == 0) {
                 alertify.error(res);
             } else {
-                //alert(datos);
+                
                 var array = datos.split("</tr>");
                 var rfc = array[0];
                 var razon = array[1];
@@ -1493,7 +1385,7 @@ function loadDatosFactura(iddatos = "") {
 }
 
 function loadFecha() {
-    ////cargandoShow();
+   
     $.ajax({
         url: 'com.sine.enlace/enlacefactura.php',
         type: 'POST',
