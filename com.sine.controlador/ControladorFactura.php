@@ -39,19 +39,10 @@ class ControladorFactura {
         $datos = "$url</tr>$token";
         return $datos;
     }
-/*
-    private function getTMPCFDIS($sessionId) {
-        $consultado = false;
-        $consulta = "SELECT * FROM tmpcfdi  WHERE sessionid=:sessionid ORDER BY idtmpcfdi";
-        $valores = array("sessionid" => $sessionId);
-        $consultado = $this->consultas->getResults($consulta, $valores);
-        return $consultado;
-    }
-*/
+
 
     private function getTMPCFDIS($sessionId) {
         $consultado = false;
-        //$consulta = "SELECT * FROM tmpcfdi WHERE sessionid=:sessionid ORDER BY idtmpcfdi";
         $consulta = "SELECT tmp.*, CONCAT(df.letra,df.folio_interno_fac) folio 
                     FROM tmpcfdi tmp
                     INNER JOIN datos_factura df ON df.uuid = tmp.uuid
@@ -64,6 +55,15 @@ class ControladorFactura {
                     ORDER BY idtmpcfdi";
         $valores = array("sessionid" => $sessionId);
         $consultado = $this->consultas->getResults($consulta, $valores);
+        return $consultado;
+    }
+
+    private function getTMPCfdiEgreso($sessionId) {
+        $consultado = false;
+        $consultas = new Consultas();
+        $consulta = "SELECT * FROM tmpegreso WHERE sessionid = :sid";
+        $valores = array("sid" => $sessionId);
+        $consultado = $consultas->getResults($consulta, $valores);
         return $consultado;
     }
 
@@ -158,20 +158,18 @@ class ControladorFactura {
         $consultado = $this->consultas->getResults($consulta, $val);
         return $consultado;
     }
-   
-    
-  
-    
 
     public function cfdisRelacionados($tag, $sessionid, $uuidTim) {
         $productos = $this->getcfdisRelacionados($tag);
         foreach ($productos as $productoactual) {
             $tiporel = $productoactual["tiporel"];
+            $desctiporel = $productoactual['desctiporel'];
             $uuid = $productoactual['uuid'];
 
-            $consulta = "INSERT INTO `tmpcfdi` VALUES (:id, :tiporel, :uuid, :session);";
+            $consulta = "INSERT INTO `tmpcfdi` VALUES (:id, :tiporel, :desctiporel, :uuid, :session);";
             $valores = array("id" => null,
                 "tiporel" => $tiporel,
+                "desctiporel" => $desctiporel,
                 "uuid" => $uuid,
                 "session" => $sessionid);
             $con = new Consultas();
@@ -1206,6 +1204,9 @@ class ControladorFactura {
         $this->detalleFactura($f->getSessionid(), $tag);
         if ($f->getCfdisrel() == '1') {
             $this->detalleCFDIS($f->getSessionid(), $tag);
+            if($f->getTipocomprobante() == 2){
+                $this->detalleCfdiEgreso($f->getSessionid(), $tag);
+            }
         }
         if ($f->getIdcotizacion() != "") {
             $this->actualizarCotizacion($f->getIdcotizacion(), $tag);
@@ -1214,6 +1215,7 @@ class ControladorFactura {
         return $datos;
     }
 
+   
     private function detalleFactura($idsession, $tag) {
         $sumador_total = 0;
         $sumador_iva = 0;   
@@ -1301,12 +1303,14 @@ class ControladorFactura {
         foreach ($cfdi as $actual) {
             $idtmpcfdi = $actual['idtmpcfdi'];
             $tiporel = $actual['tiporel'];
+            $descrel = $actual['desc_tiporel'];
             $uuid = $actual['uuid'];
 
             $con = new Consultas();
             $consulta2 = "INSERT INTO `cfdirelacionado` VALUES (:id, :tiporel, :uuid, :tag);";
             $valores2 = array("id" => null,
                 "tiporel" => $tiporel,
+                "desctiporel" => $descrel,
                 "uuid" => $uuid,
                 "tag" => $tag);
             $insertado = $con->execute($consulta2, $valores2);
@@ -1314,6 +1318,37 @@ class ControladorFactura {
         $cfdi = $this->deleteTMPCFDI($idsession);
         return $insertado;
     }
+
+    //nuevo
+        private function detalleCfdiEgreso($idsession, $tag) {
+            $cfdi = $this->getTMPCfdiEgreso($idsession);
+            foreach ($cfdi as $actual) {
+                $id_doc = $actual['id_doc'];
+                $folio_doc = $actual['folio_doc'];
+                $type = $actual['type'];
+                $uuid = $actual['uuid'];
+                $tiporel = $actual['tiporel'];
+                $descripcion_rel = $actual['descripcion_rel'];
+                $monto_egreso = $actual['monto_egreso'];
+
+                $con = new Consultas();
+                $consulta2 = "INSERT INTO cfdiegreso VALUES (:id, :iddoc, :foliodoc, :type, :uuid, :tiporel, :descrel, :monto, :aplicada, :tag)";
+                $valores2 = array("id" => null,
+                                "iddoc" => $id_doc,
+                                "foliodoc" => $folio_doc,
+                                "type" => $type,
+                                "uuid" => $uuid,
+                                "tiporel" => $tiporel,
+                                "descrel" => $descripcion_rel,
+                                "monto" => $monto_egreso,
+                                "aplicada" => 0,
+                                "tag" => $tag);
+                $insertado = $con->execute($consulta2, $valores2);
+            }
+            $cfdi = $this->deleteTMPEgreso($idsession);
+            return $insertado;
+        }
+
 
     private function actualizarCotizacion($idcot, $idfactura) {
         $consultado = false;
@@ -1770,6 +1805,8 @@ class ControladorFactura {
         $actualizado = $con->execute($consulta, $valores);
         $datos = $this->actualizarDetalle($f->getSessionid(), $f->getTag());
         $cfdi = $this->actualizarCFDIS($f->getSessionid(), $f->getTag());
+        //nu
+        $cfdi = $this->actualizarCfdiEgreso($f->getSessionid(), $f->getTag());
         return $actualizado;
     }
 
@@ -1906,6 +1943,38 @@ private function actualizarCFDIS($idsession, $tag) {
     $cfdi = $this->deleteTMPCFDI($idsession);
     return $insertado;
 }
+    private function actualizarCfdiEgreso($idsession, $tag) {
+        $insertado = false;
+        $this->eliminarCFDIEgresoAux($tag);
+
+        $cfdi = $this->getTMPCfdiEgreso($idsession);
+        foreach ($cfdi as $actual) {
+            $id_doc = $actual['id_doc'];
+            $folio_doc = $actual['folio_doc'];
+            $type = $actual['type'];
+            $uuid = $actual['uuid'];
+            $tiporel = $actual['tiporel'];
+            $descripcion_rel = $actual['descripcion_rel'];
+            $monto_egreso = $actual['monto_egreso'];
+
+            $con = new Consultas();
+            $consulta2 = "INSERT INTO cfdiegreso VALUES (:id, :iddoc, :foliodoc, :type, :uuid, :tiporel, :descrel, :monto, :aplicada, :tag)";
+            $valores2 = array("id" => null,
+                            "iddoc" => $id_doc,
+                            "foliodoc" => $folio_doc,
+                            "type" => $type,
+                            "uuid" => $uuid,
+                            "tiporel" => $tiporel,
+                            "descrel" => $descripcion_rel,
+                            "monto" => $monto_egreso,
+                            "aplicada" => 0,
+                            "tag" => $tag);
+            $insertado = $con->execute($consulta2, $valores2);
+        }
+        $cfdi = $this->deleteTMPEgreso($idsession);
+        return $insertado;
+    }
+
     private function getTagbyID($id) {
         $consultado = false;
         $con = new Consultas();
@@ -1933,6 +2002,7 @@ private function actualizarCFDIS($idsession, $tag) {
         $eliminado = $this->consultas->execute($consulta, $valores);
         $this->eliminarFacturaAux($tag);
         $this->eliminarCFDIAux($tag);
+        $this->eliminarCfdiEgresoAux($tag);
         return $eliminado;
     }
 
@@ -1949,6 +2019,15 @@ private function actualizarCFDIS($idsession, $tag) {
         $con = new Consultas();
         $eliminado = false;
         $borrar = "DELETE FROM `cfdirelacionado` WHERE cfditag=:tag;";
+        $borrarvalores = array("tag" => $tag);
+        $eliminado = $con->execute($borrar, $borrarvalores);
+        return $eliminado;
+    }
+
+    private function eliminarCfdiEgresoAux($tag) {
+        $con = new Consultas();
+        $eliminado = false;
+        $borrar = "DELETE FROM cfdiegreso WHERE tagfactura=:tag";
         $borrarvalores = array("tag" => $tag);
         $eliminado = $con->execute($borrar, $borrarvalores);
         return $eliminado;
@@ -2330,7 +2409,7 @@ private function actualizarCFDIS($idsession, $tag) {
                     $colorB = "#f0ad4e";
                     $titbell = "Factura Cancelada";
                 } else {
-                    $timbre = "data-toggle='modal' data-target='#modalcancelar' onclick='setCancelacion($idfactura)'";
+                    $timbre = "data-bs-toggle='modal' data-bs-target='#modalcancelar' onclick='setCancelacion($idfactura)'";
                     $tittimbre = "Cancelar Factura";
                 }
             } else {
@@ -2374,33 +2453,26 @@ private function actualizarCFDIS($idsession, $tag) {
                         <ul class='dropdown-menu dropdown-menu-end'>";
 
             if ($div[0] == '1') {
-                //$datos .= "<li class='px-2'><a onclick='editarFactura($idfactura);'>Editar Factura <span class='glyphicon fas fa-edit'></span></a></li>";
                 $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='editarFactura($idfactura);'>Editar Factura <span class='text-muted small fas fa-edit'></span></a></li>";
             }
             if ($div[1] == '1' && $uuid == "") {
-                // Factura no timbrada, se muestra la opción para eliminar
+                // NO timbrada, se muestra la opción para eliminar
                 $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick=\"eliminarFactura('$idfactura');\">Eliminar Factura <span class=' text-muted small fas fa-times'></span></a></li>";
             }
             
-            // Dentro del bucle foreach donde generas las filas de la tabla
-            $opciones = ""; // Variable para almacenar las opciones
-
+            $opciones = ""; 
             if ($uuid != "") {
-                // Factura timbrada
+                //timbrada
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick=\"imprimir_factura($idfactura);\">Ver Factura <span class=' text-muted small fas fa-eye'></span></a></li>";
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' href='./com.sine.imprimir/imprimirxml.php?f=$idfactura&t=a' target='_blank'>Ver XML <span class=' text-muted small fas fa-download'></span></a></li>";
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' $timbre>$tittimbre <span class='text-muted small fas fa-bell'></span></a></li>";
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' data-bs-toggle='modal' data-bs-target='#enviarmail' onclick='showCorreos($idfactura);'>Enviar <span class=' text-muted small fas fa-envelope'></span></a></li>";
             } else {
-                // Factura no timbrada
+                //NO timbrada
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='imprimir_factura($idfactura);'>Ver Factura <span class=' text-muted small fas fa-eye'></span></a></li>";
                 $opciones .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='timbrarFactura($idfactura);'>Timbrar Factura <span class=' text-muted small fas fa-bell'></span></a></li>";
             }
-
-            // Concatenas las opciones en el orden deseado
             $datos .= $opciones;
-
-
 
             if ($div[2] == '1') {
                 $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' onclick='copiarFactura($idfactura);'>Copiar Factura <span class='text-muted small fas fa-clipboard'></span></a></li>";
@@ -2409,7 +2481,6 @@ private function actualizarCFDIS($idsession, $tag) {
             if ($uuid != "") {
                 $datos .= "<li class='notification-link py-1 ps-3'><a class='text-decoration-none text-secondary-emphasis' data-bs-toggle='modal' data-bs-target='#modal-stcfdi' onclick='checkStatusCancelacion(\"".$idfactura."\");'>Comprobar estado del CFDI <i class='text-muted small fas fa-check-circle'></i></a></li>";
             }
-            
 
             $datos .= "</ul>
                         </div></td>
@@ -2444,7 +2515,7 @@ private function actualizarCFDIS($idsession, $tag) {
         $restaurar = $this->restaurarInventario($idproducto, $cantidad);
         return $eliminado;
     }
-
+/*
     public function getPagosReg($folio, $idfactura) {
         $consultado = false;
         $consulta = "SELECT * 
@@ -2457,6 +2528,30 @@ private function actualizarCFDIS($idsession, $tag) {
 					AND dp.pago_idfactura = :fid";
         $val = array("pid" => $folio, "fid" => $idfactura);
         $consultado = $this->consultas->getResults($consulta, $val);
+        return $consultado;
+    }
+*/
+    public function getPagosReg($folio, $idfactura) {
+        $consultado = false;
+        $con = new Consultas();
+        $consultas = "SELECT p.idpago, p.letra, p.foliopago, cp.complemento_fechapago, cp.complemento_horapago, c.c_pago, c.descripcion_pago, p.totalpagado, p.uuidpago, p.cancelado, 'p' type
+                    FROM pagos p 
+                    INNER JOIN complemento_pago cp ON (cp.tagpago=p.tagpago) 
+                    INNER JOIN catalogo_pago c ON (c.idcatalogo_pago=cp.complemento_idformapago)
+                    INNER JOIN detallepago dp ON (dp.detalle_tagencabezado=cp.tagpago) 
+                    AND (dp.detalle_tagcomplemento=cp.tagcomplemento) 
+                    WHERE p.tagpago = :pid 
+                    AND dp.pago_idfactura = :fid
+                    UNION ALL
+                    SELECT df.iddatos_factura idpago, df.letra, df.folio_interno_fac foliopago, df.fecha_creacion complemento_fechapago, '' complemento_horapago,
+                    c.c_pago, c.descripcion_pago, df.totalfactura totalpagado, df.uuid uuidpago, CASE WHEN df.cfdicancel IS NULL THEN '0' ELSE '1' END cancelado, 'e' type
+                    FROM cfdiegreso ce
+                    INNER JOIN datos_factura df ON df.tagfactura = ce.tagfactura
+                    INNER JOIN catalogo_pago c ON c.idcatalogo_pago = df.id_forma_pago
+                    WHERE ce.iddoc = :fid AND ce.type = 'f'
+                    ORDER BY complemento_fechapago";
+        $val = array("pid" => $folio, "fid" => $idfactura);
+        $consultado = $con->getResults($consultas, $val);
         return $consultado;
     }
 
@@ -2602,6 +2697,7 @@ private function actualizarCFDIS($idsession, $tag) {
         
         $eliminado = $this->consultas->execute($consulta, $valores);
         $cfdi = $this->deleteTMPCFDI($sessionid);
+        $egreso = $this->deleteTMPEgreso($sessionid);
         return $eliminado;
     }
 
@@ -2611,6 +2707,15 @@ private function actualizarCFDIS($idsession, $tag) {
         $valores = array("id" => $sessionid);
         
         $eliminado = $this->consultas->execute($consulta, $valores);
+        return $eliminado;
+    }
+
+    private function deleteTMPEgreso($sessionid) {
+        $eliminado = false;
+        $consulta = "DELETE FROM `tmpegreso` WHERE sessionid=:id;";
+        $valores = array("id" => $sessionid);
+        $consultas = new Consultas();
+        $eliminado = $consultas->execute($consulta, $valores);
         return $eliminado;
     }
 
@@ -3411,17 +3516,17 @@ private function guardarXML($idfactura) {
                         return '0' . $result->message . " " . $result->messageDetail;
                     } else if ($result->status == "success") {
                         $guardar = $this->cancelarFactura($idfactura, $result->data->acuse);
-                        var_dump($result);
+                        //var_dump($result);
                         return $guardar;
                     }
                 } catch (Exception $e) {
                     echo 'Caught exception: ', $e->getMessage(), "\n";
                 }
             }
-
+/*
             public function cancelarFactura($idfactura, $cfdi) {
                 $actualizado = false;
-                $consulta = "UPDATE `datos_factura` set status_pago=:estado, cfdicancel=:cfdi WHERE iddatos_factura=:id;);";
+                $consulta = "UPDATE `datos_factura` SET status_pago=:estado, cfdicancel=:cfdi WHERE iddatos_factura=:id;";
                 $valores = array("id" => $idfactura,
                     "estado" => '3',
                     "cfdi" => $cfdi);
@@ -3429,6 +3534,101 @@ private function guardarXML($idfactura) {
                 $actualizado = $con->execute($consulta, $valores);
                 return $actualizado;
             }
+*/
+            public function cancelarFactura($idfactura, $cfdi) {
+                $ruta = "../XML/XML_CANCEL.xml";
+                $archivo = fopen($ruta,"w");
+                fwrite($archivo, $cfdi);
+                fclose($archivo);
+
+
+                $xml = simplexml_load_file($ruta);
+                foreach ($xml->Folios as $folio) {
+                    $uuid_cancel = $folio->UUID;
+                    $status_uuid = $folio->EstatusUUID;
+                }
+
+                switch($status_uuid){
+                    case 201:
+                        $mensaje_cancel = "Solicitud de cancelación exitosa";
+                        break;
+                    case 202:
+                        $mensaje_cancel = "Folio Fiscal Previamente Cancelado";
+                        break;
+                    case 203:
+                        $mensaje_cancel = "Folio Fiscal No Correspondiente al Emisor";
+                        break;
+                    case 204:
+                        $mensaje_cancel = "Folio Fiscal No Aplicable a Cancelación";
+                        break;
+                    case 205:
+                        $mensaje_cancel = "Folio Fiscal No Existente";
+                        break;
+                    case 206:
+                        $mensaje_cancel = "UUID no corresponde a un CFDI del Sector Primario";
+                        break;
+                    case 207:
+                        $mensaje_cancel = "No se especificó el motivo de cancelación o el motivo no es valido";
+                        break;
+                    case 208:
+                        $mensaje_cancel = "Folio Sustitución invalido";
+                        break;
+                    case 209:
+                        $mensaje_cancel = "Folio Sustitución no requerido";
+                        break;
+                    case 210:
+                        $mensaje_cancel = "La fecha de solicitud de cancelación es mayor a la fecha de declaración";
+                        break;
+                    case 211:
+                        $mensaje_cancel = "La fecha de solicitud de cancelación límite para factura global";
+                        break;
+                    case 212:
+                        $mensaje_cancel = "Relación no valida o inexistente";
+                        break;
+                    case 300:
+                        $mensaje_cancel = "Usuario No Válido";
+                        break;
+                    case 301:
+                        $mensaje_cancel = "XML Mal Formado";
+                        break;
+                    case 302:
+                        $mensaje_cancel = "Sello Mal Formado";
+                        break;
+                    case 304:
+                        $mensaje_cancel = "Certificado Revocado o Caduco";
+                        break;
+                    case 305:
+                        $mensaje_cancel = "Certificado Inválido";
+                        break;
+                    case 309:
+                        $mensaje_cancel = "Certificado Inválido";
+                        break;
+                    case 310:
+                        $mensaje_cancel = "CSD Inválido";
+                        break;
+                    case 311:
+                        $mensaje_cancel = "Motivo inválido";
+                        break;
+                    case 312:
+                        $mensaje_cancel = "UUID no relacionado";
+                        break;
+                }
+
+                $actualizado = "";
+                if($status_uuid == 201 || $status_uuid == 202){
+                    $consulta = "UPDATE `datos_factura` set status_pago=:estado, cfdicancel=:cfdi WHERE iddatos_factura=:id;);";
+                    $valores = array("id" => $idfactura,
+                        "estado" => '3',
+                        "cfdi" => $cfdi);
+                    $con = new Consultas();
+                    $actualizado = $con->execute($consulta, $valores);
+                    $actualizado = "1$status_uuid - $mensaje_cancel";
+                } else {
+                    $actualizado = "0$status_uuid - $mensaje_cancel";
+                }
+                return $actualizado;
+            }
+
 
             private function getConfigMailAux() {
                 $consultado = false;
@@ -3692,14 +3892,38 @@ private function guardarXML($idfactura) {
             return $uuid;
         }
 
+        private function getOptionsEgresos($sid, $n, $idprod, $total, $disuuid){
+            $datos = "<select class='form-select w-100 p-2' id='SCfdiRel$n' data-idtmpprod='$idprod' onchange='asignaMonto($n);' $disuuid>
+                          <option value=''> - - - </option>";
+    
+            $query = "SELECT * FROM tmpegreso WHERE sessionid = :sid";
+            $val = array("sid" => $sid);
+            $stmt = $this->consultas->getResults($query, $val);
+            foreach($stmt as $rs){
+                $idegreso = $rs['idegreso'];
+                $tmpidprod = $rs['idproducto'];
+                $folio = $rs['folio_doc'];
+                $monto = $rs['monto_egreso'];
+                $selected = "";
+                if($tmpidprod == $idprod || $monto == $total){
+                    $selected = "selected";
+                }
+                $datos .= "<option value='$idegreso' $selected >$folio</option>";
+            }
+            $datos .= "</select>";
+    
+            return $datos;
+        }
+
         public function asignarMontoCfdiRel($id_egreso, $total, $id_prod){
             $con = new Consultas();
-            $query = "UPDATE tmpegreso SET monto_egreso = :monto, producto = :idprod WHERE idegreso = :id";
+            $query = "UPDATE tmpegreso SET monto_egreso = :monto, idproducto = :idprod WHERE idegreso = :id";
             $val = array("monto" => $total, "idprod" => $id_prod, "id" => $id_egreso);
             $insertado = $con->execute($query, $val);
             return $insertado;
         }
     
+        
         private function getCfdiEgresos($tag) {
             $consultado = false;
             
@@ -3708,7 +3932,7 @@ private function guardarXML($idfactura) {
             $consultado = $this->consultas->getResults($consulta, $val);
             return $consultado;
         }
-        
+         
         public function cfdiEgreso($tag, $sessionid) {
             $n=0;
             $productos = $this->getCfdiEgresos($tag);
@@ -3740,28 +3964,6 @@ private function guardarXML($idfactura) {
             return $n;
         }
 
-        private function getOptionsEgresos($sid, $n, $idprod, $total, $disuuid){
-            $datos = "<select class='form-control text-center input-form' id='SCfdiRel$n' data-idtmpprod='$idprod' onchange='asignaMonto($n);' $disuuid>
-                          <option value=''> - - - </option>";
+       
     
-            $query = "SELECT * FROM tmpegreso WHERE sessionid = :sid";
-            $val = array("sid" => $sid);
-            $stmt = $this->consultas->getResults($query, $val);
-            foreach($stmt as $rs){
-                $idegreso = $rs['idegreso'];
-                $tmpidprod = $rs['idproducto'];
-                $folio = $rs['folio_doc'];
-                $monto = $rs['monto_egreso'];
-                $selected = "";
-                if($tmpidprod == $idprod || $monto == $total){
-                    $selected = "selected";
-                }
-                $datos .= "<option value='$idegreso' $selected >$folio</option>";
-            }
-            $datos .= "</select>";
-    
-            return $datos;
-        }
-    
-
 }

@@ -91,7 +91,6 @@ function checkIVA(idtmp) {
 }
 
 function setCamposProducto() {
-   
     $("#codigo-producto").val('');
     $("#producto").val('');
     $("#tipo").val('');
@@ -180,7 +179,6 @@ function insertarProductoFactura() {
         });
     }
 }
-
 
 //autocompletar-----------------
 function aucompletarRegimen() {
@@ -846,7 +844,7 @@ function gestionarFactura(idfactura = null) {
     if ($("#chfirma").prop('checked')) {
         chfirma = 1;
     }
-    if ($("#cfdirel").hasClass('in')) {
+    if ($("#cfdirel").hasClass('show')) {
         cfdis = 1;
     }
 
@@ -1007,6 +1005,7 @@ function editarFactura(idFactura) {
     });
 }
 
+
 function setValoresEditarFactura(datos) {
     changeText("#contenedor-titulo-form-factura", "Editar Factura");
     changeText("#btn-form-factura", "Guardar cambios <span class='fas fa-save'></span>");
@@ -1082,7 +1081,6 @@ function setValoresEditarFactura(datos) {
     }
 	
     if (cfdisrel == '1') {
-    	
         $.ajax({
             url: "com.sine.enlace/enlacefactura.php",
             type: "POST",
@@ -1098,10 +1096,24 @@ function setValoresEditarFactura(datos) {
                     var p1 = array[0];
                     var p2 = array[1];
                     $("#body-lista-cfdi").html(p2);
-                    $("#cfdirel").addClass('in');
+                    $("#cfdirel").addClass('show');
                 }
             }
         });
+
+        if(idtipo_comprobante == 2){//egreso
+            $.ajax({
+                url: "com.sine.enlace/enlacefactura.php",
+                type: "POST",
+                data: {transaccion: "cfdiEgreso", tag: tag},
+                success: function (datos) {
+                    //alert(datos);
+                }
+            }); 
+        }
+    
+    
+    
     }
 
     $.ajax({
@@ -1158,6 +1170,7 @@ function setValoresEditarFactura(datos) {
 
 
 }
+
 
 function eliminarFactura(idFactura) {
     alertify.confirm("Esta seguro que desea eliminar esta factura?", function () {
@@ -1233,11 +1246,12 @@ function setValoresCopiarFactura(datos) {
     var rzsocial = array[23];
     var clvreg = array[24];
     var regimen = array[25];
-    var tag = array[26];
-    var dirreceptor = array[27];
-    var periodoG = array[28];
-    var mesperiodo = array[29];
-    var anhoperiodo = array[30];
+    var cpemisor = array[26];
+    var tag = array[27];
+    var dirreceptor = array[28];
+    var periodoG = array[29];
+    var mesperiodo = array[30];
+    var anhoperiodo = array[31];
 
     if (cfdisrel == '1') {
         $.ajax({
@@ -1255,7 +1269,7 @@ function setValoresCopiarFactura(datos) {
                     var p1 = array[0];
                     var p2 = array[1];
                     $("#body-lista-cfdi").html(p2);
-                    $("#cfdirel").addClass('in');
+                    $("#cfdirel").addClass('show');
                 }
             }
         });
@@ -1307,8 +1321,8 @@ function setValoresCopiarFactura(datos) {
         $("#chfirma").attr('checked', true);
     }
 
-    loadDatosFactura();
-    getTipoCambio();
+    loadDatosFactura(iddatos);
+    getTipoCambio(idmoneda);
 }
 
 /*
@@ -1362,7 +1376,7 @@ function setValoresCopiarFactura(datos) {
                     var p1 = array[0];
                     var p2 = array[1];
                     $("#body-lista-cfdi").html(p2);
-                    $("#cfdirel").addClass('in');
+                    $("#cfdirel").addClass('show');
                 }
             }
         });

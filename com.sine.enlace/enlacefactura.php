@@ -644,9 +644,9 @@ if (isset($_POST['transaccion'])) {
             $reemplazo = $_POST['reemplazo'];
             $cadena = $cf->cancelarTimbre($idfactura, $motivo, $reemplazo);
             if ($cadena != "") {
-                echo $cadena;
+                echo 'timbre cancelado';
             } else {
-                echo "";
+                echo "error al cancelar el timbrado";
             }
             break;
         case 'filtrarproducto':
@@ -808,7 +808,7 @@ function obtenerdatosFactura(){
     $f->setPeriodicidad($_POST['periodicidad']);
     $f->setMesperiodo($_POST['mesperiodo']);
     $f->setAnoperiodo($_POST['anhoperiodo']);
-    $f->setTag($_POST['tag']); //nuevo
+    $f->setTag($_POST['tag']); //n
     $f->setChfirmar($_POST['chfirma']);
     $f->setCfdisrel($_POST['cfdis']);
     $f->setIdcotizacion($_POST['idcotizacion']);

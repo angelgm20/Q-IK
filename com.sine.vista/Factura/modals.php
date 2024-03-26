@@ -104,12 +104,12 @@
 <div class="modal fade bs-example-modal-lg" id="modalcancelar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close-modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="titulo-modal" id="myModalLabel">Motivo de la cancelacion:</h4>
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group">
-                        <select class="form-control text-center input-form" id="motivo-cancelacion" name="motivo-cancelacion" onchange="checkCancelacion();">
+                        <select class="form-select w-100 p-2 mb-3" id="motivo-cancelacion" name="motivo-cancelacion" onchange="checkCancelacion();">
                             <option value="" id="option-default-motivo">- - - -</option>
                             <optgroup id="motivos" class="contenedor-motivos text-left"> </optgroup>
                         </select>
@@ -127,7 +127,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-right" id="btn">
-                        <button class="button-modal" onclick="cancelarTimbre()" id="btn-cancelar">Cancelar Timbre <span class="glyphicon glyphicon-bell"></span></button>
+                        <button class="button-modal" onclick="cancelarTimbre()" id="btn-cancelar">Cancelar Timbre <span class="fas fa-bell"></span></button>
                     </div>	
                 </div>
             </div>
